@@ -23,7 +23,7 @@ BUFSIZ = 1024
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase("TestLiveness")
-@pytest.mark.regression
+@pytest.mark.liveness
 @pytest.mark.routing_service
 class TestLiveness(object):
     issues = ""
@@ -74,7 +74,7 @@ class TestLiveness(object):
 
         if TestLiveness.issues:
             logger.logger.warning(f"{TestLiveness.issues}")
-            # Slack.send_message("IGNORE IT ===>" + TestLiveness.issues)
+            Slack.send_message(TestLiveness.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

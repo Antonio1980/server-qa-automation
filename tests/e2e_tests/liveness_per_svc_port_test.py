@@ -23,6 +23,7 @@ BUFSIZ = 1024
 @allure.severity(allure.severity_level.MINOR)
 @allure.testcase("TestLiveness")
 @pytest.mark.ddt
+# @pytest.mark.liveness
 class TestLivenessPerServicePort(object):
     issues = ""
     latitude = "0.0"
@@ -75,7 +76,7 @@ class TestLivenessPerServicePort(object):
 
         if TestLivenessPerServicePort.issues:
             logger.logger.warning(f"{TestLivenessPerServicePort.issues}")
-            # Slack.send_message("IGNORE IT ===>" + TestLiveness.issues)
+            Slack.send_message(TestLivenessPerServicePort.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
