@@ -1,3 +1,4 @@
+import os
 import time
 import pytest
 from src.common import logger
@@ -31,14 +32,23 @@ def endpoints():
     return response_
 
 
-def pytest_addoption(parser):
-    parser.addoption(
-        "--expect_endpoints", action="store", default="2", help="Please provide an expected result for liveness test (int).")
+# def pytest_addoption(parser):
+#     parser.addoption(
+#         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")
+#
+#
+# @pytest.fixture
+# def expect_endpoints(request):
+#     return request.config.getoption("--expect_endpoints")
+
+
+def pytest_generate_tests(metafunc):
+    os.environ['EXPECTED_ENDPOINTS'] = '2'
 
 
 @pytest.fixture
-def expect_endpoints(request):
-    return request.config.getoption("--expect_endpoints")
+def ex_endpoints():
+    return os.environ.get('EXPECTED_ENDPOINTS')
 
 
 def pytest_runtest_makereport(item, call):

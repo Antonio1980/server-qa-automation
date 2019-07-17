@@ -35,10 +35,14 @@ class TestLivenessPerServicePort(object):
     message2 = UdpMessage().udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
+    @pytest.mark.usefixtures("ex_endpoints")
     @allure.step("Verify that Routing svc returns all active endpoints.")
-    def test_returned_endpoints(self, endpoints):
-        if len(endpoints) != 2:
-            err_message = "Endpoints count != " + str(2) + "\n"
+    def test_returned_endpoints(self, endpoints, ex_endpoints):
+        if ex_endpoints is None:
+            raise AutomationError("Environment variable 'EXPECTED_ENDPOINTS' is not provided...")
+
+        if len(endpoints) != int(ex_endpoints):
+            err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
             TestLivenessPerServicePort.issues += err_message
             logger.logger.exception(err_message)
             raise AutomationError(err_message)
