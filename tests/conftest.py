@@ -1,9 +1,10 @@
 import time
 import pytest
 from src.common import logger
+from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-collect_ignore = ["setup.py"]
+collect_ignore = ["setup.cfg.py"]
 
 
 @pytest.fixture(scope="class")
@@ -21,6 +22,23 @@ def run_time_count(request):
         logger.logger.info("AVERAGE OF THE TEST CASE RUN TIME: {0} minutes {1} seconds".format(min_, sec_))
 
     request.addfinalizer(stop_counter)
+
+
+@pytest.fixture(scope="class")
+@automation_logger(logger)
+def endpoints():
+    response_ = ApiClient().routing_svc.get_endpoints()[0]
+    return response_
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--expect_endpoints", action="store", default="2", help="Please provide an expected result for liveness test (int).")
+
+
+@pytest.fixture
+def expect_endpoints(request):
+    return request.config.getoption("--expect_endpoints")
 
 
 def pytest_runtest_makereport(item, call):

@@ -38,10 +38,9 @@ class TestLiveness(object):
 
     @automation_logger(logger)
     @allure.step("Verify that Routing svc returns all active endpoints.")
-    @pytest.mark.parametrize('arg', [2])
-    def test_returned_endpoints(self, endpoints, arg):
-        if len(endpoints) != arg:
-            err_message = "Endpoints count != " + str(arg) + "\n"
+    def test_returned_endpoints(self, endpoints, expect_endpoints):
+        if len(endpoints) != int(expect_endpoints):
+            err_message = "Endpoints count != " + str(expect_endpoints) + "\n"
             TestLiveness.issues += err_message
             logger.logger.exception(err_message)
             raise AutomationError(err_message)

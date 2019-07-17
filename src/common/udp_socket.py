@@ -14,7 +14,7 @@ class UdpSocket:
     @classmethod
     @automation_logger(logger)
     def udp_send(cls, bytes_to_send: bytes, address: tuple):
-        logger.logger.info("UDP client up and listening")
+        logger.logger.info("UDP client is Up!")
         cls.udp_socket.sendto(bytes_to_send, address)
 
 
@@ -32,8 +32,8 @@ class UdpMessage(RequestSchema):
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
-
-        self.data[CLIENT_DATA] = dict()
+        dict_ = dict()
+        self.data[CLIENT_DATA] = dict_
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 100))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"
         self.data[CLIENT_DATA][LATITUDE] = str(latitude)
