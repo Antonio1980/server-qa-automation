@@ -1,6 +1,8 @@
 import time
 import allure
 import pytest
+
+from config_definitions import BaseConfig
 from src.common import logger
 from src.common.utils.slack import Slack
 from src.common.log_decorator import automation_logger
@@ -37,13 +39,11 @@ class TestLiveness(object):
     message2 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
-    @pytest.mark.usefixtures("ex_endpoints")
     @allure.step("Verify that Routing svc returns all active endpoints.")
-    def test_returned_endpoints(self, endpoints, ex_endpoints):
-        if ex_endpoints is None:
-            raise AutomationError("Environment variable 'EXPECTED_ENDPOINTS' is not provided...")
+    def test_returned_endpoints(self, endpoints):
+        ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
 
-        if len(endpoints) != int(ex_endpoints):
+        if len(endpoints) != ex_endpoints:
             err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
             TestLiveness.issues += err_message
             logger.logger.exception(err_message)
@@ -69,11 +69,11 @@ class TestLiveness(object):
             except Exception as e:
                 error = F"The endpoint {endpoint['name']} is not responding! \n"
                 TestLiveness.issues += error
-                logger.logger.warning(f"{error}")
+                logger.logger.fatal(f"{error}")
                 logger.logger.exception(e)
 
         if TestLiveness.issues:
-            logger.logger.warning(f"{TestLiveness.issues}")
+            logger.logger.fatal(f"{TestLiveness.issues}")
             Slack.send_message(TestLiveness.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:

@@ -3,6 +3,7 @@ import requests
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
+from src.common.services.svc_requests.request_constants import *
 from src.common.services.svc_requests.routing_requests import RoutingServiceRequest
 
 
@@ -19,9 +20,10 @@ class RoutingService(ServiceBase):
         """
         uri = self.url + "endpoints"
         try:
+            logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers)
             body = json.loads(_response.text)
-            logger.logger.info("Service Response: {0}".format(body))
+            logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} create_api_token failed with error: {e}")

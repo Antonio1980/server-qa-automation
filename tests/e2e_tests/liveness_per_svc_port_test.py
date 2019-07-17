@@ -71,11 +71,11 @@ class TestLivenessPerServicePort(object):
                 except Exception as e:
                     error = F"The endpoint {endpoint['name']} is not responding! \n"
                     TestLivenessPerServicePort.issues += error
-                    logger.logger.warning(f"{error}")
+                    logger.logger.error(f"{error}")
                     logger.logger.exception(e)
 
         if TestLivenessPerServicePort.issues:
-            logger.logger.warning(f"{TestLivenessPerServicePort.issues}")
+            logger.logger.fatal(f"{TestLivenessPerServicePort.issues}")
             Slack.send_message(TestLivenessPerServicePort.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:

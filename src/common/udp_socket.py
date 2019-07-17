@@ -34,7 +34,7 @@ class UdpMessage(RequestSchema):
         (latitude, longitude, bearing, velocity, accuracy) = args
         dict_ = dict()
         self.data[CLIENT_DATA] = dict_
-        self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 100))
+        self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"
         self.data[CLIENT_DATA][LATITUDE] = str(latitude)
         self.data[CLIENT_DATA][LONGTITUDE] = str(longitude)
