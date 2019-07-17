@@ -26,7 +26,7 @@ class UdpMessage(RequestSchema):
         self.data[DEBUG_MODE] = debug_mode
 
     @automation_logger(logger)
-    def udp_message(self, *args):
+    def set_udp_message(self, *args):
         """
 
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float

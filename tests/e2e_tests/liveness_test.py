@@ -33,8 +33,8 @@ class TestLiveness(object):
     velocity = 0
     accuracy = 5.0
 
-    message1 = UdpMessage().udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
-    message2 = UdpMessage().udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
+    message1 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
+    message2 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
     @pytest.mark.usefixtures("ex_endpoints")

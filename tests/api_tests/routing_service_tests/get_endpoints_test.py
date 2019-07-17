@@ -13,7 +13,7 @@ test_case = ""
 @allure.title("GET ENDPOINTS.")
 @allure.description("""
     Functional tests.
-    1. 
+    1. Basic 'smoke_test'
     2.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
