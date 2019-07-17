@@ -2,11 +2,10 @@ from src.common import logger
 from src.common.log_decorator import automation_logger
 
 
-class AutomationError(BaseException):
+class AutomationError(Exception):
     
-    def __init__(self, *args, **kwargs):
-        super(BaseException, self).__init__()
-        AutomationError.__init__(self, *args, **kwargs)
+    def __init__(self, *args):
+        super(Exception, self).__init__(*args)
 
     @automation_logger(logger)
     def __str__(self):

@@ -9,6 +9,7 @@ from src.common.automation_error import AutomationError
 from src.common.udp_socket import UdpSocket, UdpMessage
 
 test_case = "liveness"
+BUFSIZ = 1024
 
 
 # @pytest.mark.incremental
@@ -38,14 +39,15 @@ class TestLiveness(object):
     @pytest.fixture(scope="class")
     @automation_logger(logger)
     def endpoints(self):
-        response_ = ApiClient().routing_svc.get_endpoints()
+        response_ = ApiClient().routing_svc.get_endpoints()[0]
         return response_
 
     @automation_logger(logger)
-    @allure.step(F"Verify that Routing svc returns all active endpoints.")
-    def test_returned_endpoints(self, endpoints):
-        if len(endpoints) != 2:
-            err_message = "Endpoints count != " + str(2) + "\n"
+    @allure.step("Verify that Routing svc returns all active endpoints.")
+    @pytest.mark.parametrize('arg', [2])
+    def test_returned_endpoints(self, endpoints, arg):
+        if len(endpoints) != arg:
+            err_message = "Endpoints count != " + str(arg) + "\n"
             TestLiveness.issues += err_message
             logger.logger.exception(err_message)
             raise AutomationError(err_message)
@@ -53,28 +55,29 @@ class TestLiveness(object):
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    @allure.step(F"Verify that all provided ports are open and accept UDP connections.")
+    @allure.step("Verify that all provided ports are open and accept UDP connections.")
     def test_endpoints_ports(self, endpoints):
 
         for endpoint in endpoints:
 
             UdpSocket.udp_send(self.message1, (endpoint["ip"], endpoint["minPort"]))
             UdpSocket.udp_send(self.message2, (endpoint["ip"], endpoint["maxPort"]))
-            time.sleep(1.0)
+            time.sleep(2.0)
             try:
-                response_ = UdpSocket.udp_socket.recv(10000)
+                response_ = UdpSocket.udp_socket.recv(BUFSIZ)
                 if response_:
-                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!")
+                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!  {response_}")
                 else:
-                    logger.logger.error(F"The endpoint {endpoint['name']} is not available!")
+                    logger.logger.error(F"Not valid UDP response: {response_}")
             except Exception as e:
                 error = F"The endpoint {endpoint['name']} is not responding! \n"
                 TestLiveness.issues += error
-                logger.logger.exception(error, e)
+                logger.logger.warning(f"{error}")
+                logger.logger.exception(e)
 
         if TestLiveness.issues:
             logger.logger.warning(f"{TestLiveness.issues}")
-            Slack.send_message("IGNORE IT ===>" + TestLiveness.issues)
+            # Slack.send_message("IGNORE IT ===>" + TestLiveness.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

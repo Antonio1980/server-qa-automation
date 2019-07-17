@@ -16,3 +16,4 @@ class BaseConfig:
 
     API_BASE_URL = parser.get("URLS", "api_base_url")
     SLACK_URL = parser.get("URLS", "slack_url")
+    GITLAB_URL = parser.get("URLS", "gitlab_url")

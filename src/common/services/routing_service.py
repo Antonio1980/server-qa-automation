@@ -13,12 +13,16 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_endpoints(self):
+        """
+
+        :return:
+        """
         uri = self.url + "endpoints"
         try:
             _response = requests.get(uri, headers=self.headers)
             body = json.loads(_response.text)
             logger.logger.info("Service Response: {0}".format(body))
-            return body
+            return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} create_api_token failed with error: {e}")
             raise e

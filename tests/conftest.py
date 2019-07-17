@@ -8,7 +8,7 @@ collect_ignore = ["setup.py"]
 
 @pytest.fixture(scope="class")
 @automation_logger(logger)
-def r_time_count(request):
+def run_time_count(request):
     start_time = time.perf_counter()
     logger.logger.info("START TIME: {0}".format(start_time))
 
