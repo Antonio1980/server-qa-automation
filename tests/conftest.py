@@ -42,10 +42,6 @@ def endpoints():
 #     return request.config.getoption("--expect_endpoints")
 
 
-# def pytest_generate_tests(metafunc):
-#     os.environ['EXPECTED_ENDPOINTS'] = '2'
-
-
 @pytest.fixture
 def ex_endpoints():
     return os.environ.get('EXPECTED_ENDPOINTS')

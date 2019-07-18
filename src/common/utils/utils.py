@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from src.common import logger
 from src.common.log_decorator import automation_logger
+from src.common.utils.auth_zero import AuthorizationZero
 
 
 class Utils:
@@ -20,6 +21,11 @@ class Utils:
     @automation_logger(logger)
     def get_timestamp():
         return datetime.utcnow().isoformat() + "Z"
+
+    @staticmethod
+    @automation_logger(logger)
+    def get_auth_token():
+        return AuthorizationZero.get_authorization_token()
 
 
 # if __name__ == "__main__":

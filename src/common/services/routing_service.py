@@ -8,8 +8,9 @@ from src.common.services.svc_requests.routing_requests import RoutingServiceRequ
 
 
 class RoutingService(ServiceBase):
-    def __init__(self):
+    def __init__(self, auth_token):
         super(RoutingService, self).__init__()
+        self.headers.update({'Authorization': 'Bearer {}'.format(auth_token)})
         self.url = self.api_base_url + "routing-service/"
 
     @automation_logger(logger)
@@ -21,12 +22,12 @@ class RoutingService(ServiceBase):
         uri = self.url + "endpoints"
         try:
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.get(uri, headers=self.headers)
+            _response = requests.get(uri, headers=self.headers_without_token)
             body = json.loads(_response.text)
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} create_api_token failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_endpoints failed with error: {e}")
             raise e
 
 

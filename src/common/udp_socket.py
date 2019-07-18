@@ -9,7 +9,7 @@ from src.common.services.svc_requests.request_schema import RequestSchema
 
 class UdpSocket:
     udp_socket = socket(family=AF_INET, type=SOCK_DGRAM)
-    udp_socket.settimeout(2)
+    udp_socket.settimeout(1)
 
     @classmethod
     @automation_logger(logger)

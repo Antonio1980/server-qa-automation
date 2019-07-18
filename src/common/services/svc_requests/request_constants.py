@@ -15,3 +15,10 @@ HORIZONTAL_ACCURACY = "horizontalAccuracy"
 TIMESTAMP = "timestamp"
 SOURCE = "source"
 DEBUG_MODE = "debugMode"
+
+# Area-Blacklist
+SW = "sw"
+NE = "ne"
+LNG = "lng"
+LAT = "lat"
+

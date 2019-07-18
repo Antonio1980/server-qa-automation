@@ -25,7 +25,7 @@ class Slack:
             logger.logger.info("Service Response: {0}".format(body))
             return body
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} create_api_token failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} send_message failed with error: {e}")
             raise e
 
 

@@ -3,6 +3,7 @@ import allure
 import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
+from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 from src.common.udp_socket import UdpSocket, UdpMessage
@@ -21,8 +22,7 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.MINOR)
-@allure.testcase("TestLiveness")
-@pytest.mark.ddt
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/liveness_per_svc_port_test.py", "TestLivenessPerServicePort")
 # @pytest.mark.liveness
 class TestLivenessPerServicePort(object):
     issues = ""

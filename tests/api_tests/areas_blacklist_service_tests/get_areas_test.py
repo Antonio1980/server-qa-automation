@@ -9,35 +9,37 @@ test_case = ""
 
 
 @allure.feature("")
-@allure.story("Client able to get Location services endpoints from Routing service.")
-@allure.title("GET ENDPOINTS.")
+@allure.story("Client able to get ")
+@allure.title("GET AREAS.")
 @allure.description("""
     Functional tests.
-    1. Basic 'smoke_test'
+    1. 
     2.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/routing_service_tests/get_endpoints_test.py","TestGetEndpoints")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/areas_blacklist_service_tests/get_areas_test.py",
+                 "TestGetAreas")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
 @pytest.mark.routing_service
-class TestGetEndpoints(object):
+class TestGetAreas(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that 'getEndpoints' method returned response and status code is 200")
-    def test_get_endpoints_method_works(self):
-        response_ = ApiClient().routing_svc.get_endpoints()
+    @allure.step("Verify that ")
+    def test_get_areas_method_works(self):
+        response_ = ApiClient().areas_blacklist_svc.get_areas()
         assert response_[0] is not None
         assert response_[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_endpoints_method(self):
-        response_ = ApiClient().routing_svc.get_endpoints()[0]
-        assert isinstance(response_, list)
-        assert len(response_) > 0
-        for item in response_:
+    def test_attributes_in_get_areas_method(self):
+        response_ = ApiClient().areas_blacklist_svc.get_areas()[0]
+        assert "hash" in response_.keys() and isinstance(response_["hash"], str)
+        assert "areas" in response_.keys() and isinstance(response_["areas"], list)
+        assert len(response_["areas"]) > 0
+        for item in response_["areas"]:
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

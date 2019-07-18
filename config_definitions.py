@@ -26,7 +26,7 @@ elif environment.lower() == Environment.INTEGRATION.value:
 elif environment.lower() == Environment.PRODUCTION.value:
     environment_conf_file = "production.cfg"
 else:
-    error = "Environment is not detected ! Please specify environment variable 'ENV' (options: stg, int, prod)"
+    error = "Environment is not detected ! Please specify environment variable 'ENV' (ENV=[stg, int, prod])"
     logger.logger.exception(error)
     raise AutomationError(error)
 
@@ -41,3 +41,7 @@ class BaseConfig:
     API_BASE_URL = parser.get("URLS", "api_base_url")
     SLACK_URL = parser.get("URLS", "slack_url")
     GITLAB_URL = parser.get("URLS", "gitlab_url")
+    AUTH_ZERO = parser.get("URLS", "auth_zero")
+
+    AUTH_ZERO_USER = parser.get("AUTOMATION", "auth_zero_user")
+    AUTH_ZERO_PASSWORD = parser.get("AUTOMATION", "auth_zero_password")
