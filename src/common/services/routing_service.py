@@ -24,7 +24,7 @@ class RoutingService(ServiceBase):
             logger.logger.info("Service Response: {0}".format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} create_api_token failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_endpoints failed with error: {e}")
             raise e
 
 
