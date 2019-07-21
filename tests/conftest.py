@@ -5,7 +5,7 @@ from src.common import logger
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-collect_ignore = ["setup.cfg.py"]
+# collect_ignore = ["setup.py"]
 
 
 @pytest.fixture(scope="class")

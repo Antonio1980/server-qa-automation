@@ -1,4 +1,3 @@
-import time
 import allure
 import pytest
 from src.common import logger
@@ -80,7 +79,7 @@ class TestLocationLivenessPerServicePort(object):
 
         if TestLocationLivenessPerServicePort.issues:
             logger.logger.fatal(f"{TestLocationLivenessPerServicePort.issues}")
-            # Slack.send_message(TestLivenessPerServicePort.issues)
+            Slack.send_message(TestLocationLivenessPerServicePort.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

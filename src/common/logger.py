@@ -6,15 +6,18 @@ from src import src_dir
 
 
 def create_logger(name='PYTHON_WTP_QA', level='DEBUG'):
-    log_file = _create_log_file()
     logger_ = logging.getLogger() if name is None else logging.getLogger(name)
     logger_.setLevel(level)
     format_ = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(format_)
-    log_file = logging.FileHandler(log_file)
-    log_file.setFormatter(formatter)
-    log_file.setLevel(level)
-    logger_.addHandler(log_file)
+    env = os.environ.get("ENV")
+    if env != "prod":
+        log_file = _create_log_file()
+        log_file = logging.FileHandler(log_file)
+        log_file.setFormatter(formatter)
+        log_file.setLevel(level)
+        logger_.addHandler(log_file)
+
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     console_handler.setLevel(level)

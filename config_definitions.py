@@ -19,7 +19,7 @@ if "ENV" in os.environ.keys():
 else:
     environment = "stg"
 
-logger.logger.info(F"ENVIRONMENT SET FOR: {environment}")
+# logger.logger.info(F"ENVIRONMENT SET FOR: {environment}")
 
 if environment.lower() == Environment.STAGING.value:
     environment_conf_file = "staging.cfg"
@@ -29,7 +29,6 @@ elif environment.lower() == Environment.PRODUCTION.value:
     environment_conf_file = "production.cfg"
 else:
     error = "Environment is not detected ! Please specify environment variable 'ENV' (ENV=[stg, int, prod])"
-    logger.logger.exception(error)
     raise AutomationError(error)
 
 
@@ -39,6 +38,7 @@ class BaseConfig:
     parser = get_parser(config_file)
 
     EXPECTED_ENDPOINTS = parser.get("ARGS", "location_endpoints")
+    LOG_FILE = parser.get("ARGS", "logger")
 
     API_BASE_URL = parser.get("URLS", "api_base_url")
     SLACK_URL = parser.get("URLS", "slack_url")

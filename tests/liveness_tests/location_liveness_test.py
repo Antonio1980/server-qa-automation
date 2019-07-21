@@ -72,7 +72,7 @@ class TestLocationLiveness(object):
 
         if TestLocationLiveness.issues:
             logger.logger.fatal(f"{TestLocationLiveness.issues}")
-            # Slack.send_message(TestLiveness.issues)
+            Slack.send_message(TestLocationLiveness.issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
