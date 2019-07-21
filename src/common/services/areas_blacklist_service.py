@@ -15,10 +15,6 @@ class AreasBlacklistService(ServiceBase):
 
     @automation_logger(logger)
     def get_areas(self):
-        """
-
-        :return:
-        """
         uri = self.url + "areas"
         try:
             logger.logger.info(F"API Service URL is {uri}")
@@ -64,10 +60,6 @@ class AreasBlacklistService(ServiceBase):
 
     @automation_logger(logger)
     def get_hash(self):
-        """
-
-        :return:
-        """
         uri = self.url + "hash"
         try:
             logger.logger.info(F"API Service URL is {uri}")
@@ -94,10 +86,6 @@ class AreasBlacklistService(ServiceBase):
 
     @automation_logger(logger)
     def export_areas(self):
-        """
-
-        :return:
-        """
         uri = self.url + "areas/export"
         try:
             logger.logger.info(F"API Service URL is {uri}")
@@ -110,14 +98,9 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_areas_inbox(self, *args):
-        """
-
-        :param args: sw_lng, sw_lat, ne_lng, ne_lat
-        :return:
-        """
+    def get_areas_inbox(self, sw_lng: float, sw_lat: float, ne_lng: float, ne_lat: float) -> tuple:
         uri = self.url + "areas/inBox"
-        payload = AreasBlacklistServiceRequest().get_areas_inbox(args)
+        payload = AreasBlacklistServiceRequest().get_areas_inbox(sw_lng, sw_lat, ne_lng, ne_lat)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)

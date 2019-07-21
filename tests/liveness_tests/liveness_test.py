@@ -11,19 +11,18 @@ test_case = "liveness"
 BUFSIZ = 1024
 
 
-@allure.feature('Location Service')
+@allure.feature('Liveness')
 @allure.story('Client able to found and connect to Location service via configured ports.')
-@allure.title("END TO END")
+@allure.title("Location Service")
 @allure.description("""
-    Functional end to end test.
+    Functional test.
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/liveness_test.py", "TestLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
-@pytest.mark.routing_service
 class TestLiveness(object):
     issues = ""
     latitude = "0.0"
@@ -73,7 +72,7 @@ class TestLiveness(object):
 
         if TestLiveness.issues:
             logger.logger.fatal(f"{TestLiveness.issues}")
-            Slack.send_message(TestLiveness.issues)
+            # Slack.send_message(TestLiveness.issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:

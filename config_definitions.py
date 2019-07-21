@@ -19,6 +19,8 @@ if "ENV" in os.environ.keys():
 else:
     environment = "stg"
 
+logger.logger.info(F"ENVIRONMENT SET FOR: {environment}")
+
 if environment.lower() == Environment.STAGING.value:
     environment_conf_file = "staging.cfg"
 elif environment.lower() == Environment.INTEGRATION.value:
