@@ -7,7 +7,7 @@ from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 from src.common.udp_socket import UdpSocket, UdpMessage
 
-test_case = "liveness"
+test_case = "location_liveness"
 BUFSIZ = 1024
 
 
@@ -21,9 +21,9 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_test.py", "TestLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
-class TestLiveness(object):
+class TestLocationLiveness(object):
     issues = ""
     latitude = "0.0"
     longitude = "0.0"
@@ -41,7 +41,7 @@ class TestLiveness(object):
 
         if len(endpoints) != ex_endpoints:
             err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
-            TestLiveness.issues += err_message
+            TestLocationLiveness.issues += err_message
             logger.logger.exception(err_message)
 
             raise AutomationError(err_message)
@@ -66,12 +66,12 @@ class TestLiveness(object):
 
             except Exception as e:
                 error = F"The endpoint {endpoint['name']} is not responding! \n"
-                TestLiveness.issues += error
+                TestLocationLiveness.issues += error
                 logger.logger.fatal(f"{error}")
                 logger.logger.exception(e)
 
-        if TestLiveness.issues:
-            logger.logger.fatal(f"{TestLiveness.issues}")
+        if TestLocationLiveness.issues:
+            logger.logger.fatal(f"{TestLocationLiveness.issues}")
             # Slack.send_message(TestLiveness.issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")

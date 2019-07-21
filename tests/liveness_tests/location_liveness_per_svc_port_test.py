@@ -22,9 +22,9 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.MINOR)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_per_svc_port_test.py", "TestLivenessPerServicePort")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py", "TestLivenessPerServicePort")
 @pytest.mark.liveness
-class TestLivenessPerServicePort(object):
+class TestLocationLivenessPerServicePort(object):
     issues = ""
     latitude = "0.0"
     longitude = "0.0"
@@ -45,7 +45,7 @@ class TestLivenessPerServicePort(object):
 
         if len(endpoints) != ex_endpoints:
             err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
-            TestLivenessPerServicePort.issues += err_message
+            TestLocationLivenessPerServicePort.issues += err_message
             logger.logger.exception(err_message)
             raise AutomationError(err_message)
         else:
@@ -74,12 +74,12 @@ class TestLivenessPerServicePort(object):
                     else:
                         logger.logger.error(f"{if_error}")
                 except Exception as e:
-                    TestLivenessPerServicePort.issues += if_error
+                    TestLocationLivenessPerServicePort.issues += if_error
                     logger.logger.error(f"{if_error}")
                     logger.logger.exception(e)
 
-        if TestLivenessPerServicePort.issues:
-            logger.logger.fatal(f"{TestLivenessPerServicePort.issues}")
+        if TestLocationLivenessPerServicePort.issues:
+            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.issues}")
             # Slack.send_message(TestLivenessPerServicePort.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
