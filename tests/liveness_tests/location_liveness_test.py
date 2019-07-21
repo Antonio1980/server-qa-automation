@@ -1,4 +1,3 @@
-import time
 import allure
 import pytest
 from src.common import logger
@@ -22,7 +21,7 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/liveness_test.py", "TestLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
 @pytest.mark.routing_service
 class TestLiveness(object):
