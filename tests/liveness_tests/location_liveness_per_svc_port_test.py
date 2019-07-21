@@ -3,7 +3,6 @@ import allure
 import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
-from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 from src.common.udp_socket import UdpSocket, UdpMessage
@@ -21,11 +20,10 @@ BUFSIZ = 1024
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
-@allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/liveness_test.py", "TestLiveness")
-@pytest.mark.liveness
-@pytest.mark.routing_service
-class TestLiveness(object):
+@allure.severity(allure.severity_level.MINOR)
+@allure.testcase("TestLiveness")
+# @pytest.mark.liveness
+class TestLivenessPerServicePort(object):
     issues = ""
     latitude = "0.0"
     longitude = "0.0"
@@ -45,7 +43,7 @@ class TestLiveness(object):
 
         if len(endpoints) != int(ex_endpoints):
             err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
-            TestLiveness.issues += err_message
+            TestLivenessPerServicePort.issues += err_message
             logger.logger.exception(err_message)
             raise AutomationError(err_message)
         else:
@@ -56,25 +54,28 @@ class TestLiveness(object):
     def test_endpoints_ports(self, endpoints):
 
         for endpoint in endpoints:
-            UdpSocket.udp_send(self.message1, (endpoint["ip"], endpoint["minPort"]))
-            UdpSocket.udp_send(self.message2, (endpoint["ip"], endpoint["maxPort"]))
+            port_range = [p for p in range(endpoint["minPort"], endpoint["maxPort"] + 1)]
+            logger.logger.info(F"Accepted ports are: {port_range}")
 
-            try:
-                response_ = UdpSocket.udp_socket.recv(BUFSIZ)
-                if response_:
-                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!  {response_}")
-                else:
-                    logger.logger.error(F"Not valid UDP response: {response_}")
-            except Exception as e:
-                error = F"The endpoint {endpoint['name']} is not responding! \n"
-                TestLiveness.issues += error
-                logger.logger.warning(f"{error}")
-                logger.logger.exception(e)
+            for port in port_range:
+                UdpSocket.udp_send(self.message1, (endpoint["ip"], port))
+                UdpSocket.udp_send(self.message2, (endpoint["ip"], port))
+                time.sleep(1.0)
+                try:
+                    response_ = UdpSocket.udp_socket.recv(BUFSIZ)
+                    if response_:
+                        logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!  {response_}")
+                    else:
+                        logger.logger.error(F"Not valid UDP response: {response_}")
+                except Exception as e:
+                    error = F"The endpoint {endpoint['name']} is not responding! \n"
+                    TestLivenessPerServicePort.issues += error
+                    logger.logger.warning(f"{error}")
+                    logger.logger.exception(e)
 
-        if TestLiveness.issues:
-            logger.logger.warning(f"{TestLiveness.issues}")
-            Slack.send_message(TestLiveness.issues)
-
+        if TestLivenessPerServicePort.issues:
+            logger.logger.warning(f"{TestLivenessPerServicePort.issues}")
+            Slack.send_message(TestLivenessPerServicePort.issues)
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
