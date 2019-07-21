@@ -1,5 +1,5 @@
 import pytest
 
 
-if __name__ == "__main__":
+def run(self):
     pytest.main(['-v', 'tests', '-m', 'liveness'])

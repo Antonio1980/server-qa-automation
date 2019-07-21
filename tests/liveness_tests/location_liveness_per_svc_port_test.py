@@ -1,11 +1,12 @@
 import allure
 import pytest
 from src.common import logger
+from src.common.entities.udp_message import UdpMessage
 from src.common.utils.slack import Slack
 from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
-from src.common.udp_socket import UdpSocket, UdpMessage
+from src.common.udp_socket import UdpSocket
 
 test_case = "location_liveness"
 BUFSIZ = 1024
@@ -21,7 +22,8 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
 @allure.severity(allure.severity_level.MINOR)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py", "TestLivenessPerServicePort")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py",
+                 "TestLocationLivenessPerServicePort")
 @pytest.mark.liveness
 class TestLocationLivenessPerServicePort(object):
     issues = ""
@@ -35,17 +37,15 @@ class TestLocationLivenessPerServicePort(object):
     message2 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
-    # @pytest.mark.usefixtures("ex_endpoints")
     @allure.step("Verify that Routing svc returns all active endpoints.")
     def test_returned_endpoints(self, endpoints):
         ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
-        # if ex_endpoints is None:
-        #     raise AutomationError("Environment variable 'EXPECTED_ENDPOINTS' is not provided...")
 
         if len(endpoints) != ex_endpoints:
             err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
             TestLocationLivenessPerServicePort.issues += err_message
             logger.logger.exception(err_message)
+
             raise AutomationError(err_message)
         else:
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
