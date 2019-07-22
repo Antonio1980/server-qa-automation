@@ -32,21 +32,6 @@ def endpoints():
     return response_
 
 
-# def pytest_addoption(parser):
-#     parser.addoption(
-#         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")
-#
-#
-# @pytest.fixture
-# def expect_endpoints(request):
-#     return request.config.getoption("--expect_endpoints")
-
-
-@pytest.fixture
-def ex_endpoints():
-    return os.environ.get('EXPECTED_ENDPOINTS')
-
-
 def pytest_runtest_makereport(item, call):
     if "incremental" in item.keywords:
         if call.excinfo is not None:
@@ -59,3 +44,18 @@ def pytest_runtest_setup(item):
         previousfailed = getattr(item.parent, "_previousfailed", None)
         if previousfailed is not None:
             pytest.xfail("previous test failed (%s)" % previousfailed.name)
+
+
+# def pytest_addoption(parser):
+#     parser.addoption(
+#         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")
+#
+#
+# @pytest.fixture
+# def expect_endpoints(request):
+#     return request.config.getoption("--expect_endpoints")
+#
+#
+# @pytest.fixture
+# def ex_endpoints():
+#     return os.environ.get('EXPECTED_ENDPOINTS')

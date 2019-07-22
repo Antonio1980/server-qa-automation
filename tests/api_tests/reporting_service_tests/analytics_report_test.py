@@ -1,3 +1,4 @@
+import os
 import allure
 import pytest
 from src.common import logger
@@ -9,6 +10,7 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
+@pytest.mark.skipif(os.environ.get("ENV") == "prod", reason="This test shouldn't run on production!")
 @allure.title("ANALYTICS REPORT")
 @allure.description("""
     Functional test.
