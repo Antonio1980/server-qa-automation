@@ -6,4 +6,4 @@ py==1.5.4
 pycparser==2.18
 requests==2.19.1
 requests-cache==0.4.13
-ntplib=0.3.3
+ntplib==0.3.3
