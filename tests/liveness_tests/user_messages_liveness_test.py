@@ -1,6 +1,7 @@
 import allure
 import pytest
 from src.common import logger
+from src.common.utils.slack import Slack
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
@@ -27,10 +28,9 @@ class TestUserMesagesLiveness(object):
     def test_user_messages_liveness(self):
         _response = ApiClient().messages_svc.get_user_messages("aaa")
 
-        assert _response[1].status_code == 200
-        assert _response[0] is not None
-        assert "messages" in _response[0].keys()
-        assert isinstance(_response[0]["messages"], list)
-        assert len(_response[0]["messages"]) > 0
+        if _response[1].status_code != 200 or _response[0] is None or "messages" not in _response[0].keys() \
+                or not isinstance(_response[0]["messages"], list) or len(_response[0]["messages"]) <= 0:
+            Slack.send_message(
+                F"{self.__class__.__name__} test_user_messages_liveness failed with response: {_response}")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

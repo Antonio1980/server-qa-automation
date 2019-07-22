@@ -12,10 +12,10 @@ class ReportingService(ServiceBase):
         self.url = self.api_base_url + "reporting-service/v1/"
 
     @automation_logger(logger)
-    def analytics(self, client_id, report_item):
+    def analytics_report(self, client_id, report_item):
         uri = self.url + "analytics"
         try:
-            payload = ReportingServiceRequest().analytics(client_id, report_item)
+            payload = ReportingServiceRequest().analytics_report(client_id, report_item)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
             body = "OK"

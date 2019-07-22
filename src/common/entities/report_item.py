@@ -9,3 +9,8 @@ class ReportItem(object):
         self.report_type = str(report_type)
         self.session_id = str(session_id)
         self.timestamp = Utils.get_timestamp()
+
+    def __repr__(self):
+        return "{}({})".format(self.__class__.__name__,
+                               ', '.join("{k}={v}".format(k=k, v=self.__dict__[k])
+                                         for k in sorted(self.__dict__.keys())))

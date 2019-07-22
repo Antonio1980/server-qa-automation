@@ -1,6 +1,7 @@
 import allure
 import pytest
 from src.common import logger
+from src.common.utils.slack import Slack
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
@@ -26,10 +27,9 @@ class TestAreaLivenessTelAviv(object):
     @allure.step("Verify that service returns areas of TelAviv.")
     def test_get_area_tel_aviv(self):
         _response = ApiClient().areas_blacklist_svc.get_areas_inbox(ne_lng=34.82932599989067, ne_lat=32.09434632337351,
-                                                                    sw_lng=34.75310834852348, sw_lat=32.039067310341956)[0]
-        assert _response is not None
-        assert "areas" in _response.keys()
-        areas = _response["areas"]
-        assert len(areas) > 0
+                                                                    sw_lng=34.75310834852348, sw_lat=32.039067310341956)
+        if _response[1].status_code != 200 or _response[0] is None or "areas" not in _response[0].keys() \
+                or len(_response[0]["areas"]) <= 0:
+            Slack.send_message(F"{self.__class__.__name__} test_get_area_tel_aviv failed with response: {_response}")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

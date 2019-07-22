@@ -8,8 +8,6 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.feature("")
-@allure.story("Client able to get Location services endpoints from Routing service.")
 @allure.title("GET ENDPOINTS.")
 @allure.description("""
     Functional tests.

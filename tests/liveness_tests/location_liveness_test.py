@@ -1,12 +1,14 @@
+import time
 import allure
 import pytest
+import random
 from src.common import logger
-from src.common.entities.udp_message import UdpMessage
 from src.common.utils.slack import Slack
 from config_definitions import BaseConfig
+from src.common.udp_socket import UdpSocket
+from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
-from src.common.udp_socket import UdpSocket
 
 test_case = "location_liveness"
 BUFSIZ = 1024
@@ -28,12 +30,9 @@ class TestLocationLiveness(object):
     issues = ""
     latitude = "0.0"
     longitude = "0.0"
-    bearing = 0
-    velocity = 0
+    bearing = random.uniform(0, 360)
+    velocity = random.uniform(2, 40)
     accuracy = 5.0
-
-    message1 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
-    message2 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
     @allure.step("Verify that Routing svc returns all active endpoints.")
@@ -55,21 +54,30 @@ class TestLocationLiveness(object):
 
         for endpoint in endpoints:
 
-            UdpSocket.udp_send(self.message1, (endpoint["ip"], endpoint["minPort"]))
-            UdpSocket.udp_send(self.message2, (endpoint["ip"], endpoint["maxPort"]))
+            _socket = UdpSocket()
 
+            if_error = F"The endpoint {endpoint['name']} is not responding ! \n"
+
+            _socket.udp_send_to(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                             self.velocity, self.accuracy), (endpoint["ip"],
+                                                                                             endpoint["minPort"]))
+            time.sleep(1.0)
+            _socket.udp_send_to(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                             self.velocity, self.accuracy), (endpoint["ip"],
+                                                                                             endpoint["maxPort"]))
             try:
-                response_ = UdpSocket.udp_socket.recv(BUFSIZ)
-                if response_:
-                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!  {response_}")
-                else:
-                    logger.logger.error(F"Not valid UDP response: {response_}")
-
+                time.sleep(1.0)
+                response_ = _socket.udp_receive(BUFSIZ)
             except Exception as e:
-                error = F"The endpoint {endpoint['name']} is not responding! \n"
-                TestLocationLiveness.issues += error
-                logger.logger.fatal(f"{error}")
-                logger.logger.exception(e)
+                response_ = None
+                logger.logger.exception(F"Error occurred while receiving data: {e}")
+
+            if response_:
+                logger.logger.info(F"The endpoint {endpoint['name']} is available for connect!")
+                logger.logger.info(F"UDP Response: {response_}")
+            else:
+                TestLocationLiveness.issues += if_error
+                logger.logger.error(f"{if_error}")
 
         if TestLocationLiveness.issues:
             logger.logger.fatal(f"{TestLocationLiveness.issues}")

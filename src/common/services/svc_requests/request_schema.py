@@ -4,6 +4,7 @@ from src.common.utils.utils import Utils
 
 class RequestSchema(object):
     timestamp = Utils.get_timestamp()
+    synch_timestamp = Utils.get_synch_timestamp()
 
     def __init__(self):
         super(RequestSchema, self).__init__()

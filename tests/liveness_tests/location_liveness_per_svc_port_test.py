@@ -1,12 +1,14 @@
+import time
+import random
 import allure
 import pytest
 from src.common import logger
-from src.common.entities.udp_message import UdpMessage
 from src.common.utils.slack import Slack
 from config_definitions import BaseConfig
+from src.common.udp_socket import UdpSocket
+from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
-from src.common.udp_socket import UdpSocket
 
 test_case = "location_liveness"
 BUFSIZ = 1024
@@ -21,7 +23,7 @@ BUFSIZ = 1024
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @pytest.mark.usefixtures("run_time_count", "endpoints")
-@allure.severity(allure.severity_level.MINOR)
+@allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
 @pytest.mark.liveness
@@ -29,12 +31,9 @@ class TestLocationLivenessPerServicePort(object):
     issues = ""
     latitude = "0.0"
     longitude = "0.0"
-    bearing = 0
-    velocity = 0
+    bearing = random.uniform(0, 360)
+    velocity = random.uniform(2, 40)
     accuracy = 5.0
-
-    message1 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
-    message2 = UdpMessage().set_udp_message(latitude, longitude, bearing, velocity, accuracy).encode()
 
     @automation_logger(logger)
     @allure.step("Verify that Routing svc returns all active endpoints.")
@@ -53,33 +52,43 @@ class TestLocationLivenessPerServicePort(object):
     @automation_logger(logger)
     @allure.step("Verify that all provided ports are open and accept UDP connections.")
     def test_endpoints_ports(self, endpoints):
-
+        count, port_range = 0, []
         for endpoint in endpoints:
 
             port_range = [p for p in range(endpoint["minPort"], endpoint["maxPort"] + 1)]
             logger.logger.info(F"Accepted ports are: {port_range}")
 
             for port in port_range:
+                _socket = UdpSocket()
+                _socket.udp_connect((endpoint["ip"], port))
+
                 if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
 
-                UdpSocket.udp_send(self.message1, (endpoint["ip"], port))
-                UdpSocket.udp_send(self.message2, (endpoint["ip"], port))
-
+                _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                              self.velocity, self.accuracy))
+                time.sleep(1.0)
+                _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                              self.velocity, self.accuracy))
                 try:
-                    response_ = UdpSocket.udp_socket.recv(BUFSIZ)
-                    if response_:
-                        logger.logger.info(F"The endpoint {endpoint['name']} is available for connect on port {port} !")
-                        logger.logger.info(F"UDP Response: {response_}")
-                    else:
-                        logger.logger.error(f"{if_error}")
+                    time.sleep(1.0)
+                    response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
+                    response_ = None
+                    logger.logger.exception(F"Error occurred while receiving data: {e}")
+
+                if response_:
+                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect on port {port} !")
+                    logger.logger.info(F"UDP Response: {response_}")
+                else:
                     TestLocationLivenessPerServicePort.issues += if_error
                     logger.logger.error(f"{if_error}")
-                    logger.logger.exception(e)
+                    count += 1
 
         if TestLocationLivenessPerServicePort.issues:
             logger.logger.fatal(f"{TestLocationLivenessPerServicePort.issues}")
-            Slack.send_message(TestLocationLivenessPerServicePort.issues)
+            if count > int(((len(port_range) / 100) * 5)):
+                Slack.send_message(TestLocationLivenessPerServicePort.issues)
+
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

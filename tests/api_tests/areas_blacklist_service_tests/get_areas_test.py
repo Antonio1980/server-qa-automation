@@ -8,8 +8,6 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.feature("")
-@allure.story("Client able to get ")
 @allure.title("GET AREAS.")
 @allure.description("""
     Functional tests.
@@ -21,7 +19,7 @@ test_case = ""
                  "TestGetAreas")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.routing_service
+@pytest.mark.areas_blacklist_service
 class TestGetAreas(object):
 
     @automation_logger(logger)

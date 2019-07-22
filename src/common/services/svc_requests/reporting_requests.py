@@ -9,7 +9,7 @@ class ReportingServiceRequest(RequestSchema):
         super(ReportingServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def analytics(self, client_id, report_item):
+    def analytics_report(self, client_id, report_item):
         self.clientId = client_id
         self.id = report_item.id
         self.params = {}
