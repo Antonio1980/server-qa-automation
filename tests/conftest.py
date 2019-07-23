@@ -5,8 +5,6 @@ from src.common import logger
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-# collect_ignore = ["setup.py"]
-
 
 @pytest.fixture(scope="class")
 @automation_logger(logger)
@@ -54,6 +52,10 @@ def pytest_runtest_setup(item):
 # @pytest.fixture
 # def expect_endpoints(request):
 #     return request.config.getoption("--expect_endpoints")
+#
+#
+# def pytest_generate_tests(metafunc):
+#     os.environ['EXPECTED_ENDPOINTS'] = '2'
 #
 #
 # @pytest.fixture

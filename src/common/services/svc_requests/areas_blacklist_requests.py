@@ -24,8 +24,8 @@ class AreasBlacklistServiceRequest(RequestSchema):
         return body
 
     @automation_logger(logger)
-    def get_areas_inbox(self, sw_lng, sw_lat, ne_lng, ne_lat):
-        # ((sw_lng, sw_lat, ne_lng, ne_lat,),) = args
+    def get_areas_inbox(self, *args):
+        ((sw_lng, sw_lat, ne_lng, ne_lat,),) = args
         self.shape = {}
         self.shape[SW] = {}
         self.shape[SW][LNG] = sw_lng

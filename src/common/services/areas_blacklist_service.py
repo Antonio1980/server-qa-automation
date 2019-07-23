@@ -11,7 +11,8 @@ class AreasBlacklistService(ServiceBase):
     def __init__(self, auth_token):
         super(AreasBlacklistService, self).__init__()
         self.headers.update({'Authorization': 'Bearer {}'.format(auth_token)})
-        self.url = self.api_base_url + "areas-blacklist-manager/api/"
+        self.url_proxy = "api/"
+        self.url = self.api_base_url + self.url_proxy + "areas-blacklist-manager/"
 
     @automation_logger(logger)
     def get_areas(self):
@@ -24,6 +25,19 @@ class AreasBlacklistService(ServiceBase):
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} get_areas failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def export_areas(self):
+        uri = self.url + "areas/export"
+        try:
+            logger.logger.info(F"API Service URL is {uri}")
+            _response = requests.get(uri, headers=self.headers)
+            body = json.loads(_response.text)
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} export_areas failed with error: {e}")
             raise e
 
     @automation_logger(logger)
@@ -72,8 +86,8 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def delete_area(self, shape_id):
-        uri = self.url + "areas/" + str(shape_id)
+    def delete_areas_by_id(self, shape_id: str):
+        uri = self.url + "areas/" + shape_id
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.delete(uri, headers=self.headers)
@@ -81,26 +95,18 @@ class AreasBlacklistService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} delete_areas failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} delete_areas_by_id failed with error: {e}")
             raise e
 
     @automation_logger(logger)
-    def export_areas(self):
-        uri = self.url + "areas/export"
-        try:
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} export_areas failed with error: {e}")
-            raise e
+    def get_areas_inbox(self, *args):
+        """
 
-    @automation_logger(logger)
-    def get_areas_inbox(self, sw_lng: float, sw_lat: float, ne_lng: float, ne_lat: float) -> tuple:
+        :param args: sw_lng: float, sw_lat: float, ne_lng: float, ne_lat: float
+        :return:
+        """
         uri = self.url + "areas/inBox"
-        payload = AreasBlacklistServiceRequest().get_areas_inbox(sw_lng, sw_lat, ne_lng, ne_lat)
+        payload = AreasBlacklistServiceRequest().get_areas_inbox(args)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
