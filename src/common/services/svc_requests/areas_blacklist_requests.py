@@ -10,7 +10,7 @@ class AreasBlacklistServiceRequest(RequestSchema):
 
     @automation_logger(logger)
     def add_areas(self, *args):
-        ((sw_lng, sw_lat, ne_lng, ne_lat,),) = args
+        ((ne_lng, ne_lat, sw_lng, sw_lat, ),) = args
         self.description = "description"
         self.position = {}
         self.position[SW] = {}
@@ -25,7 +25,7 @@ class AreasBlacklistServiceRequest(RequestSchema):
 
     @automation_logger(logger)
     def get_areas_inbox(self, *args):
-        ((sw_lng, sw_lat, ne_lng, ne_lat,),) = args
+        ((ne_lng, ne_lat, sw_lng, sw_lat, ),) = args
         self.shape = {}
         self.shape[SW] = {}
         self.shape[SW][LNG] = sw_lng

@@ -12,7 +12,7 @@ class AreasBlacklistService(ServiceBase):
         super(AreasBlacklistService, self).__init__()
         self.headers.update({'Authorization': 'Bearer {}'.format(auth_token)})
         self.url_proxy = "api/"
-        self.url = self.api_base_url + self.url_proxy + "areas-blacklist-manager/"
+        self.url = self.api_base_url + "areas-blacklist-manager/" + self.url_proxy
 
     @automation_logger(logger)
     def get_areas(self):
