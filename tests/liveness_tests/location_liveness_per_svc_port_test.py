@@ -4,6 +4,7 @@ import allure
 import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
+
 from config_definitions import BaseConfig
 from src.common.udp_socket import UdpSocket
 from src.common.entities.udp_message import UdpMessage
@@ -66,11 +67,10 @@ class TestLocationLivenessPerServicePort(object):
 
                 _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                               self.velocity, self.accuracy))
-                time.sleep(1.0)
+
                 _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                               self.velocity, self.accuracy))
                 try:
-                    time.sleep(1.0)
                     response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None

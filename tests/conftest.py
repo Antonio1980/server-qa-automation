@@ -44,6 +44,18 @@ def pytest_runtest_setup(item):
             pytest.xfail("previous test failed (%s)" % previousfailed.name)
 
 
+@pytest.fixture(scope="class")
+@automation_logger(logger)
+def stderr_stdout(capsys):
+    # or use "capfd" for fd-level
+    try:
+        captured = capsys.readouterr()
+        return captured.out, captured.err
+    except Exception as e:
+        logger.logger.exception(F"stderr_stdout failed wih error: {e}")
+        raise e
+
+
 # def pytest_addoption(parser):
 #     parser.addoption(
 #         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")

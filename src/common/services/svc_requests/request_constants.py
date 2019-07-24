@@ -33,3 +33,9 @@ MAX_DECELERATION = "maxDeceleration"
 RAW_HORIZONTAL_ACCURACY = "rawHorizontalAccuracy"
 SESSION_ID = "sessionId"
 VERTICAL_ACCURACY = "verticalAccuracy"
+
+# Messages
+TASKS = "tasks"
+TO = "to"
+FROM = "from"
+TASK_ID = "taskid"

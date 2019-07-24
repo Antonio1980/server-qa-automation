@@ -25,7 +25,7 @@ class UdpMessage(RequestSchema):
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
-        self.data[CLIENT_DATA] = {}
+        self.data[CLIENT_DATA] = dict()
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"
         self.data[CLIENT_DATA][LATITUDE] = str(latitude)
@@ -35,7 +35,6 @@ class UdpMessage(RequestSchema):
         self.data[CLIENT_DATA][HORIZONTAL_ACCURACY] = float(accuracy)
         self.data[CLIENT_DATA][TIMESTAMP] = Utils.get_synch_timestamp()
         self.data[CLIENT_DATA][SOURCE] = "QA Test"
-
         body = Utils.to_json(self)
         logger.logger.info(REQUEST_BODY.format(body))
         return self

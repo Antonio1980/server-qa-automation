@@ -25,6 +25,17 @@ class Utils:
     def get_timestamp():
         return datetime.datetime.utcnow().isoformat() + "Z"
 
+    @staticmethod
+    @automation_logger(logger)
+    def to_timestamp():
+        """
+        Makes two timestamp integers.
+        :return: timestamp_from- int (1 year back from now), timestamp_to- int (current date).
+        """
+        timestamp_from = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat() + "Z"
+        timestamp_to = datetime.datetime.utcnow().isoformat() + "Z"
+        return timestamp_from, timestamp_to
+
     @classmethod
     @automation_logger(logger)
     def get_synch_timestamp(cls, left_time_seconds=10):

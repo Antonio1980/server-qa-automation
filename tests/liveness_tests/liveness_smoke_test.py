@@ -39,6 +39,7 @@ class TestSmokeLiveness(object):
                 or len(_response[0]["areas"]) <= 0:
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_get_area_tel_aviv failed with response: " \
                 F"{_response} \n"
+
             raise AutomationError(F"Test case {test_case} /1 failed!")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
@@ -55,6 +56,7 @@ class TestSmokeLiveness(object):
         if _response[1].status_code != 201 or _response[1].reason != 'Created':
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_liveness_analytics_report failed with " \
                 F"response: {_response} \n"
+
             raise AutomationError(F"Test case {test_case} /2 failed!")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
@@ -68,6 +70,7 @@ class TestSmokeLiveness(object):
                 or "_id" and "hash" and "data" not in _response[0].keys() or not isinstance(_response[0]["data"], dict):
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_get_remote_config_liveness failed with " \
                 F"response: {_response} \n"
+
             raise AutomationError(F"Test case {test_case} /3 failed!")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
@@ -81,6 +84,7 @@ class TestSmokeLiveness(object):
                 or not isinstance(_response[0]["messages"], list) or len(_response[0]["messages"]) <= 0:
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_user_messages_liveness failed with response: " \
                 F"{_response} \n"
+
             raise AutomationError(F"Test case {test_case} /4 failed!")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
@@ -89,7 +93,7 @@ class TestSmokeLiveness(object):
     @allure.step("Verify that service returns messges per user id")
     def test_user_messages_liveness(self):
         if TestSmokeLiveness.issues:
-            logger.logger.error(F"Next errors occurred:  {TestSmokeLiveness.issues}")
+            logger.logger.error(F"Next errors will be sent to Slack (:  {TestSmokeLiveness.issues}")
             Slack.send_message(TestSmokeLiveness.issues)
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED  (all arts), nothing was send. ===========")

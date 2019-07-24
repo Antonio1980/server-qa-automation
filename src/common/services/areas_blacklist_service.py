@@ -130,9 +130,3 @@ class AreasBlacklistService(ServiceBase):
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} activate_area failed with error: {e}")
             raise e
-
-
-# if __name__ == "__main__":
-#     print(AreasBlacklistService().add_areas(5, 1, 6, 0))
-#     print(AreasBlacklistService().get_areas_inbox(5, 1, 6, 0))
-#     print(AreasBlacklistService().activate_area("id", True))
