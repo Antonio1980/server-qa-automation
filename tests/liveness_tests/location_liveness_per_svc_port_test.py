@@ -1,10 +1,8 @@
-import time
 import random
 import allure
 import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
-
 from config_definitions import BaseConfig
 from src.common.udp_socket import UdpSocket
 from src.common.entities.udp_message import UdpMessage
@@ -40,13 +38,13 @@ class TestLocationLivenessPerServicePort(object):
     @allure.step("Verify that Routing svc returns all active endpoints.")
     def test_returned_endpoints(self, endpoints):
         ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
+        if_err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
 
         if len(endpoints) != ex_endpoints:
-            err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
-            TestLocationLivenessPerServicePort.issues += err_message
-            logger.logger.exception(err_message)
+            TestLocationLivenessPerServicePort.issues += if_err_message
+            logger.logger.exception(if_err_message)
 
-            raise AutomationError(err_message)
+            raise AutomationError(if_err_message)
         else:
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
@@ -74,8 +72,9 @@ class TestLocationLivenessPerServicePort(object):
                     response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None
-                    logger.logger.exception(F"Error occurred while receiving data: {e}")
-
+                    if_data_error = F"Error occurred while receiving data: {e} \n"
+                    logger.logger.exception(if_data_error)
+                    TestLocationLivenessPerServicePort.issues += if_data_error
                 if response_:
                     logger.logger.info(F"The endpoint {endpoint['name']} is available for connect on port {port} !")
                     logger.logger.info(F"UDP Response: {response_}")

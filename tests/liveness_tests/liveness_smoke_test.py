@@ -82,7 +82,7 @@ class TestSmokeLiveness(object):
 
         if _response[1].status_code != 200 or _response[0] is None or "messages" not in _response[0].keys() \
                 or not isinstance(_response[0]["messages"], list) or len(_response[0]["messages"]) <= 0:
-            TestSmokeLiveness.issues += F"{self.__class__.__name__} test_user_messages_liveness failed with response: " \
+            TestSmokeLiveness.issues += F"{self.__class__.__name__} test_user_messages_liveness failed with response: "\
                 F"{_response} \n"
 
             raise AutomationError(F"Test case {test_case} /4 failed!")
@@ -95,5 +95,6 @@ class TestSmokeLiveness(object):
         if TestSmokeLiveness.issues:
             logger.logger.error(F"Next errors will be sent to Slack (:  {TestSmokeLiveness.issues}")
             Slack.send_message(TestSmokeLiveness.issues)
+            raise AutomationError(F"Test case {test_case} failed!")
         else:
             logger.logger.info(F"============ TEST CASE {test_case} PASSED  (all arts), nothing was send. ===========")
