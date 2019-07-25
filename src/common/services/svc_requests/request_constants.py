@@ -21,8 +21,14 @@ SW = "sw"
 NE = "ne"
 LNG = "lng"
 LAT = "lat"
+DESCRIPTION = "description"
+POSITION = "position"
+SHAPE = "shape"
+SHAPE_ID = "shape_id"
+IS_ACTIVE = "isActive"
 
 # Location
+DATA_LIST = "dataList"
 ALTITUDE = "altitude"
 AVG_ACCELERATION = "avgAcceleration"
 AVG_ANGULAR_CHANGE = "avgAngularChange"
@@ -35,12 +41,23 @@ SESSION_ID = "sessionId"
 VERTICAL_ACCURACY = "verticalAccuracy"
 
 # Messages
+USER_ID = "userid"
 TASKS = "tasks"
 TO = "to"
 FROM = "from"
 TASK_ID = "taskid"
 
+# Remote-config
+HASH = "hash"
+
+# Reporting
+CLIENT_ID = "clientId"
+PARAMS = "params"
+REPORT_TYPE = "reportType"
+
 # Routing
+BOUNDING_BOX = "boundingBox"
+COUNT_BY_TYPE = "countByType"
 MAX_LAT = "maxLat"
 MAX_LON = "maxLon"
 MIN_LAT = "minLat"

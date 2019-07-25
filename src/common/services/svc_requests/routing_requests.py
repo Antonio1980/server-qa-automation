@@ -12,55 +12,55 @@ class RoutingServiceRequest(RequestSchema):
 
     @automation_logger(logger)
     def analytics(self, client_id, report_item):
-        self.clientId = client_id
-        self.id = report_item.id
-        self.params = dict()
-        self.params.update(report_item.params)
-        self.reportType = report_item.report_type
-        self.sessionId = report_item.session_id
-        self.timestamp = report_item.timestamp
-        body = self.to_json()
+        self.inner[CLIENT_ID] = client_id
+        self.inner[ID] = report_item.id
+        self.inner[PARAMS] = dict()
+        self.inner[PARAMS].update(report_item.params)
+        self.inner[REPORT_TYPE] = report_item.report_type
+        self.inner[SESSION_ID] = report_item.session_id
+        self.inner[TIMESTAMP] = report_item.timestamp
+        body = json.dumps(json.loads(self.to_json()).pop("inner"))
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
     @automation_logger(logger)
     def keep_alive(self, bounding_box, route, *args):
         ((car, pedestrian, bike, ), ) = args
-        self.boundingBox = dict()
-        self.boundingBox[MAX_LAT] = bounding_box.max_lat
-        self.boundingBox[MAX_LON] = bounding_box.max_lon
-        self.boundingBox[MIN_LAT] = bounding_box.min_lat
-        self.boundingBox[MIN_LON] = bounding_box.min_lon
-        self.countByType = dict()
-        self.countByType[CAR] = car
-        self.countByType[PEDESTRIAN] = pedestrian
-        self.countByType[BIKE] = bike
+        self.inner[BOUNDING_BOX] = dict()
+        self.inner[BOUNDING_BOX][MAX_LAT] = bounding_box.max_lat
+        self.inner[BOUNDING_BOX][MAX_LON] = bounding_box.max_lon
+        self.inner[BOUNDING_BOX][MIN_LAT] = bounding_box.min_lat
+        self.inner[BOUNDING_BOX][MIN_LON] = bounding_box.min_lon
+        self.inner[COUNT_BY_TYPE] = dict()
+        self.inner[COUNT_BY_TYPE][CAR] = car
+        self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
+        self.inner[COUNT_BY_TYPE][BIKE] = bike
         body = {**json.loads(self.to_json()), **json.loads(Utils.to_json(route))}
-        body = Utils.to_json(body)
+        body = json.dumps(body.pop("inner"))
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
     @automation_logger(logger)
     def add_route(self, location):
-        self.id = location.id
-        self.altitude = location.altitude
-        self.avgAcceleration = location.avg_acceleration
-        self.avgAngularChange = location.avg_angular_change
-        self.bearing = location.bearing
-        self.breakingStrengthPercent = location.breaking_strange_percent
-        self.clientDataType = location.client_data_type
-        self.horizontalAccuracy = location.horizontal_accuracy
-        self.latitude = location.latitude
-        self.longitude = location.longitude
-        self.maxAcceleration = location.max_acceleration
-        self.maxAngularChange = location.max_angular_change
-        self.maxDeceleration = location.max_deceleration
-        self.rawHorizontalAccuracy = location.raw_horizontal_accuracy
-        self.sessionId = location.session_id
-        self.source = location.source
-        self.timestamp = location.timestamp
-        self.velocity = location.velocity
-        self.verticalAccuracy = location.vertical_accuracy
-        body = self.to_json()
+        self.inner[ID] = location.id
+        self.inner[ALTITUDE] = location.altitude
+        self.inner[AVG_ACCELERATION] = location.avg_acceleration
+        self.inner[AVG_ANGULAR_CHANGE] = location.avg_angular_change
+        self.inner[BEARING] = location.bearing
+        self.inner[BREAKING_STRANGE_PERCENT] = location.breaking_strange_percent
+        self.inner[CLIENT_DATA_TYPE] = location.client_data_type
+        self.inner[HORIZONTAL_ACCURACY] = location.horizontal_accuracy
+        self.inner[LATITUDE] = location.latitude
+        self.inner[LONGTITUDE] = location.longitude
+        self.inner[MAX_ACCELERATION] = location.max_acceleration
+        self.inner[MAX_ANGULAR_CHANGE] = location.max_angular_change
+        self.inner[MAX_DECELERATION] = location.max_deceleration
+        self.inner[RAW_HORIZONTAL_ACCURACY] = location.raw_horizontal_accuracy
+        self.inner[SESSION_ID] = location.session_id
+        self.inner[SOURCE] = location.source
+        self.inner[TIMESTAMP] = location.timestamp
+        self.inner[VELOCITY] = location.velocity
+        self.inner[VERTICAL_ACCURACY] = location.vertical_accuracy
+        body = json.dumps(json.loads(self.to_json()).pop("inner"))
         logger.logger.info(REQUEST_BODY.format(body))
         return body

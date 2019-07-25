@@ -1,3 +1,4 @@
+import json
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
@@ -10,33 +11,33 @@ class LocationServiceRequest(RequestSchema):
 
     @automation_logger(logger)
     def add_locations(self, location):
-        self.id = location.id
-        self.altitude = location.altitude
-        self.avgAcceleration = location.avg_acceleration
-        self.avgAngularChange = location.avg_angular_change
-        self.bearing = location.bearing
-        self.breakingStrengthPercent = location.breaking_strange_percent
-        self.clientDataType = location.client_data_type
-        self.horizontalAccuracy = location.horizontal_accuracy
-        self.latitude = location.latitude
-        self.longitude = location.longitude
-        self.maxAcceleration = location.max_acceleration
-        self.maxAngularChange = location.max_angular_change
-        self.maxDeceleration = location.max_deceleration
-        self.rawHorizontalAccuracy = location.raw_horizontal_accuracy
-        self.sessionId = location.session_id
-        self.source = location.source
-        self.timestamp = location.timestamp
-        self.velocity = location.velocity
-        self.verticalAccuracy = location.vertical_accuracy
-        body = self.to_json()
+        self.inner[ID] = location.id
+        self.inner[ALTITUDE] = location.altitude
+        self.inner[AVG_ACCELERATION] = location.avg_acceleration
+        self.inner[AVG_ANGULAR_CHANGE] = location.avg_angular_change
+        self.inner[BEARING] = location.bearing
+        self.inner[BREAKING_STRANGE_PERCENT] = location.breaking_strange_percent
+        self.inner[CLIENT_DATA_TYPE] = location.client_data_type
+        self.inner[HORIZONTAL_ACCURACY] = location.horizontal_accuracy
+        self.inner[LATITUDE] = location.latitude
+        self.inner[LONGTITUDE] = location.longitude
+        self.inner[MAX_ACCELERATION] = location.max_acceleration
+        self.inner[MAX_ANGULAR_CHANGE] = location.max_angular_change
+        self.inner[MAX_DECELERATION] = location.max_deceleration
+        self.inner[RAW_HORIZONTAL_ACCURACY] = location.raw_horizontal_accuracy
+        self.inner[SESSION_ID] = location.session_id
+        self.inner[SOURCE] = location.source
+        self.inner[TIMESTAMP] = location.timestamp
+        self.inner[VELOCITY] = location.velocity
+        self.inner[VERTICAL_ACCURACY] = location.vertical_accuracy
+        body = json.dumps(json.loads(self.to_json()).pop("inner"))
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
     @automation_logger(logger)
     def add_multiple_locations(self, location):
-        self.dataList = list()
-        self.dataList.extend([
+        self.inner[DATA_LIST] = list()
+        self.inner[DATA_LIST].extend([
             {
                 ID: location.id,
                 ALTITUDE: location.altitude,
@@ -59,6 +60,14 @@ class LocationServiceRequest(RequestSchema):
                 VERTICAL_ACCURACY: location.vertical_accuracy
             }
         ])
-        body = self.to_json()
+        body = json.dumps(json.loads(self.to_json()).pop("inner"))
         logger.logger.info(REQUEST_BODY.format(body))
         return body
+
+
+# if __name__ == "__main__":
+#     from src.common.entities.location import Location
+#     import json
+#     l = Location()
+#     r = LocationServiceRequest().add_locations(l)
+#     pass

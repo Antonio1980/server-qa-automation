@@ -9,6 +9,7 @@ class RequestSchema(object):
 
     def __init__(self):
         super(RequestSchema, self).__init__()
+        self.inner = dict()
 
     def __getattr__(self, name):
         if not hasattr(self, name):
