@@ -13,8 +13,9 @@ class LocationService(ServiceBase):
         self.url = self.api_base_url + "location-service/"
 
     @automation_logger(logger)
-    def get_locations(self):
+    def get_locations(self, client_id):
         uri = self.url + "locations"
+        self.headers_without_token.update({"clientId": client_id})
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)

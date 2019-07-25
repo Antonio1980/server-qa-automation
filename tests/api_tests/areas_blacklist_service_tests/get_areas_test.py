@@ -8,11 +8,11 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("GET AREAS.")
+@allure.title("GET AREAS")
 @allure.description("""
     Functional tests.
-    1. 
-    2.
+    1. Check that service responded on 'GetAreas' request properly.
+    2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/areas_blacklist_service_tests/get_areas_test.py",
@@ -23,7 +23,7 @@ test_case = ""
 class TestGetAreas(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that ")
+    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_areas_method_works(self):
         response_ = ApiClient().areas_blacklist_svc.get_areas()
         assert response_[0] is not None
@@ -32,6 +32,7 @@ class TestGetAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
+    @allure.step("Verify that service response has 'areas' is list and it > 0")
     def test_attributes_in_get_areas_method(self):
         response_ = ApiClient().areas_blacklist_svc.get_areas()[0]
         assert "hash" in response_.keys() and isinstance(response_["hash"], str)

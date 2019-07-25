@@ -8,7 +8,7 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("GET ENDPOINTS.")
+@allure.title("GET ENDPOINTS")
 @allure.description("""
     Functional tests.
     1. Basic 'smoke_test'
