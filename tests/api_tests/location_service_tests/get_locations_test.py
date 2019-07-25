@@ -32,7 +32,7 @@ class TestGetLocation(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that 'locations' is list object.")
+    @allure.step("Verify response properties and that 'locations' is list object.")
     def test_attributes_in_get_locations_method(self):
         response_ = ApiClient().location_svc.get_locations("aaa")[0]
         assert "locations" in response_.keys()

@@ -32,7 +32,7 @@ class TestGetAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that service response has 'areas' is list and it > 0")
+    @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_get_areas_method(self):
         response_ = ApiClient().areas_blacklist_svc.get_areas()[0]
         assert "hash" in response_.keys() and isinstance(response_["hash"], str)

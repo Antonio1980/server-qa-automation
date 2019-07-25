@@ -11,7 +11,8 @@ test_case = ""
 @allure.title("GET REMOTE CONFIG")
 @allure.description("""
     Functional test.
-    1. Check that "get_config" request returned current config.
+    1. Check that service is responded on "GetRemoteConfig" request properly.
+    2. Check that service response contains desired properties.
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
@@ -22,13 +23,21 @@ test_case = ""
 class TestGetRemoteConfig(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns remote config data.")
-    def test_get_remote_config(self):
+    @allure.step("Verify that response is not empty and status code is 200")
+    def test_get_remote_config_method_works(self):
         _response = ApiClient().remote_config_svc.get_config()
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
-        assert "_id" and "hash" and "data" in _response[0].keys()
-        assert isinstance(_response[0]["data"], dict)
+
+        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+
+    @automation_logger(logger)
+    @allure.step("Verify response properties and that 'data' is dict object.")
+    def test_attributes_in_get_remote_config(self):
+        _response = ApiClient().remote_config_svc.get_config()[0]
+
+        assert "_id" and "hash" and "data" in _response.keys()
+        assert isinstance(_response["data"], dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

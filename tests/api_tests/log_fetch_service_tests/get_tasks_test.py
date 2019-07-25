@@ -32,7 +32,7 @@ class TestGetTasks(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that 'locations' is list object.")
+    @allure.step("Verify response properties and that 'locations' is list object.")
     def test_attributes_in_get_tasks_method(self):
         response_ = ApiClient().log_fetch_svc.get_tasks()[0]
         assert "tasks" in response_.keys()

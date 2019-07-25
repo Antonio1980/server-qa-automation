@@ -1,4 +1,3 @@
-import os
 import allure
 import pytest
 from src.common import logger
@@ -13,7 +12,7 @@ test_case = ""
 @allure.title("ANALYTICS REPORT")
 @allure.description("""
     Functional test.
-    1. Check that "analytics" request returned status 201- Created.
+    1. Check that service is responded on "GetRemoteConfig" request properly.
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
@@ -24,8 +23,8 @@ test_case = ""
 class TestAnalyticsReport(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns valid status code and reason.")
-    def test_analytics_report(self):
+    @allure.step("Verify that response is not empty and status code is 201")
+    def test_analytics_report_method_works(self):
         client_id = "QA"
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)

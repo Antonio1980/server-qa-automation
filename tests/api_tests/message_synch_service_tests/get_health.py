@@ -32,7 +32,7 @@ class TestGetHealth(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that 'locations' is list object.")
+    @allure.step("Verify response properties and that 'locations' is list object.")
     def test_attributes_in_get_health_method(self):
         response_ = ApiClient().messages_synch_svc.get_health()[0]
         assert "nodeHealth" and "mongooseHealth" and "serviceVersion" in response_.keys()

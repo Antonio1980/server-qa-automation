@@ -11,18 +11,19 @@ test_case = ""
 @allure.title("GET ENDPOINTS")
 @allure.description("""
     Functional tests.
-    1. Basic 'smoke_test'
-    2.
+    1. Check that service is responded on "GetEndpoints" request properly.
+    2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/routing_service_tests/get_endpoints_test.py","TestGetEndpoints")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/routing_service_tests/get_endpoints_test.py",
+                 "TestGetEndpoints")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
 @pytest.mark.routing_service
 class TestGetEndpoints(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that 'getEndpoints' method returned response and status code is 200")
+    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_endpoints_method_works(self):
         response_ = ApiClient().routing_svc.get_endpoints()
         assert response_[0] is not None
@@ -31,6 +32,7 @@ class TestGetEndpoints(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
+    @allure.step("Verify response properties and that response is list object.")
     def test_attributes_in_get_endpoints_method(self):
         response_ = ApiClient().routing_svc.get_endpoints()[0]
         assert isinstance(response_, list)
