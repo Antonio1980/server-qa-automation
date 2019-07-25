@@ -39,7 +39,7 @@ class LocationServiceRequest(RequestSchema):
         self.dataList.extend([
             {
                 ID: location.id,
-                ATTITUDE: location.altitude,
+                ALTITUDE: location.altitude,
                 AVG_ACCELERATION: location.avg_acceleration,
                 AVG_ANGULAR_CHANGE: location.avg_angular_change,
                 BEARING: location.bearing,

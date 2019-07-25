@@ -10,7 +10,8 @@ from src.common.services.svc_requests.remote_config_requests import RemoteConfig
 class RemoteConfigService(ServiceBase):
     def __init__(self):
         super(RemoteConfigService, self).__init__()
-        self.url = self.api_base_url + "remote-config-service/api/"
+        self.proxy_url = "api/"
+        self.url = self.api_base_url + "remote-config-service/" + self.proxy_url
 
     @automation_logger(logger)
     def get_config(self):
@@ -35,4 +36,17 @@ class RemoteConfigService(ServiceBase):
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} set_config failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def get_config_hash(self):
+        uri = self.url + "hash"
+        try:
+            logger.logger.info(F"API Service URL is {self.url}")
+            _response = requests.get(uri, headers=self.headers_without_token)
+            body = json.loads(_response.text)
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_config_hash failed with error: {e}")
             raise e

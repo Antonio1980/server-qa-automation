@@ -23,7 +23,7 @@ LNG = "lng"
 LAT = "lat"
 
 # Location
-ATTITUDE = "altitude"
+ALTITUDE = "altitude"
 AVG_ACCELERATION = "avgAcceleration"
 AVG_ANGULAR_CHANGE = "avgAngularChange"
 BREAKING_STRANGE_PERCENT = "breakingStrengthPercent"
@@ -39,3 +39,12 @@ TASKS = "tasks"
 TO = "to"
 FROM = "from"
 TASK_ID = "taskid"
+
+# Routing
+MAX_LAT = "maxLat"
+MAX_LON = "maxLon"
+MIN_LAT = "minLat"
+MIN_LON = "minLon"
+CAR = "CAR"
+PEDESTRIAN = "PEDESTRIAN"
+BIKE = "BIKE"

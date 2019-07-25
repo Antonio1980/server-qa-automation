@@ -32,3 +32,9 @@ class DriverHelper(str, Enum):
     LINK_TEXT = "link_text"
     CSS_SELECTOR = "css_selector"
     PARTIAL_LINK_TEXT = "partial_link_text"
+
+
+class Types(str, Enum):
+    CAR = "CAR"
+    PEDESTRIAN = "PEDESTRIAN"
+    BIKE = "BIKE"
