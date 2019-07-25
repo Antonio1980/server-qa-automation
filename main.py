@@ -2,7 +2,7 @@ import pytest
 
 
 def run(self):
-    pytest.main(['-v', 'tests', '-m', 'liveness'])
+    pytest.main(['--capture=sys', '--capture=fd', 'tests', '-m', 'liveness'])
 
 
 if __name__ == "__main__":
