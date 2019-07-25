@@ -27,7 +27,3 @@ class Slack:
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} send_message failed with error: {e}")
             raise e
-
-
-# if __name__ == "__main__":
-#     Slack.send_message("Just Test ! Please ignore!")

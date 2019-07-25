@@ -31,8 +31,3 @@ class AuthorizationZero:
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} get_authorization_token failed with error: {e}")
             raise e
-
-
-# if __name__ == "__main__":
-#     token = AuthorizationZero.get_authorization_token()["access_token"]
-#     pass

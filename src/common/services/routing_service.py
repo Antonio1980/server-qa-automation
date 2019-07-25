@@ -1,7 +1,6 @@
 import json
 import requests
 from src.common import logger
-from src.common.entities.route import Route
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
@@ -141,13 +140,3 @@ class RoutingService(ServiceBase):
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} get_version_info failed with error: {e}")
             raise e
-
-
-# if __name__ == "__main__":
-#     from src.common.entities.bounding_box import BoundingBox
-#
-#     box = BoundingBox().set_bounding_box(0.76823, 439824.4, 2288, 0)
-#     route_ = Route().set_route("128.65.34.98", "Anton", 5, [200, 400])
-#
-#     print(RoutingService().keep_alive(box, route_, 1, 2, 3))
-#     pass

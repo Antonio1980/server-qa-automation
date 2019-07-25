@@ -67,8 +67,3 @@ class Utils:
         :return: random string.
         """
         return ''.join(random.choice(chars) for _ in range(size))
-
-
-# if __name__ == "__main__":
-#     t_ = Utils.get_timestamp()
-#     print(t_)
