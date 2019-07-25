@@ -19,7 +19,7 @@ test_case = ""
                  "TestGetHealth")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.location_service
+@pytest.mark.messages_synch_service
 class TestGetHealth(object):
 
     @automation_logger(logger)

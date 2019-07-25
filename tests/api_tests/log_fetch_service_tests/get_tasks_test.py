@@ -19,7 +19,7 @@ test_case = ""
                  "TestGetTasks")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.location_service
+@pytest.mark.log_fetch_service
 class TestGetTasks(object):
 
     @automation_logger(logger)
