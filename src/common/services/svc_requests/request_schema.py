@@ -3,8 +3,6 @@ from src.common.utils.utils import Utils
 
 
 class RequestSchema(object):
-    timestamp = Utils.get_timestamp()
-    synch_timestamp = Utils.get_synch_timestamp()
     (timestamp_from, timestamp_to) = Utils.to_timestamp()
 
     def __init__(self):
