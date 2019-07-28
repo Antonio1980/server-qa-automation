@@ -1,4 +1,3 @@
-import json
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *

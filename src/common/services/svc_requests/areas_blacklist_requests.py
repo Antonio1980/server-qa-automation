@@ -1,4 +1,3 @@
-import json
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
@@ -10,9 +9,9 @@ class AreasBlacklistServiceRequest(RequestSchema):
         super(AreasBlacklistServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def add_areas(self, *args):
+    def add_areas(self, description, *args):
         ((ne_lng, ne_lat, sw_lng, sw_lat, ), ) = args
-        self.inner[DESCRIPTION] = "description"
+        self.inner[DESCRIPTION] = str(description)
         self.inner[POSITION] = dict()
         self.inner[POSITION][SW] = dict()
         self.inner[POSITION][SW][LNG] = sw_lng
@@ -25,15 +24,14 @@ class AreasBlacklistServiceRequest(RequestSchema):
         return body
 
     @automation_logger(logger)
-    def get_areas_inbox(self, *args):
-        ((ne_lng, ne_lat, sw_lng, sw_lat, ), ) = args
+    def get_areas_inbox(self, bounding_box):
         self.inner[SHAPE] = dict()
         self.inner[SHAPE][SW] = dict()
-        self.inner[SHAPE][SW][LNG] = sw_lng
-        self.inner[SHAPE][SW][LAT] = sw_lat
+        self.inner[SHAPE][SW][LNG] = bounding_box.min_lon
+        self.inner[SHAPE][SW][LAT] = bounding_box.min_lat
         self.inner[SHAPE][NE] = dict()
-        self.inner[SHAPE][NE][LNG] = ne_lng
-        self.inner[SHAPE][NE][LAT] = ne_lat
+        self.inner[SHAPE][NE][LNG] = bounding_box.max_lon
+        self.inner[SHAPE][NE][LAT] = bounding_box.max_lat
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

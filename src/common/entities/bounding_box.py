@@ -1,8 +1,7 @@
-from src.common import logger
-from src.common.log_decorator import automation_logger
+from src.common.entities.entity import Entity
 
 
-class BoundingBox(object):
+class BoundingBox(Entity):
     def __init__(self):
         super(BoundingBox, self).__init__()
         self.max_lat = 0
@@ -10,16 +9,9 @@ class BoundingBox(object):
         self.min_lat = 0
         self.min_lon = 0
 
-    @automation_logger(logger)
-    def set_bounding_box(self, max_lat: float, max_lon: float, min_lat: float, min_lon: float):
-        self.max_lat = max_lat
-        self.max_lon = max_lon
-        self.min_lat = min_lat
-        self.min_lon = min_lon
-        logger.logger.info(F"BoundingBox: {self}")
+    def set_bounding_box(self, ne_lat: float, ne_lon: float, sw_lat: float, sw_lon: float):
+        self.max_lat = ne_lat
+        self.max_lon = ne_lon
+        self.min_lat = sw_lat
+        self.min_lon = sw_lon
         return self
-
-    def __repr__(self):
-        return "{}({})".format(self.__class__.__name__,
-                               ', '.join("{k}={v}".format(k=k, v=self.__dict__[k])
-                                         for k in sorted(self.__dict__.keys())))

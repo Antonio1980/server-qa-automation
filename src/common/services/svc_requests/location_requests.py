@@ -1,4 +1,3 @@
-import json
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
@@ -65,9 +64,9 @@ class LocationServiceRequest(RequestSchema):
         return body
 
 
-if __name__ == "__main__":
-    from src.common.entities.location import Location
-
-    l = Location()
-    r = LocationServiceRequest().add_locations(l)
-    pass
+# if __name__ == "__main__":
+#     from src.common.entities.location import Location
+#
+#     l = Location()
+#     r = LocationServiceRequest().add_locations(l)
+#     pass

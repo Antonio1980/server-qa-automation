@@ -1,21 +1,17 @@
 import random
 from src.common import logger
+from src.common.entities.entity import Entity
 from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
 
 
-class UdpMessage():
+class UdpMessage(Entity):
     def __init__(self, debug_mode=True):
         super(UdpMessage, self).__init__()
         self.type = "LocationUpdate2"
         self.data = dict()
         self.data[DEBUG_MODE] = debug_mode
-
-    def __repr__(self):
-        return "{}({})".format(self.__class__.__name__,
-                               ', '.join("{k}={v}".format(k=k, v=self.__dict__[k])
-                                         for k in sorted(self.__dict__.keys())))
 
     @automation_logger(logger)
     def set_udp_message(self, *args):
@@ -37,7 +33,7 @@ class UdpMessage():
         self.data[CLIENT_DATA][VELOCITY] = velocity
         self.data[CLIENT_DATA][HORIZONTAL_ACCURACY] = float(accuracy)
         self.data[CLIENT_DATA][SOURCE] = "QA Test"
-        logger.logger.info(F"UDP Message is {Instruments.from_json(self)}")
+        logger.logger.info(F"UDP Message is {self.to_json()}")
         return self
 
     @automation_logger(logger)

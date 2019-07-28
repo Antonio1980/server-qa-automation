@@ -41,14 +41,15 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_areas(self, *args):
+    def add_areas(self, description, *args):
         """
-
+        Sends POST HTTP "AddAreas" request to AreasBlacklistService
+        :param description: Any string.
         :param args: sw_lng, sw_lat, ne_lng, ne_lat
-        :return:
+        :return: tuple with: body- response text as dict and pure HTTP response
         """
         uri = self.url + "areas"
-        payload = AreasBlacklistServiceRequest().add_areas(args)
+        payload = AreasBlacklistServiceRequest().add_areas(description, args)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers)
@@ -99,14 +100,9 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_areas_inbox(self, *args):
-        """
-
-        :param args: sw_lng: float, sw_lat: float, ne_lng: float, ne_lat: float
-        :return:
-        """
+    def get_areas_inbox(self, bounding_box):
         uri = self.url + "areas/inBox"
-        payload = AreasBlacklistServiceRequest().get_areas_inbox(args)
+        payload = AreasBlacklistServiceRequest().get_areas_inbox(bounding_box)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)

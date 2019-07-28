@@ -1,7 +1,8 @@
 from src.common.utils.utils import Utils
+from src.common.entities.entity import Entity
 
 
-class Location(object):
+class Location(Entity):
     def __init__(self):
         super(Location, self).__init__()
         self.id = Utils.random_string_generator()
@@ -23,8 +24,3 @@ class Location(object):
         self.timestamp = Utils.get_timestamp()
         self.velocity = 0
         self.vertical_accuracy = 0
-
-    def __repr__(self):
-        return "{}({})".format(self.__class__.__name__,
-                               ', '.join("{k}={v}".format(k=k, v=self.__dict__[k])
-                                         for k in sorted(self.__dict__.keys())))

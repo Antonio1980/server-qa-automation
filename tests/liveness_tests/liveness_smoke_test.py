@@ -1,6 +1,7 @@
 import allure
 import pytest
 from src.common import logger
+from src.common.entities.bounding_box import BoundingBox
 from src.common.utils.slack import Slack
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
@@ -32,9 +33,11 @@ class TestSmokeLiveness(object):
     @automation_logger(logger)
     @allure.step("Verify that service returns areas of TelAviv.")
     def test_get_area_tel_aviv(self):
-        ne_lng, ne_lat = 34.82932599989067, 32.09434632337351
-        sw_lng, sw_lat = 34.75310834852348, 32.039067310341956
-        _response = ApiClient().areas_blacklist_svc.get_areas_inbox(ne_lng, ne_lat, sw_lng, sw_lat)
+        ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
+        sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
+        box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
+
+        _response = ApiClient().areas_blacklist_svc.get_areas_inbox(box)
         if _response[1].status_code != 200 or _response[0] is None or "areas" not in _response[0].keys() \
                 or len(_response[0]["areas"]) <= 0:
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_get_area_tel_aviv failed with response: " \
