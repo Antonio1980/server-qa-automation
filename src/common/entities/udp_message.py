@@ -1,12 +1,11 @@
 import random
 from src.common import logger
-from src.common.utils.utils import Utils
+from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
-from src.common.services.svc_requests.request_schema import RequestSchema
 
 
-class UdpMessage(RequestSchema):
+class UdpMessage():
     def __init__(self, debug_mode=True):
         super(UdpMessage, self).__init__()
         self.type = "LocationUpdate2"
@@ -33,13 +32,11 @@ class UdpMessage(RequestSchema):
         self.data[CLIENT_DATA][BEARING] = bearing
         self.data[CLIENT_DATA][VELOCITY] = velocity
         self.data[CLIENT_DATA][HORIZONTAL_ACCURACY] = float(accuracy)
-        self.data[CLIENT_DATA][TIMESTAMP] = Utils.get_synch_timestamp()
+        self.data[CLIENT_DATA][TIMESTAMP] = Instruments.get_synch_timestamp()
         self.data[CLIENT_DATA][SOURCE] = "QA Test"
-        body = Utils.from_json(self)
-        logger.logger.info(REQUEST_BODY.format(body))
         return self
 
     @automation_logger(logger)
     def get_udp_message(self, *args):
         (latitude, longitude, bearing, velocity, accuracy) = args
-        return Utils.from_json(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")
+        return Instruments.from_json(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")

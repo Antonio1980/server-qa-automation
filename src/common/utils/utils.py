@@ -2,7 +2,6 @@ import json
 import random
 import string
 import datetime
-import ntplib as ntplib
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.utils.auth_zero import AuthorizationZero
@@ -38,22 +37,6 @@ class Utils:
         timestamp_from = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat() + "Z"
         timestamp_to = datetime.datetime.utcnow().isoformat() + "Z"
         return timestamp_from, timestamp_to
-
-    @classmethod
-    @automation_logger(logger)
-    def get_synch_timestamp(cls, left_time_seconds=10):
-
-        if left_time_seconds > 0:
-            try:
-                ntp_client = ntplib.NTPClient()
-                ntp_response = ntp_client.request("time1.google.com", version=3)
-                time_offset = ntp_response.offset
-                return (datetime.datetime.utcnow() + datetime.timedelta(seconds=time_offset)).strftime(
-                    "%Y-%m-%dT%H:%M:%S.%fZ")
-            except ntplib.NTPException as e:
-                logger.logger.exception(F"NTPException: {e}")
-                left_time_seconds -= 1
-                cls.get_synch_timestamp(left_time_seconds)
 
     @staticmethod
     @automation_logger(logger)
