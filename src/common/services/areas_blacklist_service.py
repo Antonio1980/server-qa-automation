@@ -74,19 +74,6 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_hash(self):
-        uri = self.url + "hash"
-        try:
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_hash failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
     def delete_areas_by_id(self, shape_id: str):
         uri = self.url + "areas/" + shape_id
         try:
