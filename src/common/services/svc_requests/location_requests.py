@@ -30,7 +30,7 @@ class LocationServiceRequest(RequestSchema):
         self.inner[TIMESTAMP] = location.timestamp
         self.inner[VELOCITY] = location.velocity
         self.inner[VERTICAL_ACCURACY] = location.vertical_accuracy
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -60,14 +60,14 @@ class LocationServiceRequest(RequestSchema):
                 VERTICAL_ACCURACY: location.vertical_accuracy
             }
         ])
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
 
-# if __name__ == "__main__":
-#     from src.common.entities.location import Location
-#     import json
-#     l = Location()
-#     r = LocationServiceRequest().add_locations(l)
-#     pass
+if __name__ == "__main__":
+    from src.common.entities.location import Location
+
+    l = Location()
+    r = LocationServiceRequest().add_locations(l)
+    pass

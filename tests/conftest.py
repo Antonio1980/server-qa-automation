@@ -56,6 +56,16 @@ def stderr_stdout(capsys):
         raise e
 
 
+@pytest.fixture(scope="session")
+def env():
+    env = os.environ.get('ENV')
+    if isinstance(env, str):
+        return env
+    else:
+        os.environ["ENV"] = "stg"
+        return "stg"
+
+
 # def pytest_addoption(parser):
 #     parser.addoption(
 #         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")
@@ -65,11 +75,3 @@ def stderr_stdout(capsys):
 # def expect_endpoints(request):
 #     return request.config.getoption("--expect_endpoints")
 #
-#
-# def pytest_generate_tests(metafunc):
-#     os.environ['EXPECTED_ENDPOINTS'] = '2'
-#
-#
-# @pytest.fixture
-# def ex_endpoints():
-#     return os.environ.get('EXPECTED_ENDPOINTS')

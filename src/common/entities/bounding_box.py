@@ -23,4 +23,3 @@ class BoundingBox(object):
         return "{}({})".format(self.__class__.__name__,
                                ', '.join("{k}={v}".format(k=k, v=self.__dict__[k])
                                          for k in sorted(self.__dict__.keys())))
-

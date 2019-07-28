@@ -35,11 +35,11 @@ class UdpMessage(RequestSchema):
         self.data[CLIENT_DATA][HORIZONTAL_ACCURACY] = float(accuracy)
         self.data[CLIENT_DATA][TIMESTAMP] = Utils.get_synch_timestamp()
         self.data[CLIENT_DATA][SOURCE] = "QA Test"
-        body = Utils.to_json(self)
+        body = Utils.from_json(self)
         logger.logger.info(REQUEST_BODY.format(body))
         return self
 
     @automation_logger(logger)
     def get_udp_message(self, *args):
         (latitude, longitude, bearing, velocity, accuracy) = args
-        return Utils.to_json(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")
+        return Utils.from_json(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")

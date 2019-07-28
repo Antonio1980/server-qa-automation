@@ -38,7 +38,7 @@ class TestLocationLivenessPerServicePort(object):
     @allure.step("Verify that Routing svc returns all active endpoints.")
     def test_returned_endpoints(self, endpoints):
         ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
-        if_err_message = "Endpoints count != " + str(ex_endpoints) + "\n"
+        if_err_message = "Endpoints count != " + str(ex_endpoints) + " current number is " + str(len(endpoints)) + " \n"
 
         if len(endpoints) != ex_endpoints:
             TestLocationLivenessPerServicePort.issues += if_err_message

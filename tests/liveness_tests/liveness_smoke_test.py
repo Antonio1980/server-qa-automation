@@ -85,16 +85,9 @@ class TestSmokeLiveness(object):
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_user_messages_liveness failed with response: "\
                 F"{_response} \n"
 
-            raise AutomationError(F"Test case {test_case} /4 failed!")
-
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
-
-    @automation_logger(logger)
-    @allure.step("Verify that service returns messges per user id")
-    def test_user_messages_liveness(self):
         if TestSmokeLiveness.issues:
             logger.logger.error(F"Next errors will be sent to Slack (:  {TestSmokeLiveness.issues}")
             Slack.send_message(TestSmokeLiveness.issues)
-            raise AutomationError(F"Test case {test_case} failed!")
+            raise AutomationError(F"Test case {test_case} /4 failed!")
         else:
-            logger.logger.info(F"============ TEST CASE {test_case} PASSED  (all arts), nothing was send. ===========")
+            logger.logger.info(F"============ TEST CASE {test_case} PASSED  (all ports), nothing was send. ===========")

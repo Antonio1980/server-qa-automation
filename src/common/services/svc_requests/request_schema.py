@@ -21,5 +21,5 @@ class RequestSchema(object):
                                ', '.join("{k}={v}".format(k=k[1:], v=self.__dict__[k])
                                          for k in sorted(self.__dict__.keys())))
 
-    def to_json(self):
-        return Utils.to_json(self)
+    def from_json(self, key=None):
+        return Utils.from_json(self, key)

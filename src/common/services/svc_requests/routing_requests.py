@@ -19,7 +19,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[REPORT_TYPE] = report_item.report_type
         self.inner[SESSION_ID] = report_item.session_id
         self.inner[TIMESTAMP] = report_item.timestamp
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -35,8 +35,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[COUNT_BY_TYPE][CAR] = car
         self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
         self.inner[COUNT_BY_TYPE][BIKE] = bike
-        body = {**json.loads(self.to_json()), **json.loads(Utils.to_json(route))}
-        body = json.dumps(body.pop("inner"))
+        body = {**json.loads(self.from_json("inner")), **json.loads(Utils.from_json(route))}
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -61,6 +60,6 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[TIMESTAMP] = location.timestamp
         self.inner[VELOCITY] = location.velocity
         self.inner[VERTICAL_ACCURACY] = location.vertical_accuracy
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

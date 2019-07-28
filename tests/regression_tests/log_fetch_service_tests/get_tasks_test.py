@@ -15,7 +15,7 @@ test_case = ""
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/log_fetch_service_tests/get_tasks_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/get_tasks_test.py",
                  "TestGetTasks")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression

@@ -21,6 +21,6 @@ class MessagesServiceRequest(RequestSchema):
                 TASK_ID: task_id
             }
         ])
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

@@ -17,6 +17,7 @@ def get_parser(config):
 if "ENV" in os.environ.keys():
     environment = os.environ.__getitem__("ENV")
 else:
+    os.environ["ENV"] = "stg"
     environment = "stg"
 
 if environment.lower() == Environment.STAGING.value:

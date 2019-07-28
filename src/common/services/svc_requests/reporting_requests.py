@@ -18,7 +18,7 @@ class ReportingServiceRequest(RequestSchema):
         self.inner[REPORT_TYPE] = report_item.report_type
         self.inner[SESSION_ID] = report_item.session_id
         self.inner[TIMESTAMP] = report_item.timestamp
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -45,6 +45,6 @@ class ReportingServiceRequest(RequestSchema):
         self.inner[DATA][0][TIMESTAMP] = location.timestamp
         self.inner[DATA][0][VELOCITY] = location.velocity
         self.inner[DATA][0][VERTICAL_ACCURACY] = location.vertical_accuracy
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

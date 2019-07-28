@@ -16,7 +16,7 @@ test_case = ""
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/api_tests/remote_config_service_tests/get_remote_config_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/get_remote_config_test.py",
                  "TestGetRemoteConfig")
 @pytest.mark.regression
 @pytest.mark.remote_config_service

@@ -14,6 +14,6 @@ class RemoteConfigServiceRequest(RequestSchema):
         self.inner[HASH] = hash
         self.inner[DATA] = dict()
         self.inner[DATA].update(data)
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

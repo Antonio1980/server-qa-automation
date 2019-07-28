@@ -12,13 +12,16 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def to_json(object_):
+    def from_json(object_, key=None):
         """
         Converts a class object to JSON object.
         :param object_: a class instance.
         :return: a JSON object (python dictionary).
         """
-        return json.dumps(object_, default=lambda o: vars(o), sort_keys=True, indent=4)
+        if key:
+            return json.dumps(json.loads(json.dumps(object_, default=lambda o: vars(o), sort_keys=True, indent=4)).pop(key))
+        else:
+            return json.dumps(object_, default=lambda o: vars(o), sort_keys=True, indent=4)
 
     @staticmethod
     @automation_logger(logger)

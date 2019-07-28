@@ -20,7 +20,7 @@ class AreasBlacklistServiceRequest(RequestSchema):
         self.inner[POSITION][NE] = dict()
         self.inner[POSITION][NE][LNG] = ne_lng
         self.inner[POSITION][NE][LAT] = ne_lat
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -34,7 +34,7 @@ class AreasBlacklistServiceRequest(RequestSchema):
         self.inner[SHAPE][NE] = dict()
         self.inner[SHAPE][NE][LNG] = ne_lng
         self.inner[SHAPE][NE][LAT] = ne_lat
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -42,6 +42,6 @@ class AreasBlacklistServiceRequest(RequestSchema):
     def activate_area(self, shape_id, status):
         self.inner[SHAPE_ID] = shape_id
         self.inner[IS_ACTIVE] = status
-        body = json.dumps(json.loads(self.to_json()).pop("inner"))
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
