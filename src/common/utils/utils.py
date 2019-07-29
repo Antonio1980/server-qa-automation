@@ -11,7 +11,7 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def from_json(object_, key=None):
+    def to_json_dumps(object_, key=None):
         """
         Converts a class object to JSON object.
         :param object_: a class instance.
@@ -24,19 +24,26 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def get_timestamp():
-        return datetime.datetime.utcnow().isoformat() + "Z"
+    def get_timestamps():
+        """
+        Makes two timestamp integers.
+        :return: past_timestamp- str (1 year back from now),
+        curr_timestamp- str (current date), future_timestamp- str (future date 1 month forward)
+        """
+        past_timestamp = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat() + "Z"
+        curr_timestamp = datetime.datetime.utcnow().isoformat() + "Z"
+        future_timestamp = (datetime.datetime.utcnow() + datetime.timedelta(days=30)).isoformat() + "Z"
+        return past_timestamp, curr_timestamp, future_timestamp
 
     @staticmethod
     @automation_logger(logger)
-    def to_timestamp():
-        """
-        Makes two timestamp integers.
-        :return: timestamp_from- int (1 year back from now), timestamp_to- int (current date).
-        """
-        timestamp_from = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat() + "Z"
-        timestamp_to = datetime.datetime.utcnow().isoformat() + "Z"
-        return timestamp_from, timestamp_to
+    def get_dates():
+        past_date = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%S") + \
+                    ".918 +00:00"
+        curr_date = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + ".918 +00:00"
+        future_date = (datetime.datetime.utcnow() + datetime.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S") + \
+                    ".918 +00:00"
+        return past_date, curr_date, future_date
 
     @staticmethod
     @automation_logger(logger)
@@ -45,7 +52,7 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def random_string_generator(size=8, chars=string.ascii_lowercase + string.digits):
+    def get_random_string(size=8, chars=string.ascii_lowercase + string.digits):
         """
         Generates random string with chars and digits.
         :param size: string length expected (default is 8).

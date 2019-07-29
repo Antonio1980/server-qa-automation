@@ -11,4 +11,5 @@ class ServiceBase:
                              "(KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36",
                "accept": "*/*"
                }
-    (timestamp_from, timestamp_to) = Utils.to_timestamp()
+    (past_timestamp, curr_timestamp, future_timestamp) = Utils.get_timestamps()
+    (past_date, curr_date, future_date) = Utils.get_dates()

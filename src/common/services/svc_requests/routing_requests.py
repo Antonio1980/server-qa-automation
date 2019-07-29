@@ -35,7 +35,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[COUNT_BY_TYPE][CAR] = car
         self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
         self.inner[COUNT_BY_TYPE][BIKE] = bike
-        body = {**json.loads(self.from_json("inner")), **json.loads(Utils.from_json(route))}
+        body = {**json.loads(self.from_json("inner")), **json.loads(Utils.to_json_dumps(route))}
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 

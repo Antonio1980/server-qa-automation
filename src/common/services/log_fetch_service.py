@@ -3,6 +3,7 @@ import requests
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
+from src.common.services.svc_requests.log_fetch_requests import LogFetchServiceRequest
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 
 
@@ -26,7 +27,7 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_roup_tasks_by_id(self, user_id):
+    def get_tasks_by_user_id(self, user_id):
         uri = self.url + "tasks/group/" + str(user_id)
         try:
             logger.logger.info(F"API Service URL is {uri}")
@@ -52,16 +53,12 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def set_tasks(self, user_id):
+    def add_task(self, user_id):
         uri = self.url + "tasks/"
-        payload = {
-            "userid": user_id,
-            "to": self.timestamp_to,
-            "from": self.timestamp_from
-        }
+        payload = LogFetchServiceRequest().add_task(user_id)
         try:
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(uri, data=json.dumps(payload), headers=self.headers_without_token)
+            _response = requests.post(uri, data=payload, headers=self.headers_without_token)
             body = json.loads(_response.text)
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
@@ -70,11 +67,13 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def upload_tasks(self, task_id):
+    def upload_file_task(self, task_id, text):
         uri = self.url + "upload/" + str(task_id)
+        self.headers_without_token.update({"Content-Type": "application/octet-stream"})
+        payload = LogFetchServiceRequest().upload_file(text)
         try:
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(uri, headers=self.headers_without_token)
+            _response = requests.post(uri, data=payload,headers=self.headers_without_token)
             body = json.loads(_response.text)
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response

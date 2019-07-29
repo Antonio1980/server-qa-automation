@@ -3,7 +3,8 @@ from src.common.utils.utils import Utils
 
 
 class RequestSchema(object):
-    (timestamp_from, timestamp_to) = Utils.to_timestamp()
+    (past_timestamp, curr_timestamp, future_timestamp) = Utils.get_timestamps()
+    (past_date, curr_date, future_date) = Utils.get_dates()
 
     def __init__(self):
         super(RequestSchema, self).__init__()
@@ -20,4 +21,4 @@ class RequestSchema(object):
                                          for k in sorted(self.__dict__.keys())))
 
     def from_json(self, key=None):
-        return Utils.from_json(self, key)
+        return Utils.to_json_dumps(self, key)

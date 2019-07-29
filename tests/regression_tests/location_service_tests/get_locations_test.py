@@ -8,6 +8,7 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
+@pytest.mark.skip
 @allure.title("GET LOCATIONS")
 @allure.description("""
     Functional tests.

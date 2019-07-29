@@ -39,4 +39,4 @@ class UdpMessage(Entity):
     @automation_logger(logger)
     def get_udp_message(self, *args):
         (latitude, longitude, bearing, velocity, accuracy) = args
-        return Instruments.from_json(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")
+        return Instruments.to_json_dumps(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")

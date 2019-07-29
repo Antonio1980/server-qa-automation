@@ -15,8 +15,8 @@ class MessagesServiceRequest(RequestSchema):
         self.inner[DATA] = dict()
         self.inner[DATA][TASKS].extend([
             {
-                TO: self.timestamp_to,
-                FROM: self.timestamp_from,
+                TO: self.curr_timestamp,
+                FROM: self.past_timestamp,
                 TASK_ID: task_id
             }
         ])

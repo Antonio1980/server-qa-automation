@@ -27,7 +27,7 @@ class TestAddAreas(object):
     @allure.step("Verify that response is not empty and status code is 201")
     def test_add_areas_method_works(self):
         # sw_lng, sw_lat, ne_lng, ne_lat
-        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.random_string_generator(),
+        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)
         assert response_[0] is not None
@@ -38,7 +38,7 @@ class TestAddAreas(object):
     @automation_logger(logger)
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_add_areas_method(self):
-        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.random_string_generator(),
+        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)[0]
         assert "hash" in response_.keys() and isinstance(response_["hash"], str)

@@ -1,9 +1,12 @@
 import json
+from src.common.utils.utils import Utils
 
 
 class Entity(object):
     def __init__(self):
         super(Entity, self).__init__()
+        (self.past_timestamp, self.curr_timestamp, self.future_timestamp) = Utils.get_timestamps()
+        (self.past_date, self.curr_date, self.future_date) = Utils.get_dates()
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__,
