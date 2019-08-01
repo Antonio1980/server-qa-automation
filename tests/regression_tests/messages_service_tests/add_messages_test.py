@@ -8,24 +8,24 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("GET USER MESSAGES")
+@allure.title("ADD MESSAGES")
 @allure.description("""
     Functional test.
-    1. Check that service is responded on "GetUserMessages" request properly.
+    1. Check that service is responded on "AddMessages" request properly.
     2. Check that service response contains desired properties.
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/get_user_messages_test.py",
-                 "TestUserMesages")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/add_messages_test.py",
+                 "TestAddMessages")
 @pytest.mark.regression
 @pytest.mark.messages_service
-class TestUserMesages(object):
+class TestAddMessages(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_user_messages_method_works(self):
-        _response = ApiClient().messages_svc.get_user_messages("aaa")
+    def test_add_messages_method_works(self):
+        _response = ApiClient().messages_svc.add_messages("anton", "sendLog", "task_id")
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -33,12 +33,11 @@ class TestUserMesages(object):
         logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that 'messages' is list object.")
-    def test_attributes_in_user_messages_method(self):
-        _response = ApiClient().messages_svc.get_user_messages("aaa")[0]
+    @allure.step("Verify response properties and that 'newMsg' is dict object.")
+    def test_attributes_in_add_messages_method(self):
+        _response = ApiClient().messages_svc.add_messages("anton", "sendLog", "task_id")[0]
 
-        assert "messages" in _response.keys()
-        assert isinstance(_response["messages"], list)
-        assert len(_response["messages"]) > 0
+        assert "newMsg" in _response.keys()
+        assert isinstance(_response["newMsg"], dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")

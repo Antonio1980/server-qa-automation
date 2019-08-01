@@ -8,24 +8,24 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("GET USER MESSAGES")
+@allure.title("GET MESSAGES")
 @allure.description("""
     Functional test.
-    1. Check that service is responded on "GetUserMessages" request properly.
+    1. Check that service is responded on "GetMessages" request properly.
     2. Check that service response contains desired properties.
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/get_user_messages_test.py",
-                 "TestUserMesages")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/get_messages_test.py",
+                 "TestGetMessages")
 @pytest.mark.regression
 @pytest.mark.messages_service
-class TestUserMesages(object):
+class TestGetMessages(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_user_messages_method_works(self):
-        _response = ApiClient().messages_svc.get_user_messages("aaa")
+    def test_get_messages_method_works(self):
+        _response = ApiClient().messages_svc.get_messages()
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -34,11 +34,11 @@ class TestUserMesages(object):
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'messages' is list object.")
-    def test_attributes_in_user_messages_method(self):
-        _response = ApiClient().messages_svc.get_user_messages("aaa")[0]
+    def test_attributes_in_get_messages_method(self):
+        _response = ApiClient().messages_svc.get_messages()[0]
 
-        assert "messages" in _response.keys()
-        assert isinstance(_response["messages"], list)
-        assert len(_response["messages"]) > 0
+        assert "messagesArray" in _response.keys()
+        assert isinstance(_response["messagesArray"], list)
+        assert len(_response["messagesArray"]) > 0
 
         logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")

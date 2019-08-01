@@ -9,14 +9,16 @@ class MessagesServiceRequest(RequestSchema):
         super(MessagesServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def set_messages(self, user_id, message_type, task_id):
+    def add_messages(self, user_id, message_type, task_id):
         self.inner[TYPE] = message_type
         self.inner[USER_ID] = user_id
+        self.inner[DISTRIBUTION_TYPE] = "SpecificUser"
         self.inner[DATA] = dict()
+        self.inner[DATA][TASKS] = list()
         self.inner[DATA][TASKS].extend([
             {
-                TO: self.curr_timestamp,
-                FROM: self.past_timestamp,
+                TO: self.curr_date,
+                FROM: self.past_date,
                 TASK_ID: task_id
             }
         ])

@@ -27,9 +27,9 @@ class MessagesService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def set_messages(self):
+    def add_messages(self, user_id, message_type, task_id):
         uri = self.url + "messages/"
-        payload = MessagesServiceRequest().set_messages()
+        payload = MessagesServiceRequest().add_messages(user_id, message_type, task_id)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)

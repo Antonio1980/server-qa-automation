@@ -46,6 +46,7 @@ TASKS = "tasks"
 TO = "to"
 FROM = "from"
 TASK_ID = "taskid"
+DISTRIBUTION_TYPE = "distributionType"
 
 # Remote-config
 HASH = "hash"
