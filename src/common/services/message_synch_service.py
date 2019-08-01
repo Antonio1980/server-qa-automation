@@ -10,7 +10,7 @@ class MessagesSynchService(ServiceBase):
     def __init__(self):
         super(MessagesSynchService, self).__init__()
         self.proxy_url = "api/"
-        self.url = self.api_base_url + "messages-service/" + self.proxy_url
+        self.url = self.api_base_url + "messages-sync-service/" + self.proxy_url
 
     @automation_logger(logger)
     def get_health(self):

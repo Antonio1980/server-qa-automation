@@ -24,8 +24,8 @@ class TestUploadFileTask(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_upload_file_task_method_works(self, task):
-        task_id = task["taskid"]
+    def test_upload_file_task_method_works(self, get_task):
+        task_id = get_task["taskid"]
         response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
         assert response_[0] is not None
         assert response_[1].status_code == 200
@@ -34,8 +34,8 @@ class TestUploadFileTask(object):
 
     @automation_logger(logger)
     @allure.step("Verify response property - updated")
-    def test_attributes_in_upload_file_task_method(self, task):
-        task_id = task["taskid"]
+    def test_attributes_in_upload_file_task_method(self, get_task):
+        task_id = get_task["taskid"]
         response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
         assert "updated" in response_.keys()
         assert response_["updated"] == "updated"

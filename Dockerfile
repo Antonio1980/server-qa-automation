@@ -23,10 +23,12 @@ RUN pip install --upgrade pip
 
 # copy source code
 COPY . project
-RUN find . -name \*.pyc -delete
+# delete python cache
+RUN find project/ -name \*.pyc -delete
+# check location
 RUN pwd && ls -la
 
-# install requirements
+# install virtual environment and requirements
 RUN pip install virtualenv
 RUN virtualenv venv
 RUN pip install -r project/requirements.txt
