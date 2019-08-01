@@ -8,24 +8,24 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("GET REMOTE CONFIG")
+@allure.title("ADD REMOTE CONFIG")
 @allure.description("""
     Functional test.
-    1. Check that service is responded on "GetRemoteConfig" request properly.
+    1. Check that service is responded on "AddRemoteConfig" request properly.
     2. Check that service response contains desired properties.
     """)
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_count", "remote_config")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/get_remote_config_test.py",
-                 "TestGetRemoteConfig")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/add_remote_config_test.py",
+                 "TestAddRemoteConfig")
 @pytest.mark.regression
 @pytest.mark.remote_config_service
-class TestGetRemoteConfig(object):
+class TestAddRemoteConfig(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_get_remote_config_method_works(self):
-        _response = ApiClient().remote_config_svc.get_config()
+    def test_add_remote_config_method_works(self, remote_config):
+        _response = ApiClient().remote_config_svc.add_remote_config(remote_config)
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -34,11 +34,11 @@ class TestGetRemoteConfig(object):
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'data' is dict object.")
-    def test_attributes_in_get_remote_config(self):
-        _response = ApiClient().remote_config_svc.get_config()[0]
+    def test_attributes_in_add_remote_config_method(self, remote_config):
+        _response = ApiClient().remote_config_svc.add_remote_config(remote_config)[0]
 
-        assert "_id" and "hash" and "data" and "last_updated" in _response.keys()
+        assert "hash" and "data" and "last_updated" in _response.keys()
         assert isinstance(_response["data"], dict)
-        assert "swagger" and "param1" and "param2" and "param3" in _response["data"].keys()
+        assert _response["data"] is not None
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

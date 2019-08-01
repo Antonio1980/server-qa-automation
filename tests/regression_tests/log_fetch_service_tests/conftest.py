@@ -4,7 +4,7 @@ from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 @automation_logger(logger)
 def get_task():
     response_ = ApiClient().log_fetch_svc.get_tasks()[0]
@@ -16,7 +16,7 @@ def get_task():
         get_task()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 @automation_logger(logger)
 def add_task():
     response_ = ApiClient().log_fetch_svc.add_task("another_any_string")[0]

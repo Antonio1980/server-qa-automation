@@ -50,6 +50,10 @@ DISTRIBUTION_TYPE = "distributionType"
 
 # Remote-config
 HASH = "hash"
+SWAGGER = "swagger"
+PARAM1 = "param1"
+PARAM2 = "param2"
+PARAM3 = "param3"
 
 # Reporting
 CLIENT_ID = "clientId"

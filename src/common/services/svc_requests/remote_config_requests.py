@@ -9,10 +9,10 @@ class RemoteConfigServiceRequest(RequestSchema):
         super(RemoteConfigServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def set_config(self, hash, data):
-        self.inner[HASH] = hash
+    def add_config(self, remote_config):
+        self.inner[HASH] = remote_config.config_hash
         self.inner[DATA] = dict()
-        self.inner[DATA].update(data)
+        self.inner[DATA].update(remote_config.data)
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

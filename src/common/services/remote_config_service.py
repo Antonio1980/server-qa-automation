@@ -26,9 +26,9 @@ class RemoteConfigService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def set_config(self):
+    def add_remote_config(self, remote_config):
         try:
-            payload = RemoteConfigServiceRequest().set_config()
+            payload = RemoteConfigServiceRequest().add_config(remote_config)
             logger.logger.info(F"API Service URL is {self.url}")
             _response = requests.post(self.url, data=payload, headers=self.headers_without_token)
             body = json.loads(_response.text)
