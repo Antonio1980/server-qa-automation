@@ -19,7 +19,7 @@ test_case = ""
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/add_messages_test.py",
                  "TestAddMessages")
 @pytest.mark.regression
-@pytest.mark.messages_service
+@pytest.mark.regression_messages
 class TestAddMessages(object):
 
     @automation_logger(logger)

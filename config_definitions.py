@@ -1,12 +1,9 @@
 import os
 import configparser
-from src.common import logger
 from src.common.enums import Environment
-from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
 
-@automation_logger(logger)
 def get_parser(config):
     parser = configparser.ConfigParser()
     with open(config, mode="r", buffering=-1, closefd=True):

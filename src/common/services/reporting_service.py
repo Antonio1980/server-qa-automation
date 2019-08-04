@@ -14,10 +14,10 @@ class ReportingService(ServiceBase):
         self.url = self.api_base_url + "reporting-service/" + self.proxy_url
 
     @automation_logger(logger)
-    def analytics_report(self, client_id, report_item):
+    def add_analytics_report(self, client_id, report_item):
         uri = self.url + "analytics"
         try:
-            payload = ReportingServiceRequest().analytics_report(client_id, report_item)
+            payload = ReportingServiceRequest().analytics_report(client_id, [report_item])
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
             body = "OK"
@@ -28,10 +28,10 @@ class ReportingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def bulk_analytics_report(self, client_id, report_item):
+    def bulk_analytics_report(self, client_id: str, report_item_list: list) -> tuple:
         uri = self.url + "analytics/bulk"
         try:
-            payload = ReportingServiceRequest().analytics_report(client_id, report_item)
+            payload = ReportingServiceRequest().analytics_report(client_id, report_item_list)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
             body = "OK"

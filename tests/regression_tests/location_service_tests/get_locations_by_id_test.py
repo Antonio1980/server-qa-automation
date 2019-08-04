@@ -20,7 +20,7 @@ test_case = ""
                  "TestGetLocationById")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.location_service
+@pytest.mark.regression_location
 class TestGetLocationById(object):
 
     @automation_logger(logger)

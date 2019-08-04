@@ -1,37 +1,30 @@
-FROM python:3.7-alpine3.8
+FROM ubuntu:latest
+MAINTAINER fnndsc "antons@eyenet-mobile.com"
 
-# update apk repo
-RUN echo "http://dl-4.alpinelinux.org/alpine/v3.8/main" >> /etc/apk/repositories && \
-    echo "http://dl-4.alpinelinux.org/alpine/v3.8/community" >> /etc/apk/repositories
-
-# upgrade and update VM
-RUN apk upgrade
-RUN apk update && apk add \
-  bash openssh vim curl   \
-  build-base git          \
-  gcc libxslt-dev         \
-  --no-cache ca-certificates
-
-FROM python:3.7
-
-# ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
 
-# install pip
-RUN curl -O https://bootstrap.pypa.io/get-pip.py && python get-pip.py
-RUN pip install --upgrade pip
+RUN apt-get update                  \
+  && apt-get install -y             \
+  python3-pip python3-dev           \
+  && cd /usr/local/bin              \
+  && ln -s /usr/bin/python3 python  \
+  && pip3 install --upgrade pip
 
-# copy source code
+RUN apt-get update        \
+  && apt-get install -y   \
+  apt-utils bash vim curl \
+  git gcc libxslt-dev
+
 COPY . project
-# delete python cache
-RUN find project/ -name \*.pyc -delete
-# check location
-RUN pwd && ls -la
 
-# install virtual environment and requirements
-RUN pip install virtualenv
-RUN virtualenv venv
 RUN pip install -r project/requirements.txt
 
-# Leave it on
+RUN find project/ -name \*.pyc -delete
+
+RUN pwd && ls -la
+
+VOLUME src/repository/allure_result
+
+WORKDIR project
+
 CMD tail -f /dev/null

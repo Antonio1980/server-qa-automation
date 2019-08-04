@@ -19,7 +19,7 @@ test_case = ""
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/get_config_hash_test.py",
                  "TestGetConfigHash")
 @pytest.mark.regression
-@pytest.mark.remote_config_service
+@pytest.mark.regression_remote_config
 class TestGetConfigHash(object):
 
     @automation_logger(logger)

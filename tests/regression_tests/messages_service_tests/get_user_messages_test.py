@@ -17,10 +17,10 @@ test_case = ""
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/get_user_messages_test.py",
-                 "TestUserMesages")
+                 "TestUserMessages")
 @pytest.mark.regression
-@pytest.mark.messages_service
-class TestUserMesages(object):
+@pytest.mark.regression_messages
+class TestUserMessages(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")

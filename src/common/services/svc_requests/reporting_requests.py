@@ -1,3 +1,4 @@
+import json
 from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
@@ -9,17 +10,34 @@ class ReportingServiceRequest(RequestSchema):
         super(ReportingServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def analytics_report(self, client_id, report_item):
-        self.inner[CLIENT_ID] = client_id
-        self.inner[ID] = report_item.id
-        self.inner[PARAMS] = dict()
-        self.inner[PARAMS].update(report_item.params)
-        self.inner[REPORT_TYPE] = report_item.report_type
-        self.inner[SESSION_ID] = report_item.session_id
-        self.inner[TIMESTAMP] = report_item.timestamp
-        body = self.from_json("inner")
-        logger.logger.info(REQUEST_BODY.format(body))
-        return body
+    def analytics_report(self, client_id: str, report_item_list: list, bulk: bool):
+        if bulk:
+            body_list = list()
+            for item in report_item_list:
+                inner = dict()
+                inner[CLIENT_ID] = client_id
+                inner[ID] = item.id
+                inner[PARAMS] = dict()
+                inner[PARAMS].update(item.params)
+                inner[REPORT_TYPE] = item.report_type
+                inner[SESSION_ID] = item.session_id
+                inner[TIMESTAMP] = item.timestamp
+                inner = json.dumps(
+                        json.loads(json.dumps(inner, default=lambda o: vars(o), sort_keys=True, indent=4)).pop("inner"))
+                body_list.append(inner)
+            logger.logger.info(REQUEST_BODY.format(body_list))
+            return self.from_json(body_list)
+        else:
+            self.inner[CLIENT_ID] = client_id
+            self.inner[ID] = report_item_list[0].id
+            self.inner[PARAMS] = dict()
+            self.inner[PARAMS].update(report_item_list[0].params)
+            self.inner[REPORT_TYPE] = report_item_list[0].report_type
+            self.inner[SESSION_ID] = report_item_list[0].session_id
+            self.inner[TIMESTAMP] = report_item_list[0].timestamp
+            body = self.from_json("inner")
+            logger.logger.info(REQUEST_BODY.format(body))
+            return body
 
     @automation_logger(logger)
     def location_history_report(self, location):

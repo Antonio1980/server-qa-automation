@@ -13,7 +13,7 @@ class RoutingService(ServiceBase):
         self.url = self.api_base_url + "routing-service/"
 
     @automation_logger(logger)
-    def analytics(self, client_id, report_item):
+    def add_analytics_report(self, client_id, report_item):
         uri = self.url + "analytics"
         try:
             payload = RoutingServiceRequest().analytics(client_id, report_item)
@@ -54,7 +54,7 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_count_by_type(self):
-        uri = self.url + "v1/count-by-type"
+        uri = self.url + "v2/count-by-type"
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(url=uri, headers=self.headers_without_token)
@@ -87,41 +87,13 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_route(self, location):
-        uri = self.url + "route"
-        try:
-            payload = RoutingServiceRequest().add_route(location)
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} add_route failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
-    def add_route_v3(self, location):
-        uri = self.url + "v3/route"
-        try:
-            payload = RoutingServiceRequest().add_route(location)
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} add_route failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
     def add_route_v4(self, location):
         uri = self.url + "v4/route"
         try:
             payload = RoutingServiceRequest().add_route(location)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            body = json.loads(_response.text)
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:

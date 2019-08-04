@@ -19,7 +19,7 @@ test_case = ""
                  "TestGetAreas")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.areas_blacklist_service
+@pytest.mark.regression_areas_blacklist
 class TestGetAreas(object):
 
     @automation_logger(logger)

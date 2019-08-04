@@ -19,13 +19,14 @@ test_case = ""
                  "TestGetEndpoints")
 @pytest.mark.usefixtures("run_time_count")
 @pytest.mark.regression
-@pytest.mark.routing_service
+@pytest.mark.regression_routing
 class TestGetEndpoints(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_endpoints_method_works(self):
         response_ = ApiClient().routing_svc.get_endpoints()
+
         assert response_[0] is not None
         assert response_[1].status_code == 200
 
@@ -35,6 +36,7 @@ class TestGetEndpoints(object):
     @allure.step("Verify response properties and that response is list object.")
     def test_attributes_in_get_endpoints_method(self):
         response_ = ApiClient().routing_svc.get_endpoints()[0]
+
         assert isinstance(response_, list)
         assert len(response_) > 0
         for item in response_:

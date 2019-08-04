@@ -1,5 +1,5 @@
 from src.common.entities.entity import Entity
-from src.common.services.svc_requests.request_constants import *
+from src.common.services.svc_requests.request_constants import SWAGGER, PARAM1, PARAM2, PARAM3
 
 
 class RemoteConfig(Entity):
@@ -12,6 +12,6 @@ class RemoteConfig(Entity):
         (param1, param2, param3, ) = args
         self.data[SWAGGER] = swagger
         self.data[PARAM1] = param1
-        self.data[PARAMS] = param2
+        self.data[PARAM2] = param2
         self.data[PARAM3] = param3
         return self

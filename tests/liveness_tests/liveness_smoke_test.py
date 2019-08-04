@@ -54,7 +54,7 @@ class TestSmokeLiveness(object):
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.analytics_report(client_id, report_item)
+        _response = ApiClient().reporting_svc.add_analytics_report(client_id, report_item)
 
         if _response[1].status_code != 201 or _response[1].reason != 'Created':
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_liveness_analytics_report failed with " \

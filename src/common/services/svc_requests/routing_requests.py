@@ -25,7 +25,10 @@ class RoutingServiceRequest(RequestSchema):
 
     @automation_logger(logger)
     def keep_alive(self, bounding_box, route, *args):
-        ((car, pedestrian, bike, ), ) = args
+        if args and len(args[0]) > 0:
+            ((car, pedestrian, bike, ), ) = args
+        else:
+            car, pedestrian, bike = 0, 0, 0
         self.inner[BOUNDING_BOX] = dict()
         self.inner[BOUNDING_BOX][MAX_LAT] = bounding_box.max_lat
         self.inner[BOUNDING_BOX][MAX_LON] = bounding_box.max_lon
@@ -35,7 +38,12 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[COUNT_BY_TYPE][CAR] = car
         self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
         self.inner[COUNT_BY_TYPE][BIKE] = bike
-        body = {**json.loads(self.from_json("inner")), **json.loads(Utils.to_json_dumps(route))}
+        self.inner[IP] = route.ip
+        self.inner[NAME] = route.name
+        self.inner[MIN_PORT] = route.min_port
+        self.inner[MAX_PORT] = route.max_port
+        self.inner[PRIORITY] = route.priority
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
@@ -54,7 +62,6 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[MAX_ACCELERATION] = location.max_acceleration
         self.inner[MAX_ANGULAR_CHANGE] = location.max_angular_change
         self.inner[MAX_DECELERATION] = location.max_deceleration
-        self.inner[RAW_HORIZONTAL_ACCURACY] = location.raw_horizontal_accuracy
         self.inner[SESSION_ID] = location.session_id
         self.inner[SOURCE] = location.source
         self.inner[TIMESTAMP] = location.timestamp

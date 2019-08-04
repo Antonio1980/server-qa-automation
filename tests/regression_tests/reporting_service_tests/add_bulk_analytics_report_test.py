@@ -9,27 +9,30 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("ANALYTICS REPORT")
+@allure.title("ADD BULK ANALYTICS REPORT")
 @allure.description("""
     Functional test.
-    1. Check that service is responded on "GetRemoteConfig" request properly.
+    1. Check that service is responded on "postReport" request properly.
     """)
 @pytest.mark.usefixtures("run_time_count")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/analytics_report_test.py",
-                 "TestAnalyticsReport")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/add_bulk_analytics_report_test.py",
+                 "TestAddBulkAnalyticsReport")
 @pytest.mark.regression
-@pytest.mark.reporting_service
-class TestAnalyticsReport(object):
+@pytest.mark.regression_reporting
+class TestAddBulkAnalyticsReport(object):
+    client_id = "TEST"
+    report_type, session_id = "QaReport", "Test Report"
+    report_item = ReportItem(report_type, session_id)
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 201")
-    def test_analytics_report_method_works(self):
+    def test_add_bulk_analytics_report_method_works(self):
         client_id = "QA"
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.analytics_report(client_id, report_item)
+        _response = ApiClient().reporting_svc.add_analytics_report(client_id, report_item)
 
         assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'

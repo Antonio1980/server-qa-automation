@@ -19,7 +19,7 @@ test_case = ""
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/add_remote_config_test.py",
                  "TestAddRemoteConfig")
 @pytest.mark.regression
-@pytest.mark.remote_config_service
+@pytest.mark.regression_remote_config
 class TestAddRemoteConfig(object):
 
     @automation_logger(logger)
