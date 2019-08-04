@@ -35,11 +35,12 @@ class TestGetHealth(object):
     @allure.step("Verify response properties as dictionary keys.")
     def test_attributes_in_get_health_method(self):
         response_ = ApiClient().messages_synch_svc.get_health()[0]
-        assert "nodeHealth" and "mongooseHealth" and "serviceVersion" in response_.keys()
-        assert isinstance(response_["nodeHealth"], dict) and isinstance(response_["mongooseHealth"], dict) and \
-               isinstance(response_["serviceVersion"], dict)
-        assert 'memoryUsage' and 'cpuUsage' and 'uptime' and 'version' in response_["nodeHealth"].keys()
-        assert 'mongooseStatus' in response_["mongooseHealth"].keys()
-        assert 'version' in response_["serviceVersion"].keys()
+
+        assert isinstance(response_, dict)
+        assert 'memoryUsage' and 'cpuUsage' and 'uptime' and 'version' in response_.keys(), "OBJECT KEYS MISMATCHING"
+        assert isinstance(response_["memoryUsage"], dict)
+        assert "rss" and "heapTotal" and "heapUsed" and "external" in response_["memoryUsage"].keys()
+        assert isinstance(response_["cpuUsage"], dict)
+        assert "user" and "system" in response_["cpuUsage"]
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

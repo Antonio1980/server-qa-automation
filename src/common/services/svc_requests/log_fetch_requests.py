@@ -14,7 +14,7 @@ class LogFetchServiceRequest(RequestSchema):
         self.inner[TO] = self.future_date
         self.inner[FROM] = self.curr_date
         body = self.from_json("inner")
-        logger.logger.info("AAAAA!!!" + REQUEST_BODY.format(body))
+        logger.logger.info(REQUEST_BODY.format(body))
         return body
 
     @automation_logger(logger)

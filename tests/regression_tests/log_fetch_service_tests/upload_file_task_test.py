@@ -3,6 +3,7 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
+from src.common.automation_error import AutomationError
 from src.common.log_decorator import automation_logger
 
 test_case = ""
@@ -17,7 +18,7 @@ test_case = ""
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/upload_file_task_test.py",
                  "TestUploadFileTask")
-@pytest.mark.usefixtures("run_time_count", "task")
+@pytest.mark.usefixtures("run_time_count", "get_task")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
 class TestUploadFileTask(object):
@@ -26,7 +27,11 @@ class TestUploadFileTask(object):
     @allure.step("Verify that response is not empty and status code is 200")
     def test_upload_file_task_method_works(self, get_task):
         task_id = get_task["taskid"]
-        response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
+        try:
+            response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
+        except Exception as e:
+            logger.logger(F"Error while getting server response: {e}")
+            raise AutomationError(e)
         assert response_[0] is not None
         assert response_[1].status_code == 200
 
@@ -36,8 +41,12 @@ class TestUploadFileTask(object):
     @allure.step("Verify response property - updated")
     def test_attributes_in_upload_file_task_method(self, get_task):
         task_id = get_task["taskid"]
-        response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
-        assert "updated" in response_.keys()
-        assert response_["updated"] == "updated"
+        try:
+            response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
+        except Exception as e:
+            logger.logger(F"Error while getting server response: {e}")
+            raise AutomationError(e)
+        assert isinstance(response_, dict)
+        assert "_id" and "status" and "to" and "from" and "userid" and "taskid" and "timestamp" in response_.keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

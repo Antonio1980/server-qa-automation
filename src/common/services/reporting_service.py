@@ -10,12 +10,12 @@ from src.common.services.svc_requests.reporting_requests import ReportingService
 class ReportingService(ServiceBase):
     def __init__(self):
         super(ReportingService, self).__init__()
-        self.proxy_url = "v1/"
-        self.url = self.api_base_url + "reporting-service/" + self.proxy_url
+        self.version = "v1/"
+        self.url = self.api_base_url + "reporting-service/"
 
     @automation_logger(logger)
     def add_analytics_report(self, client_id, report_item):
-        uri = self.url + "analytics"
+        uri = self.url + self.version + "analytics"
         try:
             payload = ReportingServiceRequest().analytics_report(client_id, [report_item])
             logger.logger.info(F"API Service URL is {uri}")
@@ -28,8 +28,8 @@ class ReportingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def bulk_analytics_report(self, client_id: str, report_item_list: list) -> tuple:
-        uri = self.url + "analytics/bulk"
+    def add_bulk_analytics_report(self, client_id: str, report_item_list: list) -> tuple:
+        uri = self.url + self.version + "analytics/bulk"
         try:
             payload = ReportingServiceRequest().analytics_report(client_id, report_item_list)
             logger.logger.info(F"API Service URL is {uri}")
@@ -43,7 +43,7 @@ class ReportingService(ServiceBase):
 
     @automation_logger(logger)
     def old_analytics_report(self, client_id, report_item):
-        uri = self.url + "analytics/old"
+        uri = self.url + self.version + "analytics/old"
         try:
             payload = ReportingServiceRequest().analytics_report(client_id, report_item)
             logger.logger.info(F"API Service URL is {uri}")
@@ -57,7 +57,7 @@ class ReportingService(ServiceBase):
 
     @automation_logger(logger)
     def location_history_report(self, location):
-        uri = self.url + "location-history"
+        uri = self.url + self.version + "location-history"
         try:
             payload = ReportingServiceRequest().location_history_report(location)
             logger.logger.info(F"API Service URL is {uri}")
@@ -71,20 +71,7 @@ class ReportingService(ServiceBase):
 
     @automation_logger(logger)
     def binary_location_history_report(self, location):
-        uri = self.url + "location-history/binary"
-        try:
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, headers=self.headers_without_token)
-            body = "OK"
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} binary_location_history_report failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
-    def binary_location_history_report(self, location):
-        uri = self.url + "extension/binary"
+        uri = self.url + self.version + "location-history/binary"
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, headers=self.headers_without_token)

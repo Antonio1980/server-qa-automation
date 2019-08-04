@@ -3,6 +3,7 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
+from src.common.automation_error import AutomationError
 from src.common.log_decorator import automation_logger
 
 test_case = ""
@@ -25,7 +26,11 @@ class TestAddTask(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_add_task_method_works(self):
-        response_ = ApiClient().log_fetch_svc.add_task("any_string")
+        try:
+            response_ = ApiClient().log_fetch_svc.add_task("any_string")
+        except Exception as e:
+            logger.logger.error(F"Error while getting server response: {e}")
+            raise AutomationError(e)
         assert response_[0] is not None
         assert response_[1].status_code == 200
 
@@ -34,7 +39,11 @@ class TestAddTask(object):
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'response' is list object.")
     def test_attributes_in_add_task_method(self):
-        response_ = ApiClient().log_fetch_svc.add_task("another_any_string")[0]
+        try:
+            response_ = ApiClient().log_fetch_svc.add_task("any_string")[0]
+        except Exception as e:
+            logger.logger.error(F"Error while getting server response: {e}")
+            raise AutomationError(e)
         assert isinstance(response_, list)
         assert len(response_) > 0
 

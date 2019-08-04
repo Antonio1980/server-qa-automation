@@ -26,13 +26,12 @@ class TestAddBulkAnalyticsReport(object):
     report_item = ReportItem(report_type, session_id)
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 201")
+    @allure.step("Verify that status code is 201")
     def test_add_bulk_analytics_report_method_works(self):
-        client_id = "QA"
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.add_analytics_report(client_id, report_item)
+        _response = ApiClient().reporting_svc.add_bulk_analytics_report(self.client_id, [self.report_item, report_item])
 
         assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'

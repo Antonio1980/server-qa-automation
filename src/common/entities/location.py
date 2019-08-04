@@ -23,3 +23,4 @@ class Location(Entity):
         self.timestamp = self.curr_timestamp
         self.velocity = 0
         self.vertical_accuracy = 0
+        self.raw_horizontal_accuracy = 0
