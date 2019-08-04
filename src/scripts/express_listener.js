@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 app.post('/response', function(req, res) {
 
     // path of the file to output
-    var outputFilename = './output/customers_precondition.csv';
+    var outputFilename = './output/output.csv';
     
     // write to the file system
     fs.writeFileSync(outputFilename, JSON.stringify(req.body.payload), null, 4); 

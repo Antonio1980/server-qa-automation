@@ -21,7 +21,7 @@ BUFSIZ = 1024
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
-@pytest.mark.usefixtures("run_time_count", "endpoints")
+@pytest.mark.usefixtures("run_time_counter", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
@@ -63,12 +63,12 @@ class TestLocationLivenessPerServicePort(object):
 
                 if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
 
-                _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                try:
+                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                               self.velocity, self.accuracy))
 
-                _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                               self.velocity, self.accuracy))
-                try:
                     response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None

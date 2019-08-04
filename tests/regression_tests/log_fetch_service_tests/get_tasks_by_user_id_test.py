@@ -17,7 +17,7 @@ test_case = ""
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/get_tasks_by_user_id_test.py",
                  "TestGetTasksByUserId")
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
 class TestGetTasksByUserId(object):

@@ -18,7 +18,7 @@ test_case = ""
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/areas_blacklist_service_tests/get_areas_in_box_test.py",
                  "TestGetAreasInBox")
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
 class TestGetAreasInBox(object):

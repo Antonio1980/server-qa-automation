@@ -8,7 +8,7 @@ from src.common.log_decorator import automation_logger
 
 @pytest.fixture(scope="class")
 @automation_logger(logger)
-def run_time_count(request):
+def run_time_counter(request):
     start_time = time.perf_counter()
     logger.logger.info("START TIME: {0}".format(start_time))
 

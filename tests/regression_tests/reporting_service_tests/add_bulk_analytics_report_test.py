@@ -14,7 +14,7 @@ test_case = ""
     Functional test.
     1. Check that service is responded on "postReport" request properly.
     """)
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/add_bulk_analytics_report_test.py",
                  "TestAddBulkAnalyticsReport")

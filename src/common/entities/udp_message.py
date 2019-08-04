@@ -4,6 +4,7 @@ from src.common.entities.entity import Entity
 from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
+from src.common.utils.ntp_client import NtpClient
 
 
 class UdpMessage(Entity):
@@ -20,10 +21,9 @@ class UdpMessage(Entity):
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
+        ntp_cli = NtpClient()
         self.data[CLIENT_DATA] = dict()
-        timestamp_ = Instruments.get_synch_timestamp()
-        while timestamp_ is None:
-            timestamp_ = Instruments.get_synch_timestamp()
+        timestamp_ = ntp_cli.get_synch_timestamp()
         self.data[CLIENT_DATA][TIMESTAMP] = timestamp_
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"

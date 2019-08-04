@@ -17,7 +17,7 @@ test_case = ""
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/get_version_info_test.py",
                  "TestGetVersionInfoReportingSvc")
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_reporting
 class TestGetVersionInfoReportingSvc(object):

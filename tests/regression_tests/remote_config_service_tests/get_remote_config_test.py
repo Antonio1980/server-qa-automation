@@ -14,7 +14,7 @@ test_case = ""
     1. Check that service is responded on "GetRemoteConfig" request properly.
     2. Check that service response contains desired properties.
     """)
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/get_remote_config_test.py",
                  "TestGetRemoteConfig")

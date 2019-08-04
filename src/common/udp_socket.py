@@ -27,6 +27,7 @@ class UdpSocket(object):
             logger.logger.info('UDP message is sent!')
         except Exception as e:
             logger.logger.error(F"udp_send failed with error: {e}")
+            raise e
 
     @automation_logger(logger)
     def udp_send_to(self, bytes_to_send: bytes, address: tuple):
@@ -35,12 +36,16 @@ class UdpSocket(object):
             logger.logger.info(F'UDP message is sent to {address}')
         except Exception as e:
             logger.logger.error(F"udp_send_to failed with error: {e}")
+            raise e
 
     @automation_logger(logger)
     def udp_receive(self, buf_size):
         try:
-            _response = self.udp_socket.recv(buf_size).decode()
-            logger.logger.info(F"UDP response is: {_response}")
-            return _response
+            while True:
+                _response = self.udp_socket.recv(buf_size)
+                if len(_response) <= 0:
+                    break
+                logger.logger.info(F"UDP response is: {_response}")
+                return _response
         except Exception as e:
             logger.logger.error(F"udp_receive failed with error: {e}")

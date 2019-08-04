@@ -22,7 +22,7 @@ test_case = "smoke_liveness"
     3. RemoteConfig svc: Check that "get_config" request returned current config.
     4. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
     """)
-@pytest.mark.usefixtures("run_time_count")
+@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_smoke_test.py",
                  "TestSmokeLiveness")
