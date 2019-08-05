@@ -4,6 +4,7 @@ import logging
 import datetime
 from src import src_dir
 from google.cloud import logging as gl
+from config_definitions import BaseConfig
 from google.cloud.logging.handlers import CloudLoggingHandler
 
 
@@ -12,13 +13,8 @@ def create_logger(name='PYTHON_QA', level='DEBUG'):
     logger_.setLevel(level)
     format_ = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(format_)
-    env = os.environ.get('ENV')
-    if isinstance(env, str):
-        env = env
-    else:
-        os.environ["ENV"] = "stg"
-        env = "stg"
-    if env == "prod":
+    log_ = bool(BaseConfig.LOG_FILE)
+    if not log_:
         g_logging_client = gl.Client()
         g_logging_client.setup_logging(log_level=logging.DEBUG)
         g_handler = CloudLoggingHandler(g_logging_client, name=name)
