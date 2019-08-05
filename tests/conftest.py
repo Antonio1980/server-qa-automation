@@ -19,6 +19,7 @@ def run_time_counter(request):
         min_ = average_time.tm_min
         sec_ = average_time.tm_sec
         logger.logger.info("AVERAGE OF THE TEST CASE RUN TIME: {0} minutes {1} seconds".format(min_, sec_))
+        time.sleep(1.0)
 
     request.addfinalizer(stop_counter)
 
@@ -66,9 +67,10 @@ def env():
         return "stg"
 
 
+@pytest.mark.usefixtures("env")
 def pytest_report_header(config):
     if config.getoption("verbose") > 0:
-        return [f"Environment is {env}", "Let's go..."]
+        return [f"Environment is {os.environ.get('ENV').upper()}", "Let's test eyenet..."]
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
