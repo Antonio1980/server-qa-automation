@@ -18,16 +18,17 @@ test_case = ""
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/get_tasks_by_id_test.py",
                  "TestGetTasksById")
-@pytest.mark.usefixtures("run_time_counter", "get_task")
+@pytest.mark.usefixtures("run_time_counter", "get_uploaded_task")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
 class TestGetTasksById(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_get_tasks_by_id_method_works(self, get_task):
+    def test_get_tasks_by_id_method_works(self, get_uploaded_task):
+        task_id = get_uploaded_task['taskid']
         try:
-            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(get_task['taskid'])
+            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)
         except Exception as e:
             logger.logger(F"Error while getting server response: {e}")
             raise AutomationError(e)
@@ -38,14 +39,13 @@ class TestGetTasksById(object):
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'tasks' is list object.")
-    def test_attributes_in_get_tasks_by_id_method(self, get_task):
+    def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task):
+        task_id = get_uploaded_task['taskid']
         try:
-            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(get_task['taskid'])[0]
+            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)[0]
         except Exception as e:
             logger.logger(F"Error while getting server response: {e}")
             raise AutomationError(e)
-        assert "tasks" in response_.keys()
-        assert isinstance(response_["tasks"], list)
-        assert len(response_["tasks"]) > 0
+        assert "Do the current tasks" in response_
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

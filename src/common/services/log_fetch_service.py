@@ -45,7 +45,10 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except Exception:
+                body = _response.text
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
