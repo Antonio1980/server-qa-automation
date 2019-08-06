@@ -4,7 +4,7 @@ from src.common.entities.entity import Entity
 from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
-from src.common.utils.ntp_client import NtpClient
+from src.common.ntp_client import NtpClient
 
 
 class UdpMessage(Entity):
