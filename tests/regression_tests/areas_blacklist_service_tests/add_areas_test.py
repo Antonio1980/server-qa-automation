@@ -32,6 +32,7 @@ class TestAddAreas(object):
                                                               34.960364892273674, 32.14007552880953)
         assert response_[0] is not None
         assert response_[1].status_code == 201
+        assert response_[1].reason == "Created"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 

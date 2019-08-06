@@ -69,11 +69,11 @@ class LogFetchService(ServiceBase):
     @automation_logger(logger)
     def upload_file_task(self, task_id, text):
         uri = self.url + "upload/" + str(task_id)
-        self.headers_without_token.update({"Content-Type": "application/octet-stream"})
+        headers_ = {"Content-Type": "application/octet-stream"}
         payload = LogFetchServiceRequest().upload_file(text)
         try:
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(uri, data=payload,headers=self.headers_without_token)
+            _response = requests.post(uri, data=payload,headers=headers_)
             body = json.loads(_response.text)
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response

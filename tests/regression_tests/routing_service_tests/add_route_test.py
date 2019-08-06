@@ -41,8 +41,8 @@ class TestAddRoute(object):
         response_ = ApiClient().routing_svc.add_route_v4(self.location)[0]
 
         assert "url" and "ip" and "port" and "minPort" and "maxPort" and "name" and "countByType" in response_.keys()
-        assert  response_["ip"] is not None
-        assert  response_["name"] is not None
+        assert response_["ip"] is not None, "Failed on ip property"
+        assert response_["name"] is not None
         assert isinstance(response_["countByType"], dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")

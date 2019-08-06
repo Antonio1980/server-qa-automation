@@ -22,10 +22,8 @@ test_case = ""
 @pytest.mark.regression
 @pytest.mark.regression_routing
 class TestKeepAlive(object):
-    ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
-    sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
 
-    tel_aviv_box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
+    tel_aviv_box = BoundingBox()
 
     route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
 
