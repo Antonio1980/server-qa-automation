@@ -1,7 +1,9 @@
 import pytest
 
+
 def run(self):
-	pytest.main(['-v', 'tests', '-m', 'liveness'])
+    pytest.main(['-rxXs', '--capture=sys', '--capture=fd', '.', '-m', 'liveness', '-rEf'])
+
 
 if __name__ == "__main__":
-    pytest.main(['-v', 'tests', '-m', 'liveness'])
+    run(None)
