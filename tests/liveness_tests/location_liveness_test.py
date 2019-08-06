@@ -9,24 +9,22 @@ from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-
-test_case = "liveness"
+test_case = "location_liveness"
 BUFSIZ = 1024
 
 
-@allure.feature('Location Service')
-@allure.story('Client able to found and connect to Location service via configured ports.')
+@allure.feature('Liveness')
+@allure.story('Client able to found and connect to Location service via n and max ports.')
 @allure.title("END TO END")
 @allure.description("""
     Functional end to end test.
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
-    2. Check (for every instance) that Location service allows connections by provided ports.
+    2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
 @pytest.mark.usefixtures("run_time_counter", "endpoints")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/e2e_tests/location_liveness_test.py", "TestLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
-@pytest.mark.routing_service
 class TestLiveness(object):
     issues = ""
     latitude = "0.0"
@@ -61,13 +59,14 @@ class TestLiveness(object):
                 _socket.udp_connect((endpoint["ip"], port))
 
                 if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
-
+                message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                        self.velocity, self.accuracy)
+                message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                        self.velocity, self.accuracy)
                 try:
-                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                                  self.velocity, self.accuracy))
+                    _socket.udp_send(message1)
 
-                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                                  self.velocity, self.accuracy))
+                    _socket.udp_send(message2)
                     response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None

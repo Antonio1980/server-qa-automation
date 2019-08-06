@@ -9,7 +9,7 @@ from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-test_case = "location_liveness"
+test_case = "location_liveness_per_port"
 BUFSIZ = 1024
 
 
@@ -62,13 +62,14 @@ class TestLocationLivenessPerServicePort(object):
                 _socket.udp_connect((endpoint["ip"], port))
 
                 if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
-
+                message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                        self.velocity, self.accuracy)
+                message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                        self.velocity, self.accuracy)
                 try:
-                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                              self.velocity, self.accuracy))
+                    _socket.udp_send(message1)
 
-                    _socket.udp_send(UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                              self.velocity, self.accuracy))
+                    _socket.udp_send(message2)
                     response_ = _socket.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None

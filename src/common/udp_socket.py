@@ -9,7 +9,7 @@ class UdpSocket(object):
         self.udp_socket = socket(family=AF_INET, type=SOCK_DGRAM)
         self.udp_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.udp_socket.setsockopt(SOL_SOCKET, MSG_WAITALL, 1)
-        self.udp_socket.settimeout(2)
+        self.udp_socket.settimeout(1)
 
     @automation_logger(logger)
     def udp_connect(self, address):
@@ -49,3 +49,4 @@ class UdpSocket(object):
                 return _response
         except Exception as e:
             logger.logger.error(F"udp_receive failed with error: {e}")
+            raise e
