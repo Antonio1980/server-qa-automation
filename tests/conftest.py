@@ -3,6 +3,7 @@ import time
 import pytest
 from src.common import logger
 from src.common.api_client import ApiClient
+from src.common.enums import Environment
 from src.common.log_decorator import automation_logger
 
 
@@ -63,8 +64,8 @@ def env():
     if isinstance(env, str):
         return env
     else:
-        os.environ["ENV"] = "stg"
-        return "stg"
+        os.environ["ENV"] = Environment.STAGING.value
+        return Environment.STAGING.value
 
 
 @pytest.mark.usefixtures("env")

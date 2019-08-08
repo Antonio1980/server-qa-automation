@@ -4,8 +4,8 @@ filepath=$HOME/reportAPI
 mails=(antons@eyenet-mobile.com)
 
 declare -A envs
-envs["prod"]="$HOME/src/repository/files/[].json"
-col = "$HOME/src/repository/files/[].json"
+envs["prod"]="$HOME/src/repo/files/[].json"
+col = "$HOME/src/repo/files/[].json"
 
 for e in ${!envs[@]}; do
     echo Running environment ${envs[$e]}

@@ -12,16 +12,16 @@ def get_parser(config):
 
 
 if "ENV" in os.environ.keys():
-    environment = os.environ.__getitem__("ENV")
+    environment = os.environ.__getitem__("ENV").lower()
 else:
-    os.environ["ENV"] = "stg"
-    environment = "stg"
+    os.environ["ENV"] = Environment.STAGING.value
+    environment = Environment.STAGING.value
 
-if environment.lower() == Environment.STAGING.value:
+if environment == Environment.STAGING.value:
     environment_conf_file = "staging.cfg"
-elif environment.lower() == Environment.INTEGRATION.value:
+elif environment == Environment.INTEGRATION.value:
     environment_conf_file = "integration.cfg"
-elif environment.lower() == Environment.PRODUCTION.value:
+elif environment == Environment.PRODUCTION.value:
     environment_conf_file = "production.cfg"
 else:
     error = "Environment is not detected ! Please specify environment variable 'ENV' (ENV=[stg, int, prod])"
