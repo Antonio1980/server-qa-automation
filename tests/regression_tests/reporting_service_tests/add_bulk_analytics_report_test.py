@@ -13,6 +13,7 @@ test_case = ""
 @allure.description("""
     Functional test.
     1. Check that service is responded on "postReport" request properly.
+    2. Negative: Check that without authorization it forbidden.
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
@@ -36,4 +37,21 @@ class TestAddBulkAnalyticsReport(object):
         assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+
+    @automation_logger(logger)
+    @allure.step("Verify that without authorization status code is 401")
+    def test_add_bulk_analytics_report_negative(self):
+        report_type, session_id = "TestReport", "Test QA Test"
+        report_item = ReportItem(report_type, session_id)
+
+        api_ = ApiClient()
+        api_.reporting_svc.headers.pop("Authorization")
+        response_ = api_.reporting_svc.add_bulk_analytics_report(self.client_id, [self.report_item, report_item])
+
+        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
+        assert response_[0]['error'] == "Unauthorized"
+        assert response_[0]['message'] == "the token received is not valid: No token was provided"
+        assert response_[1].status_code == 401
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

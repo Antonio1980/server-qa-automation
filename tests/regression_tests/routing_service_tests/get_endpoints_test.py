@@ -13,6 +13,7 @@ test_case = ""
     Functional tests.
     1. Check that service is responded on "GetEndpoints" request properly.
     2. Check that service response contains desired properties.
+    3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/routing_service_tests/get_endpoints_test.py",
@@ -43,3 +44,17 @@ class TestGetEndpoints(object):
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+
+    @automation_logger(logger)
+    @allure.step("Verify that without authorization status code is 401")
+    def test_get_endpoints_negative(self):
+        api_ = ApiClient()
+        api_.routing_svc.headers.pop("Authorization")
+        response_ = api_.routing_svc.get_endpoints()
+
+        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
+        assert response_[0]['error'] == "Unauthorized"
+        assert response_[0]['message'] == "the token received is not valid: No token was provided"
+        assert response_[1].status_code == 401
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

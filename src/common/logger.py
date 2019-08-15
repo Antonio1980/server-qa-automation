@@ -36,7 +36,7 @@ def create_logger(name='PYTHON_QA', level='DEBUG'):
 def _create_log_file():
     cur_time_stamp = int(datetime.datetime.today().timestamp())
     filename = str(cur_time_stamp) + "_automation_test.log"
-    path = src_dir + "/repo/logs/"
+    path = src_dir + "/repository/logs/"
     message = " --- AUTOMATION LOG STARTED: "
     cur_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     if not os.access(path, os.F_OK) or not os.path.isdir(path) or not os.path.exists(os.path.dirname(path)):

@@ -1,6 +1,7 @@
 import json
 import requests
 from src.common import logger
+from json import JSONDecodeError
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
@@ -18,7 +19,14 @@ class RemoteConfigService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {self.url}")
             _response = requests.get(self.url, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -31,7 +39,14 @@ class RemoteConfigService(ServiceBase):
             payload = RemoteConfigServiceRequest().add_config(remote_config)
             logger.logger.info(F"API Service URL is {self.url}")
             _response = requests.post(self.url, data=payload, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -44,7 +59,14 @@ class RemoteConfigService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {self.url}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:

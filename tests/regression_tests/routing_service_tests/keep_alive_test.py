@@ -14,6 +14,7 @@ test_case = ""
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "keepAlive" request properly.
+    2. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/routing_service_tests/keep_alive_test.py",
@@ -22,9 +23,7 @@ test_case = ""
 @pytest.mark.regression
 @pytest.mark.regression_routing
 class TestKeepAlive(object):
-
     tel_aviv_box = BoundingBox()
-
     route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
 
     @automation_logger(logger)
@@ -37,3 +36,17 @@ class TestKeepAlive(object):
         assert response_[1].reason == 'Created'
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+
+    @automation_logger(logger)
+    @allure.step("Verify that without authorization status code is 401")
+    def test_keep_alive_negative(self):
+        api_ = ApiClient()
+        api_.routing_svc.headers.pop("Authorization")
+        response_ = api_.routing_svc.keep_alive(self.tel_aviv_box, self.route)
+
+        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
+        assert response_[0]['error'] == "Unauthorized"
+        assert response_[0]['message'] == "the token received is not valid: No token was provided"
+        assert response_[1].status_code == 401
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

@@ -35,8 +35,16 @@ class TestGetSynchRun(object):
     @allure.step("Verify response properties and that 'newMessages' is list object.")
     def test_attributes_in_get_synch_run_method(self):
         response_ = ApiClient().messages_synch_svc.get_synch_run()[0]
-        assert "errors" and "processTime" and "deletedMessages" and "newMessages" in response_.keys()
-        assert isinstance(response_["errors"], list) and len(response_["errors"]) == 0
-        assert isinstance(response_["newMessages"], list) and len(response_["newMessages"]) > 0
+        assert "processTime" and "logFetchRes" and "remoteConfigRes" in response_.keys()
+        assert isinstance(response_["logFetchRes"], dict)
+        assert "action" and "status" and "data" in response_["logFetchRes"].keys()
+        assert "deletedMessages" and "newMessages" and "errors" in response_["logFetchRes"]["data"].keys()
+        assert isinstance(response_["logFetchRes"]["data"]["deletedMessages"], list) and \
+            isinstance(response_["logFetchRes"]["data"]["newMessages"], list)
+        assert "action" and "status" and "data" in response_['remoteConfigRes'].keys()
+        assert "newMsg" in response_["remoteConfigRes"]["data"].keys()
+        assert "_id" and "type" and "userid" and "data" and "distributionType" in response_["remoteConfigRes"]["data"]["newMsg"].keys()
+        assert isinstance(response_["remoteConfigRes"]["data"]["newMsg"]["data"], dict)
+        assert "hash" in response_["remoteConfigRes"]["data"]["newMsg"]["data"].keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

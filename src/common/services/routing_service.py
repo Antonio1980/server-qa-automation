@@ -1,6 +1,7 @@
 import json
 import requests
 from src.common import logger
+from json import JSONDecodeError
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
@@ -8,9 +9,10 @@ from src.common.services.svc_requests.routing_requests import RoutingServiceRequ
 
 
 class RoutingService(ServiceBase):
-    def __init__(self):
+    def __init__(self, auth_token):
         super(RoutingService, self).__init__()
         self.url = self.api_base_url + "routing-service/"
+        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
     def add_analytics_report(self, client_id, report_item):
@@ -19,7 +21,14 @@ class RoutingService(ServiceBase):
             payload = RoutingServiceRequest().analytics(client_id, report_item)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -31,8 +40,15 @@ class RoutingService(ServiceBase):
         uri = self.url + "endpoints"
         try:
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.get(url=uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            _response = requests.get(url=uri, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -45,7 +61,14 @@ class RoutingService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.delete(url=uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -58,7 +81,14 @@ class RoutingService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(url=uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -78,8 +108,15 @@ class RoutingService(ServiceBase):
         try:
             payload = RoutingServiceRequest().keep_alive(bounding_box, route, args)
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -93,7 +130,14 @@ class RoutingService(ServiceBase):
             payload = RoutingServiceRequest().add_route(location)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -106,7 +150,14 @@ class RoutingService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:

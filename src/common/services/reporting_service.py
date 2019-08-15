@@ -1,6 +1,7 @@
 import json
 import requests
 from src.common import logger
+from json import JSONDecodeError
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
@@ -8,8 +9,9 @@ from src.common.services.svc_requests.reporting_requests import ReportingService
 
 
 class ReportingService(ServiceBase):
-    def __init__(self):
+    def __init__(self, auth_token):
         super(ReportingService, self).__init__()
+        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
         self.version = "v1/"
         self.url = self.api_base_url + "reporting-service/"
 
@@ -20,7 +22,14 @@ class ReportingService(ServiceBase):
             payload = ReportingServiceRequest().analytics_report(client_id, [report_item])
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -33,8 +42,15 @@ class ReportingService(ServiceBase):
         try:
             payload = ReportingServiceRequest().analytics_report(client_id, report_item_list)
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -48,7 +64,14 @@ class ReportingService(ServiceBase):
             payload = ReportingServiceRequest().analytics_report(client_id, report_item)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -61,8 +84,15 @@ class ReportingService(ServiceBase):
         try:
             payload = ReportingServiceRequest().location_history_report(location)
             logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            body = "OK"
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -75,7 +105,14 @@ class ReportingService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, headers=self.headers_without_token)
-            body = "OK"
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -88,7 +125,14 @@ class ReportingService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:

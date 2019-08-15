@@ -14,6 +14,7 @@ test_case = ""
     Functional tests.
     1. Check that service responded on 'AddAreas' request properly.
     2. Check that service response contains desired properties.
+    3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/areas_blacklist_service_tests/add_areas_test.py",
@@ -49,3 +50,19 @@ class TestAddAreas(object):
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+
+    @automation_logger(logger)
+    @allure.step("Verify that without authorization status code is 401")
+    def test_add_areas_negative(self):
+        api_ = ApiClient()
+        api_.reporting_svc.headers.pop("Authorization")
+        response_ = api_.areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+                                                       34.820289208679924, 32.009745169079615,
+                                                       34.960364892273674, 32.14007552880953)
+
+        assert "name" and "message" and "code" and "status" and "inner" in response_[0].keys()
+        assert response_[0]['code'] == "credentials_required"
+        assert response_[0]['message'] == "No authorization token was found"
+        assert response_[1].status_code == 500
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

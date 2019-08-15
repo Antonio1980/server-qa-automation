@@ -1,6 +1,7 @@
 import json
 import requests
 from src.common import logger
+from json import JSONDecodeError
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.log_fetch_requests import LogFetchServiceRequest
@@ -19,7 +20,14 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -32,7 +40,14 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -47,8 +62,12 @@ class LogFetchService(ServiceBase):
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
-            except Exception:
-                body = _response.text
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -62,7 +81,14 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -77,7 +103,14 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload,headers=headers_)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -90,7 +123,14 @@ class LogFetchService(ServiceBase):
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.delete(uri, headers=self.headers_without_token)
-            body = json.loads(_response.text)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
