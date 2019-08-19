@@ -75,9 +75,9 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_task(self, user_id):
+    def add_task(self, user_id, description="A-Test", notify_slack=False):
         uri = self.url + "tasks/"
-        payload = LogFetchServiceRequest().add_task(user_id)
+        payload = LogFetchServiceRequest().add_task(user_id, description, notify_slack)
         try:
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
@@ -92,7 +92,28 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} set_tasks failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} add_task failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def notify_slack(self, task_id, notify_slack=True):
+        uri = self.url + "tasks/notify"
+        payload = LogFetchServiceRequest().notify_slack(task_id, notify_slack)
+        try:
+            logger.logger.info(F"API Service URL is {uri}")
+            _response = requests.post(uri, data=payload, headers=self.headers_without_token)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} notify_slack failed with error: {e}")
             raise e
 
     @automation_logger(logger)
@@ -135,4 +156,24 @@ class LogFetchService(ServiceBase):
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} delete_tasks failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def health(self):
+        uri = self.url + "health"
+        try:
+            logger.logger.info(F"API Service URL is {uri}")
+            _response = requests.get(uri, headers=self.headers_without_token)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} health failed with error: {e}")
             raise e

@@ -14,26 +14,6 @@ class MessagesSynchService(ServiceBase):
         self.url = self.api_base_url + "messages-sync-service/" + self.proxy_url
 
     @automation_logger(logger)
-    def get_health(self):
-        uri = self.url + "health"
-        try:
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
-            try:
-                body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_health failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
     def get_synch_run(self):
         uri = self.url + "sync/run"
         try:
@@ -71,4 +51,24 @@ class MessagesSynchService(ServiceBase):
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} get_synch_access failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def health(self):
+        uri = self.url + "health"
+        try:
+            logger.logger.info(F"API Service URL is {uri}")
+            _response = requests.get(uri, headers=self.headers_without_token)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} health failed with error: {e}")
             raise e

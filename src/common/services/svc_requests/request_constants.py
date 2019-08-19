@@ -40,6 +40,10 @@ RAW_HORIZONTAL_ACCURACY = "rawHorizontalAccuracy"
 SESSION_ID = "sessionId"
 VERTICAL_ACCURACY = "verticalAccuracy"
 
+# Log-fetch
+NOTIFY_SLACK = "notifySlack"
+SLACK_NOTIFY_STATUS = "slackNotifyStatus"
+
 # Messages
 USER_ID = "userid"
 TASKS = "tasks"

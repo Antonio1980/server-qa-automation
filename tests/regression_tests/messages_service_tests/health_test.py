@@ -1,0 +1,44 @@
+import allure
+import pytest
+from src.common import logger
+from config_definitions import BaseConfig
+from src.common.api_client import ApiClient
+from src.common.log_decorator import automation_logger
+
+test_case = ""
+
+
+@allure.title("HEALTH MESSAGES")
+@allure.description("""
+    Functional tests.
+    1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
+    """)
+@allure.severity(allure.severity_level.BLOCKER)
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/health_test.py",
+                 "TestHealth")
+@pytest.mark.usefixtures("run_time_counter")
+@pytest.mark.regression
+@pytest.mark.regression_messages
+class TestHealth(object):
+
+    @automation_logger(logger)
+    @allure.step("Verify that status code is 200 and response properties.")
+    def test_health_messages(self):
+        _response = ApiClient().messages_svc.health()
+
+        assert _response[1].status_code == 200
+        assert isinstance(_response[0], dict)
+        assert "nodeHealth" and "mongooseHealth" and "serviceVersion" in _response[0].keys()
+        assert isinstance(_response[0]["nodeHealth"], dict)
+        assert "memoryUsage" and "cpuUsage" and "uptime" and "version" in _response[0]["nodeHealth"].keys()
+        assert isinstance(_response[0]["nodeHealth"]["memoryUsage"], dict)
+        assert "rss" and "heapTotal" and "heapUsed" and "external" in _response[0]["nodeHealth"]["memoryUsage"].keys()
+        assert isinstance(_response[0]["nodeHealth"]["cpuUsage"], dict)
+        assert "user" and "system" in _response[0]["nodeHealth"]["cpuUsage"].keys()
+        assert isinstance(_response[0]["mongooseHealth"], dict)
+        assert "mongooseStatus" in _response[0]["mongooseHealth"].keys()
+        assert _response[0]["mongooseHealth"]["mongooseStatus"] == "UP"
+        assert isinstance(_response[0]["serviceVersion"], dict)
+        assert "version" in _response[0]["serviceVersion"].keys()
+
+        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

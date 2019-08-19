@@ -8,25 +8,25 @@ from src.common.log_decorator import automation_logger
 test_case = ""
 
 
-@allure.title("UPLOAD FILE TASK")
+@allure.title("NOTIFY SLACK")
 @allure.description("""
     Functional tests.
-    1. Check that service is responded on "UploadFileTasks" request properly.
+    1. Check that service is responded on "NotifySlack" request properly.
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/upload_file_task_test.py",
-                 "TestUploadFileTask")
+@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/notify_slack_test.py",
+                 "TestNotifySlack")
 @pytest.mark.usefixtures("run_time_counter", "get_task")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
-class TestUploadFileTask(object):
+class TestNotifySlack(object):
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
-    def test_upload_file_task_method_works(self, get_task):
+    def test_notify_slack_method_works(self, get_task):
         task_id = get_task["taskid"]
-        _response = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
+        _response = ApiClient().log_fetch_svc.notify_slack(task_id, False)
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -34,12 +34,15 @@ class TestUploadFileTask(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response property - updated")
-    def test_attributes_in_upload_file_task_method(self, get_task):
+    @allure.step("Verify response properties and that 'response' is dict object.")
+    def test_attributes_in_notify_slack_method(self, get_task):
         task_id = get_task["taskid"]
-        _response = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
+        _response = ApiClient().log_fetch_svc.notify_slack(task_id)[0]
 
         assert isinstance(_response, dict)
-        assert "_id" and "status" and "to" and "from" and "userid" and "taskid" and "timestamp" in _response.keys()
+        assert "slackNotify" and "_id" and "status" and "to" and "from" and "userid" and "description" and "taskid" and\
+               "timestamp" in _response.keys()
+        assert _response["status"] == "Pending"
+        assert task_id == _response["taskid"]
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

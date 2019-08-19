@@ -27,6 +27,7 @@ class TestGetAreas(object):
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_areas_method_works(self):
         _response = ApiClient().areas_blacklist_svc.get_areas()
+
         assert _response[0] is not None
         assert _response[1].status_code == 200
 
@@ -36,6 +37,7 @@ class TestGetAreas(object):
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_get_areas_method(self):
         _response = ApiClient().areas_blacklist_svc.get_areas()[0]
+
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
         assert "areas" in _response.keys() and isinstance(_response["areas"], list)
         assert len(_response["areas"]) > 0
