@@ -26,20 +26,20 @@ class TestGetAreas(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_areas_method_works(self):
-        response_ = ApiClient().areas_blacklist_svc.get_areas()
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().areas_blacklist_svc.get_areas()
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_get_areas_method(self):
-        response_ = ApiClient().areas_blacklist_svc.get_areas()[0]
-        assert "hash" in response_.keys() and isinstance(response_["hash"], str)
-        assert "areas" in response_.keys() and isinstance(response_["areas"], list)
-        assert len(response_["areas"]) > 0
-        for item in response_["areas"]:
+        _response = ApiClient().areas_blacklist_svc.get_areas()[0]
+        assert "hash" in _response.keys() and isinstance(_response["hash"], str)
+        assert "areas" in _response.keys() and isinstance(_response["areas"], list)
+        assert len(_response["areas"]) > 0
+        for item in _response["areas"]:
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
@@ -49,11 +49,12 @@ class TestGetAreas(object):
     def test_get_areas_negative(self):
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        response_ = api_.areas_blacklist_svc.get_areas()
+        _response = api_.areas_blacklist_svc.get_areas()
 
-        assert "name" and "message" and "code" and "status" and "inner" in response_[0].keys()
-        assert response_[0]['code'] == "credentials_required"
-        assert response_[0]['message'] == "No authorization token was found"
-        assert response_[1].status_code == 500
+        assert isinstance(_response[0], dict)
+        assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
+        assert _response[0]['code'] == "credentials_required"
+        assert _response[0]['message'] == "No authorization token was found"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

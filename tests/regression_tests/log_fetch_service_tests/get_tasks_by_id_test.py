@@ -27,13 +27,10 @@ class TestGetTasksById(object):
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_tasks_by_id_method_works(self, get_uploaded_task):
         task_id = get_uploaded_task['taskid']
-        try:
-            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)
-        except Exception as e:
-            logger.logger(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
@@ -41,11 +38,8 @@ class TestGetTasksById(object):
     @allure.step("Verify response properties and that 'tasks' is list object.")
     def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task):
         task_id = get_uploaded_task['taskid']
-        try:
-            response_ = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)[0]
-        except Exception as e:
-            logger.logger(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert "Do the current tasks" in response_
+        _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)[0]
+
+        assert "Do the current tasks" in _response
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

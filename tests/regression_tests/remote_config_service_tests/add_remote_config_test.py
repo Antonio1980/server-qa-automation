@@ -37,6 +37,7 @@ class TestAddRemoteConfig(object):
     def test_attributes_in_add_remote_config_method(self, remote_config):
         _response = ApiClient().remote_config_svc.add_remote_config(remote_config)[0]
 
+        assert isinstance(_response, dict)
         assert "hash" and "data" and "last_updated" in _response.keys()
         assert isinstance(_response["data"], dict)
         assert _response["data"] is not None

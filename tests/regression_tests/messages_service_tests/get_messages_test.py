@@ -37,6 +37,7 @@ class TestGetMessages(object):
     def test_attributes_in_get_messages_method(self):
         _response = ApiClient().messages_svc.get_messages()[0]
 
+        assert isinstance(_response, dict)
         assert "messagesArray" in _response.keys()
         assert isinstance(_response["messagesArray"], list)
         assert len(_response["messagesArray"]) > 0

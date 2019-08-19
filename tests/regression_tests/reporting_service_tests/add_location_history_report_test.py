@@ -41,11 +41,12 @@ class TestAddLocationHistoryReport(object):
     def test_add_location_history_report_negative(self):
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        response_ = api_.reporting_svc.location_history_report(self.location)
+        _response = api_.reporting_svc.location_history_report(self.location)
 
-        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
-        assert response_[0]['error'] == "Unauthorized"
-        assert response_[0]['message'] == "the token received is not valid: No token was provided"
-        assert response_[1].status_code == 401
+        assert isinstance(_response[0], dict)
+        assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()
+        assert _response[0]['error'] == "Unauthorized"
+        assert _response[0]['message'] == "the token received is not valid: No token was provided"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

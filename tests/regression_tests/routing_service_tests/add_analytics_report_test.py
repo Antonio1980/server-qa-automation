@@ -27,10 +27,10 @@ class TestAddAnalyticsReport(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_add_analytics_report_method_works(self):
-        response_ = ApiClient().routing_svc.add_analytics_report("client_", self.report_item)
+        _response = ApiClient().routing_svc.add_analytics_report("client_", self.report_item)
 
-        assert response_[0] is not None
-        assert response_[1].status_code == 201
-        assert response_[1].reason == 'Created'
+        assert _response[0] is not None
+        assert _response[1].status_code == 201
+        assert _response[1].reason == 'Created'
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")

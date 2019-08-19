@@ -27,13 +27,10 @@ class TestUploadFileTask(object):
     @allure.step("Verify that response is not empty and status code is 200")
     def test_upload_file_task_method_works(self, get_task):
         task_id = get_task["taskid"]
-        try:
-            response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
-        except Exception as e:
-            logger.logger(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
@@ -41,12 +38,9 @@ class TestUploadFileTask(object):
     @allure.step("Verify response property - updated")
     def test_attributes_in_upload_file_task_method(self, get_task):
         task_id = get_task["taskid"]
-        try:
-            response_ = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
-        except Exception as e:
-            logger.logger(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert isinstance(response_, dict)
-        assert "_id" and "status" and "to" and "from" and "userid" and "taskid" and "timestamp" in response_.keys()
+        _response = ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
+
+        assert isinstance(_response, dict)
+        assert "_id" and "status" and "to" and "from" and "userid" and "taskid" and "timestamp" in _response.keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

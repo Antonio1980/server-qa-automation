@@ -25,25 +25,28 @@ class TestExportAreas(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_export_areas_method_works(self):
-        response_ = ApiClient().areas_blacklist_svc.export_areas()
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().areas_blacklist_svc.export_areas()
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_export_areas_method(self):
-        response_ = ApiClient().areas_blacklist_svc.export_areas()[0]
-        assert "areas" in response_.keys() and isinstance(response_["areas"], list)
-        assert len(response_["areas"]) > 0
-        for item in response_["areas"]:
+        _response = ApiClient().areas_blacklist_svc.export_areas()[0]
+
+        assert isinstance(_response, dict)
+        assert "areas" in _response.keys() and isinstance(_response["areas"], list)
+        assert len(_response["areas"]) > 0
+        for item in _response["areas"]:
             assert isinstance(item, dict)
 
-        assert "data" in response_.keys() and isinstance(response_["data"], dict)
-        assert "areaItems" in response_["data"].keys() and isinstance(response_["data"]["areaItems"], list)
-        assert len(response_["data"]["areaItems"]) > 0
-        for d in response_["data"]["areaItems"]:
+        assert "data" in _response.keys() and isinstance(_response["data"], dict)
+        assert "areaItems" in _response["data"].keys() and isinstance(_response["data"]["areaItems"], list)
+        assert len(_response["data"]["areaItems"]) > 0
+        for d in _response["data"]["areaItems"]:
             assert isinstance(d, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

@@ -25,20 +25,21 @@ class TestGetVersionInfo(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_version_info_method_works(self):
-        response_ = ApiClient().routing_svc.get_version_info()
+        _response = ApiClient().routing_svc.get_version_info()
 
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and 'revision' object.")
     def test_attributes_in_get_version_info_method(self):
-        response_ = ApiClient().routing_svc.get_version_info()[0]
+        _response = ApiClient().routing_svc.get_version_info()[0]
 
-        assert "appName" and "appVersion" and "buildTime" and "revision" in response_.keys()
-        assert response_["appName"] == "routing-service"
-        assert response_["revision"] is not None
+        assert isinstance(_response, dict)
+        assert "appName" and "appVersion" and "buildTime" and "revision" in _response.keys()
+        assert _response["appName"] == "routing-service"
+        assert _response["revision"] is not None
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

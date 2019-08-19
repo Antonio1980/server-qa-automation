@@ -26,21 +26,21 @@ class TestGetEndpoints(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_endpoints_method_works(self):
-        response_ = ApiClient().routing_svc.get_endpoints()
+        _response = ApiClient().routing_svc.get_endpoints()
 
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that response is list object.")
     def test_attributes_in_get_endpoints_method(self):
-        response_ = ApiClient().routing_svc.get_endpoints()[0]
+        _response = ApiClient().routing_svc.get_endpoints()[0]
 
-        assert isinstance(response_, list)
-        assert len(response_) > 0
-        for item in response_:
+        assert isinstance(_response, list)
+        assert len(_response) > 0
+        for item in _response:
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
@@ -50,11 +50,12 @@ class TestGetEndpoints(object):
     def test_get_endpoints_negative(self):
         api_ = ApiClient()
         api_.routing_svc.headers.pop("Authorization")
-        response_ = api_.routing_svc.get_endpoints()
+        _response = api_.routing_svc.get_endpoints()
 
-        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
-        assert response_[0]['error'] == "Unauthorized"
-        assert response_[0]['message'] == "the token received is not valid: No token was provided"
-        assert response_[1].status_code == 401
+        assert isinstance(_response[0], dict)
+        assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()
+        assert _response[0]['error'] == "Unauthorized"
+        assert _response[0]['message'] == "the token received is not valid: No token was provided"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

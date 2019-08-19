@@ -37,6 +37,7 @@ class TestGetRemoteConfig(object):
     def test_attributes_in_get_remote_config(self):
         _response = ApiClient().remote_config_svc.get_config()[0]
 
+        assert isinstance(_response, dict)
         assert "_id" and "hash" and "data" and "last_updated" in _response.keys()
         assert isinstance(_response["data"], dict)
         assert "swagger" and "param1" and "param2" and "param3" in _response["data"].keys()

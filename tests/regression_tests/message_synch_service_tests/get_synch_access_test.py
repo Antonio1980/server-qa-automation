@@ -25,18 +25,18 @@ class TestGetSynchAccess(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_synch_access_method_works(self):
-        response_ = ApiClient().messages_synch_svc.get_synch_access()
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().messages_synch_svc.get_synch_access()
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'response' is list object.")
     def test_attributes_in_get_synch_access_method(self):
-        response_ = ApiClient().messages_synch_svc.get_synch_access()[0]
-        assert isinstance(response_, list)
-        for item in response_:
+        _response = ApiClient().messages_synch_svc.get_synch_access()[0]
+        assert isinstance(_response, list)
+        for item in _response:
             assert item["status"] == "200 OK"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

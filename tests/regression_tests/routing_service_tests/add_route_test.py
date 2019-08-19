@@ -28,21 +28,22 @@ class TestAddRoute(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_add_route_method_works(self):
-        response_ = ApiClient().routing_svc.add_route_v4(self.location)
+        _response = ApiClient().routing_svc.add_route_v4(self.location)
 
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_properties_in_add_route_method(self):
-        response_ = ApiClient().routing_svc.add_route_v4(self.location)[0]
+        _response = ApiClient().routing_svc.add_route_v4(self.location)[0]
 
-        assert "url" and "ip" and "port" and "minPort" and "maxPort" and "name" and "countByType" in response_.keys()
-        assert response_["ip"] is not None, "Failed on ip property"
-        assert response_["name"] is not None
-        assert isinstance(response_["countByType"], dict)
+        assert isinstance(_response, dict)
+        assert "url" and "ip" and "port" and "minPort" and "maxPort" and "name" and "countByType" in _response.keys()
+        assert _response["ip"] is not None, "Failed on ip property"
+        assert _response["name"] is not None
+        assert isinstance(_response["countByType"], dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")

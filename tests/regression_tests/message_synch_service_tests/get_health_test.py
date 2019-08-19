@@ -25,22 +25,22 @@ class TestGetHealth(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_health_method_works(self):
-        response_ = ApiClient().messages_synch_svc.get_health()
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().messages_synch_svc.get_health()
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties as dictionary keys.")
     def test_attributes_in_get_health_method(self):
-        response_ = ApiClient().messages_synch_svc.get_health()[0]
+        _response = ApiClient().messages_synch_svc.get_health()[0]
 
-        assert isinstance(response_, dict)
-        assert 'memoryUsage' and 'cpuUsage' and 'uptime' and 'version' in response_.keys(), "OBJECT KEYS MISMATCHING"
-        assert isinstance(response_["memoryUsage"], dict)
-        assert "rss" and "heapTotal" and "heapUsed" and "external" in response_["memoryUsage"].keys()
-        assert isinstance(response_["cpuUsage"], dict)
-        assert "user" and "system" in response_["cpuUsage"]
+        assert isinstance(_response, dict)
+        assert 'memoryUsage' and 'cpuUsage' and 'uptime' and 'version' in _response.keys(), "OBJECT KEYS MISMATCHING"
+        assert isinstance(_response["memoryUsage"], dict)
+        assert "rss" and "heapTotal" and "heapUsed" and "external" in _response["memoryUsage"].keys()
+        assert isinstance(_response["cpuUsage"], dict)
+        assert "user" and "system" in _response["cpuUsage"]
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

@@ -25,18 +25,21 @@ class TestGetTasks(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_get_tasks_method_works(self):
-        response_ = ApiClient().log_fetch_svc.get_tasks()
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().log_fetch_svc.get_tasks()
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'tasks' is list object.")
     def test_attributes_in_get_tasks_method(self):
-        response_ = ApiClient().log_fetch_svc.get_tasks()[0]
-        assert "tasks" in response_.keys()
-        assert isinstance(response_["tasks"], list)
-        assert len(response_["tasks"]) > 0
+        _response = ApiClient().log_fetch_svc.get_tasks()[0]
+
+        assert isinstance(_response, dict)
+        assert "tasks" in _response.keys()
+        assert isinstance(_response["tasks"], list)
+        assert len(_response["tasks"]) > 0
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

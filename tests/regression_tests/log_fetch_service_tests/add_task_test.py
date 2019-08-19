@@ -26,25 +26,19 @@ class TestAddTask(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_add_task_method_works(self):
-        try:
-            response_ = ApiClient().log_fetch_svc.add_task("any_string")
-        except Exception as e:
-            logger.logger.error(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert response_[0] is not None
-        assert response_[1].status_code == 200
+        _response = ApiClient().log_fetch_svc.add_task("any_string")
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that 'response' is list object.")
     def test_attributes_in_add_task_method(self):
-        try:
-            response_ = ApiClient().log_fetch_svc.add_task("any_string")[0]
-        except Exception as e:
-            logger.logger.error(F"Error while getting server response: {e}")
-            raise AutomationError(e)
-        assert isinstance(response_, list)
-        assert len(response_) > 0
+        _response = ApiClient().log_fetch_svc.add_task("any_string")[0]
+
+        assert isinstance(_response, list)
+        assert len(_response) > 0
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

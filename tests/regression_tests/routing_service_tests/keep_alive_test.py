@@ -29,11 +29,11 @@ class TestKeepAlive(object):
     @automation_logger(logger)
     @allure.step("Verify that response is not empty and status code is 200")
     def test_keep_alive_method_works(self):
-        response_ = ApiClient().routing_svc.keep_alive(self.tel_aviv_box, self.route)
+        _response = ApiClient().routing_svc.keep_alive(self.tel_aviv_box, self.route)
 
-        assert response_[0] is not None
-        assert response_[1].status_code == 201
-        assert response_[1].reason == 'Created'
+        assert _response[0] is not None
+        assert _response[1].status_code == 201
+        assert _response[1].reason == 'Created'
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
@@ -42,11 +42,12 @@ class TestKeepAlive(object):
     def test_keep_alive_negative(self):
         api_ = ApiClient()
         api_.routing_svc.headers.pop("Authorization")
-        response_ = api_.routing_svc.keep_alive(self.tel_aviv_box, self.route)
+        _response = api_.routing_svc.keep_alive(self.tel_aviv_box, self.route)
 
-        assert "timestamp" and "status" and "error" and "message" and "path" in response_[0].keys()
-        assert response_[0]['error'] == "Unauthorized"
-        assert response_[0]['message'] == "the token received is not valid: No token was provided"
-        assert response_[1].status_code == 401
+        assert isinstance(_response[0], dict)
+        assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()
+        assert _response[0]['error'] == "Unauthorized"
+        assert _response[0]['message'] == "the token received is not valid: No token was provided"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

@@ -37,6 +37,7 @@ class TestAddMessages(object):
     def test_attributes_in_add_messages_method(self):
         _response = ApiClient().messages_svc.add_messages("anton", "sendLog", "task_id")[0]
 
+        assert isinstance(_response, dict)
         assert "newMsg" in _response.keys()
         assert isinstance(_response["newMsg"], dict)
 

@@ -28,25 +28,28 @@ class TestAddAreas(object):
     @allure.step("Verify that response is not empty and status code is 201")
     def test_add_areas_method_works(self):
         # sw_lng, sw_lat, ne_lng, ne_lat
-        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)
-        assert response_[0] is not None
-        assert response_[1].status_code == 201
-        assert response_[1].reason == "Created"
+
+        assert _response[0] is not None
+        assert _response[1].status_code == 201
+        assert _response[1].reason == "Created"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_add_areas_method(self):
-        response_ = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)[0]
-        assert "hash" in response_.keys() and isinstance(response_["hash"], str)
-        assert "areas" in response_.keys() and isinstance(response_["areas"], list)
-        assert len(response_["areas"]) > 0
-        for item in response_["areas"]:
+
+        assert isinstance(_response, dict)
+        assert "hash" in _response.keys() and isinstance(_response["hash"], str)
+        assert "areas" in _response.keys() and isinstance(_response["areas"], list)
+        assert len(_response["areas"]) > 0
+        for item in _response["areas"]:
             assert isinstance(item, dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
@@ -56,13 +59,14 @@ class TestAddAreas(object):
     def test_add_areas_negative(self):
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        response_ = api_.areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = api_.areas_blacklist_svc.add_areas(Instruments.get_random_string(),
                                                        34.820289208679924, 32.009745169079615,
                                                        34.960364892273674, 32.14007552880953)
 
-        assert "name" and "message" and "code" and "status" and "inner" in response_[0].keys()
-        assert response_[0]['code'] == "credentials_required"
-        assert response_[0]['message'] == "No authorization token was found"
-        assert response_[1].status_code == 500
+        assert isinstance(_response[0], dict)
+        assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
+        assert _response[0]['code'] == "credentials_required"
+        assert _response[0]['message'] == "No authorization token was found"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
