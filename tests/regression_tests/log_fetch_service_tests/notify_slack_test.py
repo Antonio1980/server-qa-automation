@@ -37,7 +37,7 @@ class TestNotifySlack(object):
     @allure.step("Verify response properties and that 'response' is dict object.")
     def test_attributes_in_notify_slack_method(self, get_task):
         task_id = get_task["taskid"]
-        _response = ApiClient().log_fetch_svc.notify_slack(task_id)[0]
+        _response = ApiClient().log_fetch_svc.notify_slack(task_id, False)[0]
 
         assert isinstance(_response, dict)
         assert "slackNotify" and "_id" and "status" and "to" and "from" and "userid" and "description" and "taskid" and\
