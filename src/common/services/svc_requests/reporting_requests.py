@@ -10,14 +10,18 @@ class ReportingServiceRequest(RequestSchema):
         super(ReportingServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def analytics_report(self, client_id: str, report_item_list: list):
+    def analytics_report(self, app_client, report_item_list: list):
         body_list = list()
         for item in report_item_list:
             inner = dict()
-            inner[CLIENT_ID] = client_id
+            inner[CLIENT_ID] = app_client._id
             inner[ID] = item.id
             inner[PARAMS] = dict()
-            inner[PARAMS].update(item.params)
+            if item.report_type == "AppStart":
+                inner[PARAMS][GENERAL_INFO] = dict()
+                inner[PARAMS][GENERAL_INFO].update(app_client.device.__dict__)
+            else:
+                inner[PARAMS].update(item.params)
             inner[REPORT_TYPE] = item.report_type
             inner[SESSION_ID] = item.session_id
             inner[TIMESTAMP] = item.timestamp

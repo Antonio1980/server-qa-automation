@@ -3,6 +3,7 @@ import pytest
 from src.common import logger
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
+from src.common.entities.app_client import AppClient
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 
@@ -22,7 +23,7 @@ test_case = ""
 @pytest.mark.regression
 @pytest.mark.regression_reporting
 class TestAddBulkAnalyticsReport(object):
-    client_id = "TEST"
+    client_ = AppClient()
     report_type, session_id = "QaReport", "Test Report"
     report_item = ReportItem(report_type, session_id)
 
@@ -32,7 +33,7 @@ class TestAddBulkAnalyticsReport(object):
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.add_bulk_analytics_report(self.client_id, [self.report_item, report_item])
+        _response = ApiClient().reporting_svc.add_bulk_analytics_report(self.client_, [self.report_item, report_item])
 
         assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'
@@ -47,7 +48,7 @@ class TestAddBulkAnalyticsReport(object):
 
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        _response = api_.reporting_svc.add_bulk_analytics_report(self.client_id, [self.report_item, report_item])
+        _response = api_.reporting_svc.add_bulk_analytics_report(self.client_, [self.report_item, report_item])
 
         assert isinstance(_response[0], dict)
         assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()

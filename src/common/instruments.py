@@ -1,7 +1,8 @@
+from src.common.mongo_cli import MongoCli
 from src.common.utils.slack import Slack
 from src.common.utils.utils import Utils
 from src.common.utils.auth_zero import AuthorizationZero
 
 
-class Instruments(AuthorizationZero, Slack, Utils):
+class Instruments(AuthorizationZero, Slack, Utils, MongoCli):
     pass

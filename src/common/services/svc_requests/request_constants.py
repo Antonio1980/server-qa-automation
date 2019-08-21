@@ -63,6 +63,7 @@ PARAM3 = "param3"
 CLIENT_ID = "clientId"
 PARAMS = "params"
 REPORT_TYPE = "reportType"
+GENERAL_INFO = "generalInfo"
 
 # Routing
 BOUNDING_BOX = "boundingBox"

@@ -1,8 +1,10 @@
 import json
+import uuid
 import random
 import string
 import datetime
 from src.common import logger
+from src.common.automation_error import AutomationError
 from src.common.log_decorator import automation_logger
 from src.common.utils.auth_zero import AuthorizationZero
 
@@ -60,3 +62,14 @@ class Utils:
         :return: random string.
         """
         return ''.join(random.choice(chars) for _ in range(size))
+
+    @staticmethod
+    @automation_logger(logger)
+    def get_uuid():
+        try:
+            uuid_ = str(uuid.uuid4())
+            logger.logger.info(f"The given UUID is: {uuid_}")
+            return uuid_
+        except Exception as e:
+            logger.logger.error(f"{e}")
+            raise AutomationError("Failed to get UUID.")

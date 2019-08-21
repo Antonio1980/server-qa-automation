@@ -16,20 +16,13 @@ class ReportingService(ServiceBase):
         self.url = self.api_base_url + "reporting-service/"
 
     @automation_logger(logger)
-    def add_analytics_report(self, client_id, report_item):
+    def add_analytics_report(self, app_client, report_item):
         uri = self.url + self.version + "analytics"
         try:
-            payload = ReportingServiceRequest().analytics_report(client_id, [report_item])
+            payload = ReportingServiceRequest().analytics_report(app_client, [report_item])
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
-            try:
-                body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
+            body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
@@ -37,20 +30,16 @@ class ReportingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_bulk_analytics_report(self, client_id: str, report_item_list: list) -> tuple:
+    def add_bulk_analytics_report(self, app_client: str, report_item_list: list) -> tuple:
         uri = self.url + self.version + "analytics/bulk"
         try:
-            payload = ReportingServiceRequest().analytics_report(client_id, report_item_list)
+            payload = ReportingServiceRequest().analytics_report(app_client, report_item_list)
             logger.logger.info(F"API Service URL is {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers)
-            try:
+            if _response.status_code == 401:
                 body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
+            else:
+                body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
