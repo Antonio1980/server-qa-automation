@@ -27,7 +27,7 @@ class TestAppStart(object):
     report_item = ReportItem(report_type, session_id)
 
     @automation_logger(logger)
-    @allure.step("Verify that ")
+    @allure.step("Verify that 'AppStart' report is saved in Mongo -> Reporting svc db -> reportItem ")
     def test_app_start(self, env):
         db_name = "reporting-service-" + env
         collection_name = "reportItem"
