@@ -21,6 +21,6 @@ class NtpClient(object):
                     "%Y-%m-%dT%H:%M:%S.%fZ")
             except Exception as e:
                 logger.logger.exception(F"NTPException: {e}")
-                time.sleep(1.0)
+                time.sleep(0.5)
                 left_time_seconds -= 1
                 self.get_synch_timestamp(left_time_seconds)

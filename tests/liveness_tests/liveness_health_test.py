@@ -49,17 +49,17 @@ class TestHealthLiveness(object):
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
-    @automation_logger(logger)
-    @allure.step("Verify response status code is 200 and properties of the response.")
-    def test_health_location(self):
-        _response = ApiClient().location_svc.health()
-
-        assert _response[1].status_code == 200
-        assert isinstance(_response[0], dict)
-        assert "status" in _response[0].keys()
-        assert _response[0]["status"] == "UP"
-
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+    # @automation_logger(logger)
+    # @allure.step("Verify response status code is 200 and properties of the response.")
+    # def test_health_location(self):
+    #     _response = ApiClient().location_svc.health()
+    #
+    #     assert _response[1].status_code == 200
+    #     assert isinstance(_response[0], dict)
+    #     assert "status" in _response[0].keys()
+    #     assert _response[0]["status"] == "UP"
+    #
+    #     logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
     @allure.step("Verify that status code is 200 and response properties.")

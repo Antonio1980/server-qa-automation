@@ -76,19 +76,18 @@ class TestLocationLivenessPerServicePort(object):
                             _socket.udp_send(message2)
                             _response = _socket.udp_receive(BUFSIZ)
                         except Exception:
-                            error_ports.append(port)
                             logger.logger.exception(f"{if_error}")
                             if tries != 2:
                                 TestLocationLivenessPerServicePort.second_case_issues += if_error
+                            else:
+                                error_ports.append(port)
 
                         if _response is not None:
                             logger.logger.info(
                                 F"The endpoint {endpoint['name']} is available for connect on port {port} !")
                             logger.logger.info(F"UDP Response: {_response}")
-                else:
-                    pass
 
-                if len(error_ports) > 0:
+                if len(error_ports) > 0 and tries == 2:
                     logger.logger.info(f"!!! RECURSION !!! with next failed ports: {error_ports}")
                     check_ports(error_ports, tries - 1)
 

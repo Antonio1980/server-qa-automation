@@ -44,5 +44,5 @@ class UdpSocket(object):
                     break
                 logger.logger.info(F"UDP response is: {_response}")
                 return _response
-        except TimeoutError as e:
+        except (TimeoutError, ConnectionRefusedError) as e:
             logger.logger.error(F"udp_receive failed with error: {e.with_traceback(e.__traceback__)}")
