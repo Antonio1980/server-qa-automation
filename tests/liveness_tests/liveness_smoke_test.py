@@ -1,10 +1,11 @@
 import allure
 import pytest
 from src.common import logger
-from src.common.entities.bounding_box import BoundingBox
 from src.common.utils.slack import Slack
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
+from src.common.entities.app_client import AppClient
+from src.common.entities.bounding_box import BoundingBox
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
@@ -50,11 +51,11 @@ class TestSmokeLiveness(object):
     @automation_logger(logger)
     @allure.step("Verify that service returns valid status code and reason.")
     def test_liveness_analytics_report(self):
-        client_id = "QA"
+        client_ = AppClient()
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.add_analytics_report(client_id, report_item)
+        _response = ApiClient().reporting_svc.add_analytics_report(client_, report_item)
 
         if _response[1].status_code != 201 or _response[1].reason != 'Created':
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_liveness_analytics_report failed with " \

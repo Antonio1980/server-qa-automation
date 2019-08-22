@@ -11,7 +11,7 @@ class NtpClient(object):
         self.ntp_client = ntplib.NTPClient()
 
     @automation_logger(logger)
-    def get_synch_timestamp(self, left_time_seconds=10):
+    def get_synch_timestamp(self, left_time_seconds=5):
 
         if left_time_seconds > 0:
             try:

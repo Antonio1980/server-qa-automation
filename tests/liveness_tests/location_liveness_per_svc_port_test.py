@@ -27,7 +27,8 @@ BUFSIZ = 1024
                  "TestLocationLivenessPerServicePort")
 @pytest.mark.liveness
 class TestLocationLivenessPerServicePort(object):
-    issues = ""
+    first_case_issues = ""
+    second_case_issues = ""
     latitude = "0.0"
     longitude = "0.0"
     bearing = random.uniform(0, 360)
@@ -41,7 +42,7 @@ class TestLocationLivenessPerServicePort(object):
         if_err_message = "Endpoints count != " + str(ex_endpoints) + " current number is " + str(len(endpoints)) + " \n"
 
         if len(endpoints) != ex_endpoints:
-            TestLocationLivenessPerServicePort.issues += if_err_message
+            TestLocationLivenessPerServicePort.first_case_issues += if_err_message
             logger.logger.exception(if_err_message)
 
             raise AutomationError(if_err_message)
@@ -51,43 +52,57 @@ class TestLocationLivenessPerServicePort(object):
     @automation_logger(logger)
     @allure.step("Verify that all provided ports are open and accept UDP connections.")
     def test_endpoints_ports(self, endpoints):
-        count, port_range = 0, []
-        for endpoint in endpoints:
 
+        for endpoint in endpoints:
+            error_ports = []
             port_range = [p for p in range(endpoint["minPort"], endpoint["maxPort"] + 1)]
             logger.logger.info(F"Accepted ports are: {port_range}")
 
-            for port in port_range:
-                _socket = UdpSocket()
-                _socket.udp_connect((endpoint["ip"], port))
+            def check_ports(ports, tries=2):
+                if tries > 0:
+                    for port in ports:
+                        _response = None
+                        _socket = UdpSocket()
+                        _socket.udp_connect((endpoint["ip"], port))
 
-                if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
-                message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                        self.velocity, self.accuracy)
-                message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                        self.velocity, self.accuracy)
-                try:
-                    _socket.udp_send(message1)
+                        if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
+                        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                                self.velocity, self.accuracy)
+                        message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                                self.velocity, self.accuracy)
+                        try:
+                            _socket.udp_send(message1)
 
-                    _socket.udp_send(message2)
-                    response_ = _socket.udp_receive(BUFSIZ)
-                except Exception as e:
-                    response_ = None
-                    if_data_error = F"Error occurred while receiving data: {e} \n"
-                    logger.logger.exception(if_data_error)
-                    TestLocationLivenessPerServicePort.issues += if_data_error
-                if response_:
-                    logger.logger.info(F"The endpoint {endpoint['name']} is available for connect on port {port} !")
-                    logger.logger.info(F"UDP Response: {response_}")
+                            _socket.udp_send(message2)
+                            _response = _socket.udp_receive(BUFSIZ)
+                        except Exception:
+                            error_ports.append(port)
+                            logger.logger.exception(f"{if_error}")
+                            if tries != 2:
+                                TestLocationLivenessPerServicePort.second_case_issues += if_error
+
+                        if _response is not None:
+                            logger.logger.info(
+                                F"The endpoint {endpoint['name']} is available for connect on port {port} !")
+                            logger.logger.info(F"UDP Response: {_response}")
                 else:
-                    TestLocationLivenessPerServicePort.issues += if_error
-                    logger.logger.error(f"{if_error}")
-                    count += 1
+                    pass
 
-        if TestLocationLivenessPerServicePort.issues:
-            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.issues}")
-            if count > int(((len(port_range) / 100) * 5)):
-                Slack.send_message(TestLocationLivenessPerServicePort.issues)
+                if len(error_ports) > 0:
+                    logger.logger.info(f"!!! RECURSION !!! with next failed ports: {error_ports}")
+                    check_ports(error_ports, tries - 1)
+
+            check_ports(port_range)
+
+        if TestLocationLivenessPerServicePort.first_case_issues != "":
+            logger.logger.info("---------- Those errors of the first test case will be sent to Slack Chanel ----------")
+            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.first_case_issues}")
+            Slack.send_message(TestLocationLivenessPerServicePort.first_case_issues)
+
+        if TestLocationLivenessPerServicePort.second_case_issues != "":
+            logger.logger.info("---------- Those errors of the second test case will be sent to Slack Chanel ---------")
+            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.second_case_issues}")
+            Slack.send_message(TestLocationLivenessPerServicePort.second_case_issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
