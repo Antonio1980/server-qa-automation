@@ -13,8 +13,7 @@ def create_logger(name='PYTHON_QA', level='DEBUG'):
     logger_.setLevel(level)
     format_ = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(format_)
-    log_ = bool(BaseConfig.LOG_FILE)
-    if not log_:
+    if BaseConfig.LOG_FILE == "False":
         g_logging_client = gl.Client()
         g_logging_client.setup_logging(log_level=logging.DEBUG)
         g_handler = CloudLoggingHandler(g_logging_client, name=name)

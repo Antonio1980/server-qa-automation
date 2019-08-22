@@ -35,11 +35,23 @@ class BaseConfig:
 
     EXPECTED_ENDPOINTS = parser.get("ARGS", "location_endpoints")
     LOG_FILE = parser.get("ARGS", "logger")
+    CLOUD = parser.get("ARGS", "cloud")
 
     API_BASE_URL = parser.get("URLS", "api_base_url")
     SLACK_URL = parser.get("URLS", "slack_url")
     GITLAB_URL = parser.get("URLS", "gitlab_url")
     AUTH_ZERO = parser.get("URLS", "auth_zero")
+    ELASTIC_CLOUD = parser.get("URLS", "elastic_cloud")
+    ELASTIC_CLOUD_PORT = parser.get("URLS", "elastic_cloud_port")
+    ELASTIC_LOCAL = parser.get("URLS", "elastic_local")
+    ELASTIC_LOCAL_PORT = parser.get("URLS", "elastic_local_port")
+    KIBANA_HOST = parser.get("URLS", "elastic_host")
+    if CLOUD == "True":
+        KIBANA = ELASTIC_CLOUD
+        KIBANA_PORT = ELASTIC_CLOUD_PORT
+    else:
+        KIBANA = ELASTIC_LOCAL
+        KIBANA_PORT = ELASTIC_LOCAL_PORT
 
     AUTH_ZERO_USER = parser.get("AUTOMATION", "auth_zero_user")
     AUTH_ZERO_PASSWORD = parser.get("AUTOMATION", "auth_zero_password")
