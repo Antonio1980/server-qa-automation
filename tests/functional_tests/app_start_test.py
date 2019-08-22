@@ -35,6 +35,7 @@ class TestAppStart(object):
         _response = ApiClient().reporting_svc.add_analytics_report(self.client_, self.report_item)
 
         q_result = Instruments.find_by_query(db_name, collection_name, query)
+
         assert isinstance(q_result, dict)
         assert "_id" and "report" and "source" and "migratedFromMongo" and "env" in q_result.keys()
         assert q_result["_id"] == self.report_item.id

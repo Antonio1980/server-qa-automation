@@ -26,7 +26,7 @@ class MongoCli:
 
 
 # if __name__ == "__main__":
-#     m = MongoCli
+#     m = MongoCli()
 #     db_names = m.get_data_bases()[3]
 #     db = m.mongo_client.get_database(db_names)
 #     c = db.get_collection('areas')
