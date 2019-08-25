@@ -1,4 +1,5 @@
 import json
+import time
 import uuid
 import random
 import string
@@ -49,11 +50,6 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def get_auth_token():
-        return AuthorizationZero.get_authorization_token()
-
-    @staticmethod
-    @automation_logger(logger)
     def get_random_string(size=8, chars=string.ascii_lowercase + string.digits):
         """
         Generates random string with chars and digits.
@@ -73,3 +69,22 @@ class Utils:
         except Exception as e:
             logger.logger.error(f"{e}")
             raise AutomationError("Failed to get UUID.")
+
+    @staticmethod
+    @automation_logger(logger)
+    def get_synch_timestamp(left_time_seconds=3):
+        import ntplib
+
+        if left_time_seconds > 0:
+
+            ntp_client = ntplib.NTPClient()
+            try:
+                ntp_response = ntp_client.request("time1.google.com", version=3)
+                time_offset = ntp_response.offset
+                return (datetime.datetime.utcnow() + datetime.timedelta(seconds=time_offset)).strftime(
+                    "%Y-%m-%dT%H:%M:%S.%fZ")
+            except ntplib.NTPException as e:
+                logger.logger.exception(F"NTPException: {e}")
+                time.sleep(0.3)
+                left_time_seconds -= 1
+                return Utils.get_synch_timestamp(left_time_seconds)

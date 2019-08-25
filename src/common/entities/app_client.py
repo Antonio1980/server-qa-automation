@@ -1,11 +1,11 @@
 from src.common.entities.device_app import DeviceApp
-from src.common.instruments import Instruments
+from src.common.utils.utils import Utils
 
 
 class AppClient(object):
     def __init__(self):
         super(AppClient, self).__init__()
-        self._id = Instruments.get_uuid()
+        self._id = Utils.get_uuid()
         self.device = DeviceApp()
 
     def __repr__(self):

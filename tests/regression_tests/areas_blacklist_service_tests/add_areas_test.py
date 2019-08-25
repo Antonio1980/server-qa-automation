@@ -3,8 +3,8 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
-from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
+from src.common.utils.utils import Utils
 
 test_case = ""
 
@@ -28,7 +28,7 @@ class TestAddAreas(object):
     @allure.step("Verify that response is not empty and status code is 201")
     def test_add_areas_method_works(self):
         # sw_lng, sw_lat, ne_lng, ne_lat
-        _response = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)
 
@@ -41,7 +41,7 @@ class TestAddAreas(object):
     @automation_logger(logger)
     @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_add_areas_method(self):
-        _response = ApiClient().areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(),
                                                               34.820289208679924, 32.009745169079615,
                                                               34.960364892273674, 32.14007552880953)[0]
 
@@ -59,7 +59,7 @@ class TestAddAreas(object):
     def test_add_areas_negative(self):
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        _response = api_.areas_blacklist_svc.add_areas(Instruments.get_random_string(),
+        _response = api_.areas_blacklist_svc.add_areas(Utils.get_random_string(),
                                                        34.820289208679924, 32.009745169079615,
                                                        34.960364892273674, 32.14007552880953)
 

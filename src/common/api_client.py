@@ -1,4 +1,4 @@
-from src.common.instruments import Instruments
+from src.common.utils.auth_zero import AuthorizationZero
 from src.common.services.location_service import LocationService
 from src.common.services.log_fetch_service import LogFetchService
 from src.common.services.message_synch_service import MessagesSynchService
@@ -8,7 +8,7 @@ from src.common.services.reporting_service import ReportingService
 from src.common.services.routing_service import RoutingService
 from src.common.services.areas_blacklist_service import AreasBlacklistService
 
-auth_token = Instruments.get_auth_token()["access_token"]
+auth_token = AuthorizationZero.get_authorization_token()["access_token"]
 
 
 class ApiClient(object):

@@ -1,10 +1,9 @@
 import random
 from src.common import logger
 from src.common.entities.entity import Entity
-from src.common.instruments import Instruments
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
-from src.common.ntp_client import NtpClient
+from src.common.utils.utils import Utils
 
 
 class UdpMessage(Entity):
@@ -21,9 +20,8 @@ class UdpMessage(Entity):
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
-        ntp_cli = NtpClient()
         self.data[CLIENT_DATA] = dict()
-        timestamp_ = ntp_cli.get_synch_timestamp()
+        timestamp_ = Utils.get_synch_timestamp()
         self.data[CLIENT_DATA][TIMESTAMP] = timestamp_
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"
@@ -39,4 +37,4 @@ class UdpMessage(Entity):
     @automation_logger(logger)
     def get_udp_message(self, *args):
         (latitude, longitude, bearing, velocity, accuracy) = args
-        return Instruments.to_json_dumps(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")
+        return Utils.to_json_dumps(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")

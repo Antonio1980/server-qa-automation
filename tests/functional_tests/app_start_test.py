@@ -2,9 +2,11 @@ import time
 import allure
 import pytest
 from src.common import logger
+from src.common.utils.utils import Utils
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
-from src.common.instruments import Instruments
+from src.common.data_bases.kibana import KibanaCli
+from src.common.data_bases.mongo_cli import MongoCli
 from src.common.entities.app_client import AppClient
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
@@ -27,7 +29,7 @@ class TestAppStart(object):
     client_ = AppClient()
     client_id = client_._id
     collection_name = "reportItem"
-    report_type, session_id = "AppStart", Instruments.get_uuid()
+    report_type, session_id = "AppStart", Utils.get_uuid()
     report_item = ReportItem(report_type, session_id)
     ApiClient().reporting_svc.add_analytics_report(client_, report_item)
 
@@ -36,7 +38,7 @@ class TestAppStart(object):
     def test_report_saved_in_mongo(self, env):
         db_name = "reporting-service-" + env
         query = {"report.sessionId": self.report_item.session_id}
-        q_result = Instruments.find_by_query(db_name, self.collection_name, query)
+        q_result = MongoCli.find_by_query(db_name, self.collection_name, query)
 
         assert isinstance(q_result, dict)
         assert "_id" and "report" and "source" and "migratedFromMongo" and "env" in q_result.keys()
@@ -59,7 +61,7 @@ class TestAppStart(object):
         time.sleep(5.0)
         index_ = "analytics-" + env
         query = {"query": {"match": {'report.sessionId': self.report_item.session_id}}}
-        q_result = Instruments.search_document(index_, query)
+        q_result = KibanaCli.search_document(index_, query)
 
         assert isinstance(q_result, dict)
         assert "took" and "timed_out" and "_shards" and "hits" in q_result.keys()
