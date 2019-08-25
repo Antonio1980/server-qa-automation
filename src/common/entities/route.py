@@ -1,7 +1,7 @@
-from src.common.entities.entity import Entity
+import json
 
 
-class Route(Entity):
+class Route(object):
     def __init__(self, ip="127.0.0.1"):
         super(Route, self).__init__()
         self.ip = ip
@@ -17,3 +17,6 @@ class Route(Entity):
         self.min_port = port_list[0]
         self.max_port = port_list[1]
         return self
+
+    def to_json(self):
+        return json.loads(json.dumps(self, default=lambda o: vars(o), sort_keys=True, indent=4))
