@@ -1,5 +1,4 @@
 import time
-
 import allure
 import pytest
 from src.common import logger
@@ -31,16 +30,21 @@ class TestRoutingSvcCache(object):
 
     @automation_logger(logger)
     @allure.step("Verify that ")
-    def test_routing_svc_cache(self, ):
+    def test_routing_svc_cache(self):
         cars = 500
         pedestrian = 1000
         bikes = 100
         api_ = ApiClient()
-        for i in range(5):
+
+        run_time = time.perf_counter() + 5.0
+        while time.perf_counter() <= run_time:
             api_.routing_svc.keep_alive(self.box, self.route, cars, pedestrian, bikes)
-        time.sleep(2.0)
+        time.sleep(3.0)
 
         endpoints = api_.routing_svc.get_endpoints()[0]
+        time.sleep(1.0)
+        endpoints_after = api_.routing_svc.get_endpoints()[0]
+        # Verify that My Endpoint is returned from Service cache.
         assert isinstance(endpoints, list)
         assert len(endpoints) > 0 and len(endpoints) == 3
         for item in endpoints:
@@ -54,5 +58,8 @@ class TestRoutingSvcCache(object):
         assert my_endpoint["minPort"] == self.route.min_port and my_endpoint["maxPort"] == self.route.max_port
         assert my_endpoint["countByType"]["BIKE"] == bikes and my_endpoint["countByType"]["CAR"] == cars and \
                my_endpoint["countByType"]["PEDESTRIAN"] == pedestrian
+
+        # Verify that My Endpoint is removed from Service cache.
+        assert len(endpoints) - 1 == len(endpoints_after)
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
