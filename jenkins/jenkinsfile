@@ -1,0 +1,55 @@
+pipeline {
+    agent  any
+    stages {
+        stage (clear_provious){
+            when {
+                 expression { params.clear_previous_results }
+                }
+              steps {
+                sh 'env'
+                sh 'rm -rf  ./target/allure-results/*'
+                }
+            }
+            
+      
+        
+        
+        stage('apply') {
+            steps {
+                withCredentials([file(credentialsId: 'gcloud-jenkins', variable: 'myfile')]){
+                sh 'cat $myfile | docker login -u _json_key --password-stdin https://eu.gcr.io'
+                sh 'docker run  -v /data/jenkins/workspace/$JOB_NAME/target/allure-results/:/project/src/repository/allure_result -e ENV=${tests_env} -i eu.gcr.io/eye-net/qa_automation:794278fb04ce71081eb7e0d1c5a4dc408d968355 pytest . -m ${TEST_GROUP} --alluredir=src/repository/allure_result'
+            }
+        }
+
+         stage('REPORTS') {
+            steps {
+                script {
+                    allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                       //     reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'target/allure-results']]
+            ])
+            }
+         }
+       }
+    }
+   post {
+      always {
+        echo 'One way or another, I have finished'
+        
+          }
+      success {
+         wrap([$class: 'BuildUser'])  {
+        slackSend (color: '#00FF00', message: "SUCCESSFUL, buildnumber: ${buildnum}, repo name: ${repo_name} ,  for logs: (${env.BUILD_URL}allure/)  ")
+      }
+     }
+      failure {
+        wrap([$class: 'BuildUser']) {
+        slackSend (color: '#FF0002', message: "FAILED: ,buildnumber: ${buildnum}, repo name: ${repo_name} , for logs: (${env.BUILD_URL}allure/))  ")
+     }
+    }
+   }
+}
