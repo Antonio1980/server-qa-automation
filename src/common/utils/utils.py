@@ -7,7 +7,6 @@ import datetime
 from src.common import logger
 from src.common.automation_error import AutomationError
 from src.common.log_decorator import automation_logger
-from src.common.utils.auth_zero import AuthorizationZero
 
 
 class Utils:
@@ -79,7 +78,7 @@ class Utils:
 
             ntp_client = ntplib.NTPClient()
             try:
-                ntp_response = ntp_client.request("time1.google.com", version=3)
+                ntp_response = ntp_client.request("time.google.com", version=3)
                 time_offset = ntp_response.offset
                 return (datetime.datetime.utcnow() + datetime.timedelta(seconds=time_offset)).strftime(
                     "%Y-%m-%dT%H:%M:%S.%fZ")
