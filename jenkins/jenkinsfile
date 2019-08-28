@@ -1,0 +1,95 @@
+pipeline {
+    agent  any
+    stages {
+        stage('check service is up ') {
+             when {
+                 expression { params.buildnum  != "" }
+                }
+                   agent {
+                        docker {
+                            image 'idol75/drone-kubernetes:gke0.2'
+                            args '-u root'
+                            reuseNode true
+                        }
+                    }
+            steps {
+               withCredentials([file(credentialsId: 'gcloud-jenkins', variable: 'myfile')]){
+                 sh 'gcloud auth activate-service-account --key-file=$myfile'
+                 //sh 'gcloud container clusters get-credentials ${clustername} --zone ${clusterzone} --project eye-net'
+                 sh 'gcloud container clusters get-credentials eyenet-eu-west1 --zone europe-west1-c --project eye-net'
+                 sh '''
+                  function get_avilable_reps() {
+                                      kubectl get deployments  $1 -o jsonpath="{..status.availableReplicas}" -n ${tests_env}
+                                }
+                  desired_reps=$(kubectl get deployments  ${repo_name}  -n ${tests_env} -o jsonpath="{..spec.replicas}")
+                  sleep 10
+                  echo $rep_num
+                  count=0
+                  while  [ `get_avilable_reps ${repo_name}` -lt $desired_reps ]; do
+                          if [ $count -lt 5 ];
+                          then
+                            sleep 10
+                            count=$((count + 1))
+                            echo $count
+                          else
+                            echo "Error - pod is not starting correctly after update"
+                            exit 4
+                          fi
+                        done
+                     echo "update done"
+                     '''
+            }
+        }
+    }
+        
+        stage (clear_provious){
+            when {
+                 expression { params.clear_previous_results }
+                }
+              steps {
+                sh 'env'
+                sh 'rm -rf  ./target/allure-results/*'
+                }
+            }
+   
+            
+      
+        
+        
+        stage('apply') {
+            steps {
+                withCredentials([file(credentialsId: 'gcloud-jenkins', variable: 'myfile')]){
+                sh 'cat $myfile | docker login -u _json_key --password-stdin https://eu.gcr.io'
+                sh 'docker run  -v /data/jenkins/workspace/$JOB_NAME/target/allure-results/:/project/src/repository/allure_result -e ENV=${tests_env} -i eu.gcr.io/eye-net/qa_automation:794278fb04ce71081eb7e0d1c5a4dc408d968355 pytest . -m ${TEST_GROUP} --alluredir=src/repository/allure_result'
+                // sh 'docker run  -v /data/jenkins/workspace/$JOB_NAME/target/allure-results/:/project/src/repository/allure_result -i eu.gcr.io/eye-net/qa_automation:794278fb04ce71081eb7e0d1c5a4dc408d968355 pytest .  --alluredir=src/repository/allure_result'
+
+                }
+            }
+        }
+    }
+    
+ post {
+            always {
+                script {
+                    allure([
+                            includeProperties: false,
+                            jdk: '',
+                            properties: [],
+                       //     reportBuildPolicy: 'ALWAYS',
+                            results: [[path: 'target/allure-results']]
+            ])
+            }
+        }
+    success {
+         wrap([$class: 'BuildUser'])  {
+        slackSend (color: '#00FF00', message: "SUCCESSFUL, triggerd by  , buildnumber: ${buildnum}, repo name: ${repo_name}   for logs: (${env.BUILD_URL}allure/)  ")
+      }
+     }
+      failure {
+        wrap([$class: 'BuildUser']) {
+        slackSend (color: '#FF0002', message: "FAILED: ,triggerd by , for logs: (${env.BUILD_URL}allure/))  ")
+    
+         }
+       }
+    }
+}
