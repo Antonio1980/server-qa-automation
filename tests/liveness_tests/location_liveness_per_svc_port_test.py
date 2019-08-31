@@ -9,20 +9,20 @@ from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-test_case = "location_liveness_per_port"
+test_case = "LIVENESS PER PORT"
 BUFSIZ = 1024
 
 
-@allure.feature('Liveness')
+@allure.feature("LIVENESS")
 @allure.story('Client able to found and connect to Location service via configured ports.')
-@allure.title("Location Service")
+@allure.title(test_case)
 @allure.description("""
     Functional test.
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @pytest.mark.usefixtures("run_time_counter", "endpoints")
-@allure.severity(allure.severity_level.BLOCKER)
+@allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
 @pytest.mark.liveness
@@ -36,8 +36,9 @@ class TestLocationLivenessPerServicePort(object):
     accuracy = 5.0
 
     @automation_logger(logger)
-    @allure.step("Verify that Routing svc returns all active endpoints.")
     def test_returned_endpoints(self, endpoints):
+        allure.step("Verify that Routing svc returns all active endpoints.")
+
         ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
         if_err_message = "Endpoints count != " + str(ex_endpoints) + " current number is " + str(len(endpoints)) + " \n"
 
@@ -50,8 +51,8 @@ class TestLocationLivenessPerServicePort(object):
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    @allure.step("Verify that all provided ports are open and accept UDP connections.")
     def test_endpoints_ports(self, endpoints):
+        allure.step("Verify that all provided ports are open and accept UDP connections.")
 
         for endpoint in endpoints:
             error_ports = []

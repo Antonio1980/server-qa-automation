@@ -9,20 +9,20 @@ from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-test_case = "location_liveness"
+test_case = "LIVENESS LOCATION"
 BUFSIZ = 1024
 
 
-@allure.feature('Liveness')
-@allure.story('Client able to found and connect to Location service via n and max ports.')
-@allure.title("END TO END")
+@allure.feature("LIVENESS")
+@allure.story('Client able to found and connect to Location service via min and max ports.')
+@allure.title(test_case)
 @allure.description("""
     Functional end to end test.
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
 @pytest.mark.usefixtures("run_time_counter", "endpoints")
-@allure.severity(allure.severity_level.BLOCKER)
+@allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
 class TestLiveness(object):
@@ -34,8 +34,9 @@ class TestLiveness(object):
     accuracy = 5.0
 
     @automation_logger(logger)
-    @allure.step("Verify that Routing svc returns all active endpoints.")
     def test_returned_endpoints(self, endpoints):
+        allure.step("Verify that Routing svc returns all active endpoints.")
+
         ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
         if_err_message = "Endpoints count != " + str(ex_endpoints) + " current number is " + str(len(endpoints)) + " \n"
 
@@ -48,8 +49,8 @@ class TestLiveness(object):
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    @allure.step("Verify that all provided ports are open and accept UDP connections.")
     def test_endpoints_ports(self, endpoints):
+        allure.step("Verify that all provided ports are open and accept UDP connections.")
 
         for endpoint in endpoints:
             port_range = [endpoint["minPort"], endpoint["maxPort"]]

@@ -5,26 +5,26 @@ from config_definitions import BaseConfig
 from src.common.data_bases.mongo_cli import MongoCli
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "TASK SAVED IN MONGO"
 
 
-@allure.title("TASK SAVED IN MONGO")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. 
+    1. Verify that uploaded Task is saved in Mongo DB.
     """)
-@allure.severity(allure.severity_level.BLOCKER)
+@allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/functional_tests/task_saved_in_mongo_test.py",
                  "TestTaskSavedInMongo")
 @pytest.mark.usefixtures("run_time_counter", "get_uploaded_task", "env")
-@pytest.mark.regression
-@pytest.mark.regression_log_fetch
+@pytest.mark.functional
 class TestTaskSavedInMongo(object):
     collection_name = "tasks"
 
     @automation_logger(logger)
-    @allure.step("Verify that uploaded task is saved in Mongo with status 'Done'")
-    def test_ask_saved_in_mongo(self, env, get_uploaded_task):
+    def test_task_saved_in_mongo(self, env, get_uploaded_task):
+        allure.step("Verify that uploaded task is saved in Mongo with status 'Done'")
+
         task_id = get_uploaded_task['taskid']
         db_name = "log-fetch-service-" + env
         query = {"taskid": task_id}

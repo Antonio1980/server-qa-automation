@@ -10,12 +10,12 @@ from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-test_case = "smoke_liveness"
+test_case = "LIVENESS SMOKE"
 
 
-@allure.feature('Liveness')
+@allure.feature("LIVENESS")
 @allure.story('R&D team wants to know the basic statement of the services.')
-@allure.title("Liveness Smoke Tests")
+@allure.title(test_case)
 @allure.description("""
     Functional test.
     1. AreasBlacklist svc: Check that "get_areas_inbox" request returned not empty "areas" list.
@@ -24,7 +24,7 @@ test_case = "smoke_liveness"
     4. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
     """)
 @pytest.mark.usefixtures("run_time_counter")
-@allure.severity(allure.severity_level.BLOCKER)
+@allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_smoke_test.py",
                  "TestSmokeLiveness")
 @pytest.mark.liveness
@@ -32,8 +32,9 @@ class TestSmokeLiveness(object):
     issues = None
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns areas of TelAviv.")
     def test_get_area_tel_aviv(self):
+        allure.step("Verify that service returns areas of Tel-Aviv.")
+
         ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
         sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
         box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
@@ -49,8 +50,9 @@ class TestSmokeLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns valid status code and reason.")
     def test_liveness_analytics_report(self):
+        allure.step("Verify that service returns valid status code and reason.")
+
         client_ = AppClient()
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
@@ -66,8 +68,9 @@ class TestSmokeLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns remote config data.")
     def test_get_remote_config_liveness(self):
+        allure.step("Verify that service returns remote config data.")
+
         _response = ApiClient().remote_config_svc.get_config()
 
         if _response[1].status_code != 200 or _response[0] is None \
@@ -80,8 +83,9 @@ class TestSmokeLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that service returns messges per user id")
     def test_user_messages_liveness(self):
+        allure.step("Verify that service returns messges per user id")
+
         _response = ApiClient().messages_svc.get_user_messages("aaa")
 
         if _response[1].status_code != 200 or _response[0] is None or "messages" not in _response[0].keys() \

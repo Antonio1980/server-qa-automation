@@ -11,11 +11,11 @@ from src.common.entities.app_client import AppClient
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "APP START"
 
 
 @pytest.mark.incremental
-@allure.title("APP START")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that client app on start sending report "AppStart" and this is saved in Mongo DB.
@@ -34,8 +34,8 @@ class TestAppStart(object):
     ApiClient().reporting_svc.add_analytics_report(client_, report_item)
 
     @automation_logger(logger)
-    @allure.step("Verify that 'AppStart' report is saved in Mongo -> Reporting svc db -> reportItem")
     def test_report_saved_in_mongo(self, env):
+        allure.step("Verify that 'AppStart' report is saved in Mongo -> Reporting svc db -> reportItem")
         db_name = "reporting-service-" + env
         query = {"report.sessionId": self.report_item.session_id}
         q_result = MongoCli.find_by_query(db_name, self.collection_name, query)
@@ -56,8 +56,8 @@ class TestAppStart(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that 'AppStart' report is saved in Elastic -> analytics")
     def test_report_saved_in_elastic(self, env):
+        allure.step("Verify that 'AppStart' report is saved in Elastic -> analytics")
         time.sleep(5.0)
         index_ = "analytics-" + env
         query = {"query": {"match": {'report.sessionId': self.report_item.session_id}}}
