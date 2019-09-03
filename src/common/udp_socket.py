@@ -8,7 +8,7 @@ class UdpSocket(object):
         super(UdpSocket, self).__init__()
         self.udp_socket = socket(family=AF_INET, type=SOCK_DGRAM)
         self.udp_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.udp_socket.setsockopt(SOL_SOCKET, MSG_WAITALL, 1)
+        # self.udp_socket.setsockopt(SOL_SOCKET, MSG_WAITALL, 1)
         self.udp_socket.settimeout(1)
 
     @automation_logger(logger)
