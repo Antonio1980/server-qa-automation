@@ -5,6 +5,7 @@ from src.common import logger
 from src.common.api_client import ApiClient
 from src.common.enums import Environment
 from src.common.log_decorator import automation_logger
+from src.common.udp_socket import UdpSocket
 
 
 @pytest.fixture(scope="class")
@@ -23,6 +24,20 @@ def run_time_counter(request):
         time.sleep(1.0)
 
     request.addfinalizer(stop_counter)
+
+
+@pytest.fixture(scope="class")
+@automation_logger(logger)
+def socket_(request):
+    socket_ = UdpSocket()
+    logger.logger.info(f"UDP Socket ready for connection: {socket_.__class__.__name__}")
+
+    def close_socket():
+        logger.logger.info(f"Closing UDP Socket.")
+        socket_.__exit__()
+
+    request.addfinalizer(close_socket)
+    return socket_
 
 
 @pytest.fixture(scope="class")

@@ -4,7 +4,6 @@ import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
 from config_definitions import BaseConfig
-from src.common.udp_socket import UdpSocket
 from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
@@ -21,7 +20,7 @@ BUFSIZ = 1024
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
-@pytest.mark.usefixtures("run_time_counter", "endpoints")
+@pytest.mark.usefixtures("run_time_counter", "endpoints", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
@@ -49,15 +48,14 @@ class TestLiveness(object):
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    def test_endpoints_ports(self, endpoints):
+    def test_endpoints_ports(self, endpoints, socket_):
         allure.step("Verify that all provided ports are open and accept UDP connections.")
 
         for endpoint in endpoints:
             port_range = [endpoint["minPort"], endpoint["maxPort"]]
 
             for port in port_range:
-                _socket = UdpSocket()
-                _socket.udp_connect((endpoint["ip"], port))
+                socket_.udp_connect((endpoint["ip"], port))
 
                 if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
                 message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
@@ -65,10 +63,10 @@ class TestLiveness(object):
                 message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                         self.velocity, self.accuracy)
                 try:
-                    _socket.udp_send(message1)
+                    socket_.udp_send(message1)
 
-                    _socket.udp_send(message2)
-                    response_ = _socket.udp_receive(BUFSIZ)
+                    socket_.udp_send(message2)
+                    response_ = socket_.udp_receive(BUFSIZ)
                 except Exception as e:
                     response_ = None
                     if_data_error = F"Error occurred while receiving data: {e} \n"

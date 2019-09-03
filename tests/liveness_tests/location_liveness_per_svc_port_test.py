@@ -4,7 +4,6 @@ import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
 from config_definitions import BaseConfig
-from src.common.udp_socket import UdpSocket
 from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
@@ -21,7 +20,7 @@ BUFSIZ = 1024
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
-@pytest.mark.usefixtures("run_time_counter", "endpoints")
+@pytest.mark.usefixtures("run_time_counter", "endpoints", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
@@ -51,7 +50,7 @@ class TestLocationLivenessPerServicePort(object):
             logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    def test_endpoints_ports(self, endpoints):
+    def test_endpoints_ports(self, endpoints, socket_):
         allure.step("Verify that all provided ports are open and accept UDP connections.")
 
         for endpoint in endpoints:
@@ -63,8 +62,7 @@ class TestLocationLivenessPerServicePort(object):
                 if tries > 0:
                     for port in ports:
                         _response = None
-                        _socket = UdpSocket()
-                        _socket.udp_connect((endpoint["ip"], port))
+                        socket_.udp_connect((endpoint["ip"], port))
 
                         if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
                         message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
@@ -72,10 +70,10 @@ class TestLocationLivenessPerServicePort(object):
                         message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                                 self.velocity, self.accuracy)
                         try:
-                            _socket.udp_send(message1)
+                            socket_.udp_send(message1)
 
-                            _socket.udp_send(message2)
-                            _response = _socket.udp_receive(BUFSIZ)
+                            socket_.udp_send(message2)
+                            _response = socket_.udp_receive(BUFSIZ)
                         except Exception:
                             logger.logger.exception(f"{if_error}")
                             if tries != 2:
