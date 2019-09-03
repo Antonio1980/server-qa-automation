@@ -18,6 +18,8 @@ RUN apt-get update          \
 
 COPY . project
 
+RUN pip install --upgrade pip
+
 RUN pip install -r project/requirements.txt
 
 RUN find project/ -name \*.pyc -delete

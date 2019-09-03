@@ -6,10 +6,10 @@ from src.common.api_client import ApiClient
 from src.common.entities.location import Location
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "ADD ROUTE"
 
 
-@allure.title("ADD ROUTE")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "routeMe" request properly.
@@ -26,8 +26,8 @@ class TestAddRoute(object):
     location = Location()
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_add_route_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().routing_svc.add_route_v4(self.location)
 
         assert _response[0] is not None
@@ -36,8 +36,8 @@ class TestAddRoute(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_properties_in_add_route_method(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().routing_svc.add_route_v4(self.location)[0]
 
         assert isinstance(_response, dict)

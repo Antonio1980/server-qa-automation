@@ -7,10 +7,10 @@ from src.common.entities.app_client import AppClient
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "ADD BULK ANALYTICS REPORT"
 
 
-@allure.title("ADD BULK ANALYTICS REPORT")
+@allure.title(test_case)
 @allure.description("""
     Functional test.
     1. Check that service is responded on "postReport" request properly.
@@ -28,8 +28,8 @@ class TestAddBulkAnalyticsReport(object):
     report_item = ReportItem(report_type, session_id)
 
     @automation_logger(logger)
-    @allure.step("Verify that status code is 201")
     def test_add_bulk_analytics_report_method_works(self):
+        allure.step("Verify that status code is 201")
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
@@ -41,8 +41,8 @@ class TestAddBulkAnalyticsReport(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that without authorization status code is 401")
     def test_add_bulk_analytics_report_negative(self):
+        allure.step("Verify that without authorization status code is 401")
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 

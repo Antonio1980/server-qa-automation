@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "HEALTH LOG FETCH"
 
 
-@allure.title("HEALTH LOG FETCH")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
@@ -22,8 +22,8 @@ test_case = ""
 class TestHealth(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that status code is 200 and response properties.")
     def test_health_log_fetch(self):
+        allure.step("Verify that status code is 200 and response properties.")
         _response = ApiClient().log_fetch_svc.health()
 
         assert _response[1].status_code == 200

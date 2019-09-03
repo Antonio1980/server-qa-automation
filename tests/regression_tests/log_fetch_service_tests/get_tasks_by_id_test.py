@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "GET TASKS BY ID"
 
 
-@allure.title("GET TASKS BY ID")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "GetTasksById" request properly.
@@ -23,8 +23,8 @@ test_case = ""
 class TestGetTasksById(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_tasks_by_id_method_works(self, get_uploaded_task):
+        allure.step("Verify that response is not empty and status code is 200")
         task_id = get_uploaded_task['taskid']
         _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)
 
@@ -34,8 +34,8 @@ class TestGetTasksById(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that 'tasks' is list object.")
     def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task):
+        allure.step("Verify response properties and that 'tasks' is list object.")
         task_id = get_uploaded_task['taskid']
         _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)[0]
 

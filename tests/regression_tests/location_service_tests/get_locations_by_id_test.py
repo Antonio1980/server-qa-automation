@@ -5,11 +5,11 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "GET LOCATIONS BY ID"
 
 
 @pytest.mark.skip
-@allure.title("GET LOCATIONS BY ID")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "GetLocationsById" request properly.
@@ -24,8 +24,8 @@ test_case = ""
 class TestGetLocationById(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_locations_by_id_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().location_svc.get_locations_by_id("location_id")
 
         assert _response[0] is not None
@@ -34,8 +34,8 @@ class TestGetLocationById(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that 'locations' is list object.")
     def test_attributes_in_get_locations_by_id_method(self):
+        allure.step("Verify response properties and that 'locations' is list object.")
         _response = ApiClient().location_svc.get_locations_by_id("location_id")[0]
 
         assert isinstance(_response, dict)

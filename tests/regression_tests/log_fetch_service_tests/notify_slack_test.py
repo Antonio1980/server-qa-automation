@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "NOTIFY SLACK"
 
 
-@allure.title("NOTIFY SLACK")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "NotifySlack" request properly.
@@ -23,8 +23,8 @@ test_case = ""
 class TestNotifySlack(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_notify_slack_method_works(self, get_task):
+        allure.step("Verify that response is not empty and status code is 200")
         task_id = get_task["taskid"]
         _response = ApiClient().log_fetch_svc.notify_slack(task_id, False)
 
@@ -34,8 +34,8 @@ class TestNotifySlack(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that 'response' is dict object.")
     def test_attributes_in_notify_slack_method(self, get_task):
+        allure.step("Verify response properties and that 'response' is dict object.")
         task_id = get_task["taskid"]
         _response = ApiClient().log_fetch_svc.notify_slack(task_id, False)[0]
 

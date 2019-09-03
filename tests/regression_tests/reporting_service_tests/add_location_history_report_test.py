@@ -6,10 +6,10 @@ from config_definitions import BaseConfig
 from src.common.entities.location import Location
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "ADD LOCATION HISTORY REPORT"
 
 
-@allure.title("ADD LOCATION HISTORY REPORT")
+@allure.title(test_case)
 @allure.description("""
     Functional test.
     1. Check that service is responded on "postReport" request properly.
@@ -26,9 +26,8 @@ class TestAddLocationHistoryReport(object):
     location = Location()
 
     @automation_logger(logger)
-    @allure.step("Verify that status code is 200")
     def test_add_location_history_report_method_works(self):
-
+        allure.step("Verify that status code is 200")
         _response = ApiClient().reporting_svc.location_history_report(self.location)
 
         assert _response[1].status_code == 200
@@ -37,8 +36,8 @@ class TestAddLocationHistoryReport(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that without authorization status code is 401")
     def test_add_location_history_report_negative(self):
+        allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
         _response = api_.reporting_svc.location_history_report(self.location)

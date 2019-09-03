@@ -6,10 +6,10 @@ from src.common.api_client import ApiClient
 from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "ADD ANALYTICS REPORT"
 
 
-@allure.title("ADD ANALYTICS REPORT")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "postReport" request properly.
@@ -25,8 +25,8 @@ class TestAddAnalyticsReport(object):
     report_item = ReportItem("some_type", "some_session_id")
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_add_analytics_report_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().routing_svc.add_analytics_report("client_", self.report_item)
 
         assert _response[0] is not None

@@ -7,10 +7,10 @@ from src.common.entities.bounding_box import BoundingBox
 from src.common.entities.route import Route
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "KEEP ALIVE"
 
 
-@allure.title("KEEP ALIVE")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "keepAlive" request properly.
@@ -27,8 +27,8 @@ class TestKeepAlive(object):
     route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_keep_alive_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().routing_svc.keep_alive(self.tel_aviv_box, self.route)
 
         assert _response[0] is not None
@@ -38,8 +38,8 @@ class TestKeepAlive(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that without authorization status code is 401")
     def test_keep_alive_negative(self):
+        allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         api_.routing_svc.headers.pop("Authorization")
         _response = api_.routing_svc.keep_alive(self.tel_aviv_box, self.route)

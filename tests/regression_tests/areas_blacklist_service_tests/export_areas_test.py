@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "EXPORT AREAS"
 
 
-@allure.title("EXPORT AREAS")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service responded on 'ExportAreas' request properly.
@@ -23,8 +23,8 @@ test_case = ""
 class TestExportAreas(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_export_areas_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().areas_blacklist_svc.export_areas()
 
         assert _response[0] is not None
@@ -33,8 +33,8 @@ class TestExportAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_export_areas_method(self):
+        allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
         _response = ApiClient().areas_blacklist_svc.export_areas()[0]
 
         assert isinstance(_response, dict)

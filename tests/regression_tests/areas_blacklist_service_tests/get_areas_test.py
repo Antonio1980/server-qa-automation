@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "GET AREAS"
 
 
-@allure.title("GET AREAS")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service responded on 'GetAreas' request properly.
@@ -24,8 +24,8 @@ test_case = ""
 class TestGetAreas(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_areas_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().areas_blacklist_svc.get_areas()
 
         assert _response[0] is not None
@@ -34,8 +34,8 @@ class TestGetAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
     def test_attributes_in_get_areas_method(self):
+        allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
         _response = ApiClient().areas_blacklist_svc.get_areas()[0]
 
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
@@ -47,8 +47,8 @@ class TestGetAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify that without authorization status code is 401")
     def test_get_areas_negative(self):
+        allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
         _response = api_.areas_blacklist_svc.get_areas()

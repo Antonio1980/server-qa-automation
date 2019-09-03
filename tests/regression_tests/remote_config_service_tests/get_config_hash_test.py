@@ -5,10 +5,10 @@ from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "GET CONFIG HASH"
 
 
-@allure.title("GET CONFIG HASH")
+@allure.title(test_case)
 @allure.description("""
     Functional test.
     1. Check that service is responded on "GetConfigHash" request properly.
@@ -23,8 +23,8 @@ test_case = ""
 class TestGetConfigHash(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_hash_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().remote_config_svc.get_config_hash()
 
         assert _response[1].status_code == 200
@@ -33,8 +33,8 @@ class TestGetConfigHash(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and 'currentHash' object.")
     def test_attributes_in_get_hash(self):
+        allure.step("Verify response properties and 'currentHash' object.")
         _response = ApiClient().remote_config_svc.get_config_hash()[0]
 
         assert isinstance(_response, dict)

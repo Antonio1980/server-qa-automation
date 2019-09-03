@@ -5,11 +5,11 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "HEALTH LOCATION"
 
 
 @pytest.mark.skip
-@allure.title("HEALTH LOCATION")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "Health" request properly.
@@ -23,8 +23,8 @@ test_case = ""
 class TestHealth(object):
 
     @automation_logger(logger)
-    @allure.step("Verify response status code is 200 and properties of the response.")
     def test_health_location(self):
+        allure.step("Verify response status code is 200 and properties of the response.")
         _response = ApiClient().location_svc.health()
 
         assert _response[1].status_code == 200

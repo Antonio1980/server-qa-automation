@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "GET SYNCH RUN"
 
 
-@allure.title("GET SYNCH RUN")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service is responded on "GetSynchRun" request properly.
@@ -23,17 +23,18 @@ test_case = ""
 class TestGetSynchRun(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that response is not empty and status code is 200")
     def test_get_synch_run_method_works(self):
+        allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().messages_synch_svc.get_synch_run()
+
         assert _response[0] is not None
         assert _response[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    @allure.step("Verify response properties and that 'newMessages' is list object.")
     def test_attributes_in_get_synch_run_method(self):
+        allure.step("Verify response properties and that 'newMessages' is list object.")
         _response = ApiClient().messages_synch_svc.get_synch_run()[0]
 
         assert isinstance(_response, dict)

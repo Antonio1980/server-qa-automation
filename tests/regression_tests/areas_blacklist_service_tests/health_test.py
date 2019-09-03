@@ -5,10 +5,10 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = ""
+test_case = "HEALTH ARE BLACKLIST"
 
 
-@allure.title("HEALTH ARE BLACKLIST")
+@allure.title(test_case)
 @allure.description("""
     Functional tests.
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
@@ -22,8 +22,8 @@ test_case = ""
 class TestHealth(object):
 
     @automation_logger(logger)
-    @allure.step("Verify that status code is 200 and response properties.")
     def test_health_area_black_list(self):
+        allure.step("Verify that status code is 200 and response properties.")
         _response = ApiClient().areas_blacklist_svc.health()
 
         assert _response[1].status_code == 200
