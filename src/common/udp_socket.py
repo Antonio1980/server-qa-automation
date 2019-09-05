@@ -1,4 +1,3 @@
-import warnings
 from socket import *
 from src.common import logger
 from src.common.log_decorator import automation_logger

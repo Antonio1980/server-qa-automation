@@ -40,8 +40,8 @@ class TestRoutingSvcCache(object):
 
         run_time = time.perf_counter() + 5.0
         while time.perf_counter() <= run_time:
+            time.sleep(0.8)
             self.api_.routing_svc.keep_alive(self.box, self.route, cars, pedestrian, bikes)
-        time.sleep(3.0)
 
         allure.step("Verify that My Endpoint is returned from Service cache.")
         TestRoutingSvcCache.endpoints = self.api_.routing_svc.get_endpoints()[0]
@@ -64,7 +64,7 @@ class TestRoutingSvcCache(object):
 
     @automation_logger(logger)
     def test_endpoints_after(self):
-        time.sleep(1.0)
+        time.sleep(4.0)
         allure.step("Verify that My Endpoint is removed from svc. cache if keep alive request didn't send for 4 sec.")
         endpoints_after = self.api_.routing_svc.get_endpoints()[0]
 
