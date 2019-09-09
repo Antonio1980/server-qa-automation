@@ -12,15 +12,14 @@ test_case = "LIVENESS HEALTH"
 @allure.story("R&D team wants to know the 'Health' status of the services.")
 @allure.title(test_case)
 @allure.description("""
-    Functional tests.
+    Health tests.
     1. Liveness for AreBlackList service.
-    2. Liveness for Location service. - ignored.
-    3. Liveness for LogFetch service.
-    4. Liveness for MessagesSynch service.
-    5. Liveness for Messages service.
-    6. Liveness for RemoteConfig service.
-    7. Liveness for Reporting service.
-    8. Liveness for Routing service.
+    2. Liveness for LogFetch service.
+    3. Liveness for MessagesSynch service.
+    4. Liveness for Messages service.
+    5. Liveness for RemoteConfig service.
+    6. Liveness for Reporting service.
+    7. Liveness for Routing service.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_health_test.py",
@@ -54,20 +53,6 @@ class TestHealthLiveness(object):
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
-    @pytest.mark.skip
-    @automation_logger(logger)
-    def test_health_location(self):
-        allure.step("Verify response status code is 200 and properties of the response.")
-
-        _response = self.api_.location_svc.health()
-
-        assert _response[1].status_code == 200
-        assert isinstance(_response[0], dict)
-        assert "status" in _response[0].keys()
-        assert _response[0]["status"] == "UP"
-
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
-
     @automation_logger(logger)
     def test_health_log_fetch(self):
         allure.step("Verify that status code is 200 and response properties.")
@@ -89,7 +74,7 @@ class TestHealthLiveness(object):
         assert isinstance(_response[0]["serviceVersion"], dict)
         assert "version" in _response[0]["serviceVersion"].keys()
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
     def test_health_message_synch(self):
@@ -105,7 +90,7 @@ class TestHealthLiveness(object):
         assert isinstance(_response[0]["cpuUsage"], dict)
         assert "user" and "system" in _response[0]["cpuUsage"]
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
     @automation_logger(logger)
     def test_health_messages(self):
@@ -128,7 +113,7 @@ class TestHealthLiveness(object):
         assert isinstance(_response[0]["serviceVersion"], dict)
         assert "version" in _response[0]["serviceVersion"].keys()
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 5 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")
 
     @automation_logger(logger)
     def test_health_remote_config(self):
@@ -151,7 +136,7 @@ class TestHealthLiveness(object):
         assert isinstance(_response[0]["serviceVersion"], dict)
         assert "version" in _response[0]["serviceVersion"].keys()
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 6 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 5 PASSED ===========")
 
     @automation_logger(logger)
     def test_health_reporting(self):
@@ -164,7 +149,7 @@ class TestHealthLiveness(object):
         assert "status" in _response[0].keys()
         assert _response[0]["status"] == "UP"
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 7 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 6 PASSED ===========")
 
     @automation_logger(logger)
     def test_health_routing(self):
