@@ -9,7 +9,7 @@ from src.common.utils.utils import Utils
 class UdpMessage(Entity):
     def __init__(self, debug_mode=True):
         super(UdpMessage, self).__init__()
-        self.type = "LocationUpdate2"
+        self.type = "LocationUpdate3"
         self.data = dict()
         self.data[DEBUG_MODE] = debug_mode
 
