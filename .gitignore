@@ -216,6 +216,7 @@ fabric.properties
 
 
 src/repository/allure_result/*
+src/repository/allure_results/*
 src/repository/allure_report/*
 .log
 /failures
