@@ -16,8 +16,8 @@ class Utils:
     def to_json_dumps(object_, key=None):
         """
         Converts a class object to JSON object.
-        :param key: key/value pair to delete (optional).
         :param object_: a class instance.
+        :param key: key/value pair to delete (optional).
         :return: a JSON object (python dictionary).
         """
         if key:
@@ -46,7 +46,7 @@ class Utils:
                     ".918 +00:00"
         curr_date = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + ".918 +00:00"
         future_date = (datetime.datetime.utcnow() + datetime.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S") + \
-                    ".918 +00:00"
+                      ".918 +00:00"
         return past_date, curr_date, future_date
 
     @staticmethod

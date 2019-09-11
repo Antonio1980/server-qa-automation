@@ -17,7 +17,7 @@ class MessagesSynchService(ServiceBase):
     def get_synch_run(self):
         uri = self.url + "sync/run"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -37,7 +37,7 @@ class MessagesSynchService(ServiceBase):
     def get_synch_access(self):
         uri = self.url + "sync/access"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -57,7 +57,7 @@ class MessagesSynchService(ServiceBase):
     def health(self):
         uri = self.url + "health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)

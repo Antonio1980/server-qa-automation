@@ -15,7 +15,7 @@ test_case = "GET TASKS BY ID"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/get_tasks_by_id_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/get_tasks_by_id_test.py",
                  "TestGetTasksById")
 @pytest.mark.usefixtures("run_time_counter", "get_uploaded_task")
 @pytest.mark.regression

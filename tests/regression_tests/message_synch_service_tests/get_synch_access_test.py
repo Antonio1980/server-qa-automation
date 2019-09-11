@@ -15,7 +15,7 @@ test_case = "GET SYNCH ACCESS"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/message_synch_service_tests/get_synch_access_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_synch_service_tests/get_synch_access_test.py",
                  "TestGetSynchAccess")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression

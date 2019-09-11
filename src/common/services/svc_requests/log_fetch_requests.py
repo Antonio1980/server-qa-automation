@@ -20,7 +20,7 @@ class LogFetchServiceRequest(RequestSchema):
         return body
 
     @automation_logger(logger)
-    def notify_slack(self,task_id, notify_slack):
+    def notify_slack(self, task_id, notify_slack):
         self.inner[TASK_ID] = task_id
         self.inner[SLACK_NOTIFY_STATUS] = notify_slack
         body = self.from_json("inner")
@@ -36,11 +36,11 @@ class LogFetchServiceRequest(RequestSchema):
             ################ start ######################
             ################ start ######################
                             {text}
-            ################ end ########################
-            ################ end ########################
-            ################ end ########################
-            ################ end ########################
-            ################ end ########################
+            ################# end ########################
+            ################# end ########################
+            ################# end ########################
+            ################# end ########################
+            ################# end ########################
         """
         logger.logger.info(REQUEST_BODY.format(body))
         return body

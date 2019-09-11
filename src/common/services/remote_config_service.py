@@ -17,7 +17,7 @@ class RemoteConfigService(ServiceBase):
     @automation_logger(logger)
     def get_config(self):
         try:
-            logger.logger.info(F"API Service URL is {self.url}")
+            logger.logger.info(F"API Service URL is GET- {self.url}")
             _response = requests.get(self.url, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -37,7 +37,7 @@ class RemoteConfigService(ServiceBase):
     def add_remote_config(self, remote_config):
         try:
             payload = RemoteConfigServiceRequest().add_config(remote_config)
-            logger.logger.info(F"API Service URL is {self.url}")
+            logger.logger.info(F"API Service URL is POST- {self.url}")
             _response = requests.post(self.url, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -57,7 +57,7 @@ class RemoteConfigService(ServiceBase):
     def get_config_hash(self):
         uri = self.url + "hash"
         try:
-            logger.logger.info(F"API Service URL is {self.url}")
+            logger.logger.info(F"API Service URL is GET- {self.url}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -77,7 +77,7 @@ class RemoteConfigService(ServiceBase):
     def health(self):
         uri = self.url + "health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)

@@ -14,8 +14,7 @@ test_case = "HEALTH LOG FETCH"
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/log_fetch_service_tests/health_test.py",
-                 "TestHealth")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/health_test.py", "TestHealth")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch

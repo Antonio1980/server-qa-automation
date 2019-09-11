@@ -22,8 +22,7 @@ test_case = "LIVENESS HEALTH"
     7. Liveness for Routing service.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_health_test.py",
-                 "TestHealthLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/liveness_health_test.py", "TestHealthLiveness")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.liveness
 class TestHealthLiveness(object):

@@ -14,4 +14,4 @@ class Entity(object):
                                          for k in sorted(self.__dict__.keys())))
 
     def to_json(self):
-        return json.loads(json.dumps(self, default=lambda o: vars(o), sort_keys=True, indent=4))
+        return json.loads(json.dumps(self, default=lambda obj: vars(obj), sort_keys=True, indent=4))

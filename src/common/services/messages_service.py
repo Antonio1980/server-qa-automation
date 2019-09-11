@@ -18,7 +18,7 @@ class MessagesService(ServiceBase):
     def get_messages(self):
         uri = self.url + "messages/"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -39,7 +39,7 @@ class MessagesService(ServiceBase):
         uri = self.url + "messages/"
         payload = MessagesServiceRequest().add_messages(user_id, message_type, task_id)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -59,7 +59,7 @@ class MessagesService(ServiceBase):
     def get_user_messages(self, user_id):
         uri = self.url + "messages/user/" + str(user_id)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -79,7 +79,7 @@ class MessagesService(ServiceBase):
     def delete_user_messages(self, user_id):
         uri = self.url + "messages/" + str(user_id)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -99,7 +99,7 @@ class MessagesService(ServiceBase):
     def health(self):
         uri = self.url + "health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)

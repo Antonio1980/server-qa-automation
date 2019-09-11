@@ -51,10 +51,6 @@ pipeline {
                 sh 'rm -rf  ./target/allure-results/*'
                 }
             }
-   
-            
-      
-        
         
         stage('apply') {
             steps {
@@ -75,7 +71,7 @@ pipeline {
                             includeProperties: false,
                             jdk: '',
                             properties: [],
-                       //     reportBuildPolicy: 'ALWAYS',
+                            // reportBuildPolicy: 'ALWAYS',
                             results: [[path: 'target/allure-results']]
             ])
             }
@@ -88,7 +84,6 @@ pipeline {
       failure {
         wrap([$class: 'BuildUser']) {
         slackSend (color: '#FF0002', message: "FAILED: ,triggerd by , for logs: (${env.BUILD_URL}allure/))  ")
-    
          }
        }
     }

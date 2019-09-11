@@ -15,7 +15,7 @@ test_case = "GET VERSION INFO"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/get_version_info_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/get_version_info_test.py",
                  "TestGetVersionInfoReportingSvc")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression

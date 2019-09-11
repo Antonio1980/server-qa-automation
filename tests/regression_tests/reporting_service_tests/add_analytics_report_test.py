@@ -17,7 +17,7 @@ test_case = "ADD ANALYTICS REPORT"
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/reporting_service_tests/add_analytics_report_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/add_analytics_report_test.py",
                  "TestAddAnalyticsReport")
 @pytest.mark.regression
 @pytest.mark.regression_reporting

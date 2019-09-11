@@ -15,7 +15,7 @@ test_case = "EXPORT AREAS"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/areas_blacklist_service_tests/export_areas_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/export_areas_test.py",
                  "TestExportAreas")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression

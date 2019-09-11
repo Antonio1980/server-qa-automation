@@ -6,6 +6,7 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.entities.bounding_box import BoundingBox
 from src.common.entities.route import Route
+from src.common.enums import DetectedType
 from src.common.log_decorator import automation_logger
 
 test_case = "ROUTING CACHE"
@@ -18,15 +19,14 @@ test_case = "ROUTING CACHE"
     2. Verify that if 'KeepAlive' didn't send for 4 sec. it will be removed from Routing svc. cache.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/functional_tests/routing_service_cache_test.py",
-                 "TestRoutingSvcCache")
+@allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/routing_service_cache_test.py", "TestRoutingSvcCache")
 @pytest.mark.usefixtures("run_time_counter", )
 @pytest.mark.functional
 class TestRoutingSvcCache(object):
     box = BoundingBox().set_bounding_box(ne_lat=32.19428911708705, ne_lon=34.769648982994454,
                                          sw_lat=32.166102800738855, sw_lon=34.74080987166633)
     route = Route()
-    route = route.set_route(ip=route.ip, name="AntonQA", priority=1, port_list=[88, 99] )
+    route = route.set_route(ip=route.ip, name="AntonQA", priority=1, port_list=[88, 99])
 
     api_ = ApiClient()
     endpoints = None
@@ -57,8 +57,9 @@ class TestRoutingSvcCache(object):
         assert my_endpoint["name"] == self.route.name
         assert my_endpoint["priority"] == self.route.priority
         assert my_endpoint["minPort"] == self.route.min_port and my_endpoint["maxPort"] == self.route.max_port
-        assert my_endpoint["countByType"]["BIKE"] == bikes and my_endpoint["countByType"]["CAR"] == cars and \
-               my_endpoint["countByType"]["PEDESTRIAN"] == pedestrian
+        assert my_endpoint["countByType"][DetectedType.BIKE.value] == bikes and \
+               my_endpoint["countByType"][DetectedType.CAR.value] == cars and \
+               my_endpoint["countByType"][DetectedType.PEDESTRIAN.value] == pedestrian
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 

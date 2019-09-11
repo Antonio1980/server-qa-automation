@@ -1,3 +1,5 @@
+from src.common.enums import DetectedType
+
 REQUEST_BODY = "Request body: {0}"
 RESPONSE_TEXT = "Service Response: {0}"
 
@@ -8,7 +10,7 @@ DATA = "data"
 CLIENT_DATA = "clientData"
 CLIENT_DATA_TYPE = "clientDataType"
 LATITUDE = "latitude"
-LONGTITUDE = "longitude"
+LONGITUDE = "longitude"
 BEARING = "bearing"
 VELOCITY = "velocity"
 HORIZONTAL_ACCURACY = "horizontalAccuracy"
@@ -72,9 +74,9 @@ MAX_LAT = "maxLat"
 MAX_LON = "maxLon"
 MIN_LAT = "minLat"
 MIN_LON = "minLon"
-CAR = "CAR"
-PEDESTRIAN = "PEDESTRIAN"
-BIKE = "BIKE"
+CAR = DetectedType.CAR.value
+PEDESTRIAN = DetectedType.PEDESTRIAN.value
+BIKE = DetectedType.BIKE.value
 IP = "ip"
 MIN_PORT = "minPort"
 MAX_PORT = "maxPort"

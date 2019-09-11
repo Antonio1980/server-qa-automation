@@ -13,7 +13,6 @@ class Slack:
     @automation_logger(logger)
     def send_message(cls, message: str):
         data = {
-
             "text": message,
             "parse": "full",
             "link_names": "true"

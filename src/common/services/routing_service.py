@@ -18,7 +18,7 @@ class RoutingService(ServiceBase):
     def get_endpoints(self):
         uri = self.url + "endpoints"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(url=uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -38,7 +38,7 @@ class RoutingService(ServiceBase):
     def delete_endpoints(self):
         uri = self.url + "endpoints"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(url=uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -58,7 +58,7 @@ class RoutingService(ServiceBase):
     def get_count_by_type(self):
         uri = self.url + "v2/count-by-type"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(url=uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -86,7 +86,7 @@ class RoutingService(ServiceBase):
         uri = self.url + "v2/keepalive"
         try:
             payload = RoutingServiceRequest().keep_alive(bounding_box, route, args)
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -107,7 +107,7 @@ class RoutingService(ServiceBase):
         uri = self.url + "v4/route"
         try:
             payload = RoutingServiceRequest().add_route(location)
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -127,7 +127,7 @@ class RoutingService(ServiceBase):
     def get_version_info(self):
         uri = self.url + "version-info"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -147,7 +147,7 @@ class RoutingService(ServiceBase):
     def health(self):
         uri = self.url + "actuator/health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)

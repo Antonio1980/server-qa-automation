@@ -1,5 +1,3 @@
-
-
 class DeviceApp(object):
     def __init__(self, os_type="iOS", os_version="iOS 12.4", device_model="iPhone 7"):
         super(DeviceApp, self).__init__()

@@ -14,27 +14,23 @@ class UdpMessage(Entity):
         self.data[DEBUG_MODE] = debug_mode
 
     @automation_logger(logger)
-    def set_udp_message(self, *args):
+    def get_udp_message(self, *args):
         """
-
+        Builds UDP message with dictionary structure.
         :param args: latitude- str, longitude- str, bearing- int (0-1), velocity- int (0-1), accuracy- float
+        :return: Request body as python object UdpMessage().
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
         self.data[CLIENT_DATA] = dict()
         timestamp_ = Utils.get_synch_timestamp()
         self.data[CLIENT_DATA][TIMESTAMP] = timestamp_
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
-        self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = "CAR"
+        self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = DetectedType.CAR.value
         self.data[CLIENT_DATA][LATITUDE] = str(latitude)
-        self.data[CLIENT_DATA][LONGTITUDE] = str(longitude)
+        self.data[CLIENT_DATA][LONGITUDE] = str(longitude)
         self.data[CLIENT_DATA][BEARING] = bearing
         self.data[CLIENT_DATA][VELOCITY] = velocity
         self.data[CLIENT_DATA][HORIZONTAL_ACCURACY] = float(accuracy)
         self.data[CLIENT_DATA][SOURCE] = "QA Test"
         logger.logger.info(F"UDP Message is {self.to_json()}")
-        return self
-
-    @automation_logger(logger)
-    def get_udp_message(self, *args):
-        (latitude, longitude, bearing, velocity, accuracy) = args
-        return Utils.to_json_dumps(self.set_udp_message(latitude, longitude, bearing, velocity, accuracy)).encode("utf8")
+        return Utils.to_json_dumps(self).encode("utf8")

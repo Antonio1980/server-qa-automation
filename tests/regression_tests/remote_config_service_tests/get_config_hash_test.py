@@ -16,7 +16,7 @@ test_case = "GET CONFIG HASH"
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/get_config_hash_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/get_config_hash_test.py",
                  "TestGetConfigHash")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config

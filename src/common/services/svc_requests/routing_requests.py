@@ -1,6 +1,4 @@
-import json
 from src.common import logger
-from src.common.utils.utils import Utils
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
 from src.common.services.svc_requests.request_schema import RequestSchema
@@ -58,7 +56,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[CLIENT_DATA_TYPE] = location.client_data_type
         self.inner[HORIZONTAL_ACCURACY] = location.horizontal_accuracy
         self.inner[LATITUDE] = location.latitude
-        self.inner[LONGTITUDE] = location.longitude
+        self.inner[LONGITUDE] = location.longitude
         self.inner[MAX_ACCELERATION] = location.max_acceleration
         self.inner[MAX_ANGULAR_CHANGE] = location.max_angular_change
         self.inner[MAX_DECELERATION] = location.max_deceleration

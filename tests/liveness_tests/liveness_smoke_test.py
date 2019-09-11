@@ -25,8 +25,7 @@ test_case = "LIVENESS SMOKE"
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/liveness_smoke_test.py",
-                 "TestSmokeLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/liveness_smoke_test.py", "TestSmokeLiveness")
 @pytest.mark.liveness
 class TestSmokeLiveness(object):
     issues = None
@@ -84,7 +83,7 @@ class TestSmokeLiveness(object):
 
     @automation_logger(logger)
     def test_user_messages_liveness(self):
-        allure.step("Verify that service returns messges per user id")
+        allure.step("Verify that service returns messages per user id")
 
         _response = ApiClient().messages_svc.get_user_messages("aaa")
 

@@ -19,7 +19,7 @@ class AreasBlacklistService(ServiceBase):
     def get_areas(self):
         uri = self.url + "areas"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET - {uri}")
             _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -39,7 +39,7 @@ class AreasBlacklistService(ServiceBase):
     def export_areas(self):
         uri = self.url + "areas/export"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET - {uri}")
             _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -66,7 +66,7 @@ class AreasBlacklistService(ServiceBase):
         uri = self.url + "areas"
         payload = AreasBlacklistServiceRequest().add_areas(description, args)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST - {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -86,7 +86,7 @@ class AreasBlacklistService(ServiceBase):
     def delete_areas(self):
         uri = self.url + "areas"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -106,7 +106,7 @@ class AreasBlacklistService(ServiceBase):
     def delete_areas_by_id(self, shape_id: str):
         uri = self.url + "areas/" + shape_id
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -127,7 +127,7 @@ class AreasBlacklistService(ServiceBase):
         uri = self.url + "areas/inBox"
         payload = AreasBlacklistServiceRequest().get_areas_inbox(bounding_box)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -148,7 +148,7 @@ class AreasBlacklistService(ServiceBase):
         uri = self.url + "areas/activate"
         payload = AreasBlacklistServiceRequest().activate_area(shape_id, status)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
@@ -168,7 +168,7 @@ class AreasBlacklistService(ServiceBase):
     def health(self):
         uri = self.url + "health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)

@@ -16,7 +16,7 @@ test_case = "GET AREAS"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/areas_blacklist_service_tests/get_areas_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/get_areas_test.py",
                  "TestGetAreas")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression

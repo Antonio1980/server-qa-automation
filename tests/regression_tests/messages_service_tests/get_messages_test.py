@@ -16,7 +16,7 @@ test_case = "GET MESSAGES"
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/messages_service_tests/get_messages_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/messages_service_tests/get_messages_test.py",
                  "TestGetMessages")
 @pytest.mark.regression
 @pytest.mark.regression_messages

@@ -16,7 +16,7 @@ test_case = "GET ENDPOINTS"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/routing_service_tests/get_endpoints_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/get_endpoints_test.py",
                  "TestGetEndpoints")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression

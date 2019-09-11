@@ -5,7 +5,7 @@ from src.common.utils.utils import Utils
 class AppClient(object):
     def __init__(self):
         super(AppClient, self).__init__()
-        self._id = Utils.get_uuid()
+        self.id = Utils.get_uuid()
         self.device = DeviceApp()
 
     def __repr__(self):

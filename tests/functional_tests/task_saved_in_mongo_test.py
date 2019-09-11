@@ -14,8 +14,7 @@ test_case = "TASK SAVED IN MONGO"
     1. Verify that uploaded Task is saved in Mongo DB.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/functional_tests/task_saved_in_mongo_test.py",
-                 "TestTaskSavedInMongo")
+@allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/task_saved_in_mongo_test.py", "TestTaskSavedInMongo")
 @pytest.mark.usefixtures("run_time_counter", "get_uploaded_task", "env")
 @pytest.mark.functional
 class TestTaskSavedInMongo(object):

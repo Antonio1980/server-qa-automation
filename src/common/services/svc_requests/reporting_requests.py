@@ -14,7 +14,7 @@ class ReportingServiceRequest(RequestSchema):
         body_list = list()
         for item in report_item_list:
             inner = dict()
-            inner[CLIENT_ID] = app_client._id
+            inner[CLIENT_ID] = app_client.id
             inner[ID] = item.id
             inner[PARAMS] = dict()
             if item.report_type == "AppStart":
@@ -48,7 +48,7 @@ class ReportingServiceRequest(RequestSchema):
         self.inner[DATA][0][CLIENT_DATA_TYPE] = location.client_data_type
         self.inner[DATA][0][HORIZONTAL_ACCURACY] = location.horizontal_accuracy
         self.inner[DATA][0][LATITUDE] = location.latitude
-        self.inner[DATA][0][LONGTITUDE] = location.longitude
+        self.inner[DATA][0][LONGITUDE] = location.longitude
         self.inner[DATA][0][MAX_ACCELERATION] = location.max_acceleration
         self.inner[DATA][0][MAX_ANGULAR_CHANGE] = location.max_angular_change
         self.inner[DATA][0][MAX_DECELERATION] = location.max_deceleration

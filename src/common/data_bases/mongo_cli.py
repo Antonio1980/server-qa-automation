@@ -32,12 +32,3 @@ class MongoCli:
         except Exception as e:
             logger.logger.error(f"{e}")
             raise AutomationError(f"find_by_query failed with error: {e}")
-
-
-# if __name__ == "__main__":
-#     m = MongoCli()
-#     db_names = m.get_data_bases()[3]
-#     db = m.mongo_client.get_database(db_names)
-#     c = db.get_collection('areas')
-#     r = m.find_by_query(db_names, 'areas', {"a": "1"})
-#     pass

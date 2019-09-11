@@ -16,7 +16,7 @@ test_case = "ADD REMOTE CONFIG"
     """)
 @pytest.mark.usefixtures("run_time_counter", "remote_config")
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/regression_tests/remote_config_service_tests/add_remote_config_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/add_remote_config_test.py",
                  "TestAddRemoteConfig")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config

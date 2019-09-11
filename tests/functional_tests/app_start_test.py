@@ -22,12 +22,12 @@ test_case = "APP START"
     2. Check that report saved in Elastic DB as well.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/functional_tests/app_start_test.py", "TestAppStart")
+@allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/app_start_test.py", "TestAppStart")
 @pytest.mark.usefixtures("run_time_counter", "env")
 @pytest.mark.functional
 class TestAppStart(object):
     client_ = AppClient()
-    client_id = client_._id
+    client_id = client_.id
     collection_name = "reportItem"
     report_type, session_id = "AppStart", Utils.get_uuid()
     report_item = ReportItem(report_type, session_id)
@@ -47,7 +47,7 @@ class TestAppStart(object):
         assert "sessionId" and "type" and "clientId" and "params" in q_result["report"].keys()
         assert q_result["report"]["sessionId"] == self.report_item.session_id
         assert q_result["report"]["type"] == self.report_item.report_type
-        assert q_result["report"]["clientId"] == self.client_._id
+        assert q_result["report"]["clientId"] == self.client_.id
         assert isinstance(q_result["report"]["params"], dict)
         assert "generalInfo" in q_result["report"]["params"].keys()
         assert isinstance(q_result["report"]["params"]["generalInfo"], dict)
@@ -78,7 +78,8 @@ class TestAppStart(object):
         assert q_result["hits"]["hits"][0]["_source"]["id"] == self.report_item.id
         assert "report" in q_result["hits"]["hits"][0]["_source"].keys()
         assert isinstance(q_result["hits"]["hits"][0]["_source"]["report"], dict)
-        assert "sessionId" and "type" and "clientId" and "params" in q_result["hits"]["hits"][0]["_source"]["report"].keys()
+        assert "sessionId" and "type" and "clientId" and \
+               "params" in q_result["hits"]["hits"][0]["_source"]["report"].keys()
         assert q_result["hits"]["hits"][0]["_source"]["report"]["sessionId"] == self.report_item.session_id
         assert q_result["hits"]["hits"][0]["_source"]["report"]["type"] == self.report_type
         assert q_result["hits"]["hits"][0]["_source"]["report"]["clientId"] == self.client_id

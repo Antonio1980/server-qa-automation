@@ -22,7 +22,7 @@ BUFSIZ = 1024
     """)
 @pytest.mark.usefixtures("run_time_counter", "endpoints", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "tests/liveness_tests/location_liveness_test.py", "TestLiveness")
+@allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness
 class TestLiveness(object):
     issues = ""

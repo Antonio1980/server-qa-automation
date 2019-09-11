@@ -18,7 +18,7 @@ class LogFetchService(ServiceBase):
     def get_tasks(self):
         uri = self.url + "tasks"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -38,7 +38,7 @@ class LogFetchService(ServiceBase):
     def get_tasks_by_user_id(self, user_id):
         uri = self.url + "tasks/group/" + str(user_id)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -51,14 +51,14 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_roup_tasks_by_id failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_tasks_by_user_id failed with error: {e}")
             raise e
 
     @automation_logger(logger)
     def get_tasks_by_id(self, task_id):
         uri = self.url + "tasks/" + str(task_id) + "/file"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -79,7 +79,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks/"
         payload = LogFetchServiceRequest().add_task(user_id, description, notify_slack)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -100,7 +100,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks/notify"
         payload = LogFetchServiceRequest().notify_slack(task_id, notify_slack)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -122,8 +122,8 @@ class LogFetchService(ServiceBase):
         headers_ = {"Content-Type": "application/octet-stream"}
         payload = LogFetchServiceRequest().upload_file(text)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
-            _response = requests.post(uri, data=payload,headers=headers_)
+            logger.logger.info(F"API Service URL is POST- {uri}")
+            _response = requests.post(uri, data=payload, headers=headers_)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -135,14 +135,14 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} upload_tasks failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} upload_file_task failed with error: {e}")
             raise e
 
     @automation_logger(logger)
     def delete_tasks(self, user_id):
         uri = self.url + "tasks/" + str(user_id)
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
@@ -162,7 +162,7 @@ class LogFetchService(ServiceBase):
     def health(self):
         uri = self.url + "health"
         try:
-            logger.logger.info(F"API Service URL is {uri}")
+            logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
             try:
                 body = json.loads(_response.text)
