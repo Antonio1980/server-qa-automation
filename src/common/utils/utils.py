@@ -16,13 +16,15 @@ class Utils:
     def to_json_dumps(object_, key=None):
         """
         Converts a class object to JSON object.
+        :param key: key/value pair to delete (optional).
         :param object_: a class instance.
         :return: a JSON object (python dictionary).
         """
         if key:
-            return json.dumps(json.loads(json.dumps(object_, default=lambda o: vars(o), sort_keys=True, indent=4)).pop(key))
+            return json.dumps(json.loads(json.dumps(object_, default=lambda obj: vars(obj), sort_keys=True, indent=4)
+                                         ).pop(key))
         else:
-            return json.dumps(object_, default=lambda o: vars(o), sort_keys=True, indent=4)
+            return json.dumps(object_, default=lambda obj: vars(obj), sort_keys=True, indent=4)
 
     @staticmethod
     @automation_logger(logger)
