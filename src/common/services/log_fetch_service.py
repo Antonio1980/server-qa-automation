@@ -19,7 +19,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
+            _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -39,7 +39,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks/group/" + str(user_id)
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
+            _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -59,7 +59,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks/" + str(task_id) + "/file"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
+            _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -80,7 +80,7 @@ class LogFetchService(ServiceBase):
         payload = LogFetchServiceRequest().add_task(user_id, description, notify_slack)
         try:
             logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.post(uri, data=payload, headers=self.headers_without_token)
+            _response = requests.post(uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -101,7 +101,7 @@ class LogFetchService(ServiceBase):
         payload = LogFetchServiceRequest().notify_slack(task_id, notify_slack)
         try:
             logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.post(uri, data=payload, headers=self.headers_without_token)
+            _response = requests.post(uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:

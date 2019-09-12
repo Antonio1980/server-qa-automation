@@ -38,7 +38,7 @@ class RemoteConfigService(ServiceBase):
         try:
             payload = RemoteConfigServiceRequest().add_config(remote_config)
             logger.logger.info(F"API Service URL is POST- {self.url}")
-            _response = requests.post(self.url, data=payload, headers=self.headers_without_token)
+            _response = requests.post(self.url, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
