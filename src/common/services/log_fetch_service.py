@@ -120,7 +120,7 @@ class LogFetchService(ServiceBase):
     def upload_file_task(self, task_id, text):
         uri = self.url + "upload/" + str(task_id)
         headers_ = {"Content-Type": "application/octet-stream"}
-        payload = LogFetchServiceRequest().upload_file(text)
+        payload = LogFetchServiceRequest().upload_file(text) #SHOULD NOT SEND TOKEN
         try:
             logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(uri, data=payload, headers=headers_)
