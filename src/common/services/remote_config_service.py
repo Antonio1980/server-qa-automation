@@ -9,10 +9,11 @@ from src.common.services.svc_requests.remote_config_requests import RemoteConfig
 
 
 class RemoteConfigService(ServiceBase):
-    def __init__(self):
+    def __init__(self, auth_token):
         super(RemoteConfigService, self).__init__()
         self.proxy_url = "api/"
         self.url = self.api_base_url + "remote-config-service/" + self.proxy_url
+        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
     def get_config(self):
