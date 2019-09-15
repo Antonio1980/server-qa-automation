@@ -30,7 +30,7 @@ class TestAddRemoteConfig(object):
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_add_remote_config_method(self, remote_config):
@@ -42,4 +42,4 @@ class TestAddRemoteConfig(object):
         assert isinstance(_response["data"], dict)
         assert _response["data"] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

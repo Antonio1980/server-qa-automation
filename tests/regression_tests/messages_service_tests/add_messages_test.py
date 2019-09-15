@@ -30,7 +30,7 @@ class TestAddMessages(object):
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_add_messages_method(self):
@@ -41,4 +41,4 @@ class TestAddMessages(object):
         assert "newMsg" in _response.keys()
         assert isinstance(_response["newMsg"], dict)
 
-        logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

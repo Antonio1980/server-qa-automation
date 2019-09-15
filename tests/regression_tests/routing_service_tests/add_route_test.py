@@ -27,7 +27,7 @@ class TestAddRoute(object):
     @automation_logger(logger)
     def test_add_route_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.add_route_v4(self.location)
+        _response = ApiClient().routing_svc.add_route_v3(self.location)
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -37,7 +37,7 @@ class TestAddRoute(object):
     @automation_logger(logger)
     def test_properties_in_add_route_method(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.add_route_v4(self.location)[0]
+        _response = ApiClient().routing_svc.add_route_v3(self.location)[0]
 
         assert isinstance(_response, dict)
         assert "url" and "ip" and "port" and "minPort" and "maxPort" and "name" and "countByType" in _response.keys()
@@ -45,4 +45,4 @@ class TestAddRoute(object):
         assert _response["name"] is not None
         assert isinstance(_response["countByType"], dict)
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

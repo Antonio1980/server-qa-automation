@@ -30,7 +30,7 @@ class TestGetMessages(object):
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_get_messages_method(self):
@@ -42,4 +42,4 @@ class TestGetMessages(object):
         assert isinstance(_response["messagesArray"], list)
         assert len(_response["messagesArray"]) > 0
 
-        logger.logger.info(F"============ TEST CASE {test_case} /1 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

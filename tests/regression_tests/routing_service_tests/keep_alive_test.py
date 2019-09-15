@@ -49,4 +49,4 @@ class TestKeepAlive(object):
         assert _response[0]['message'] == "the token received is not valid: No token was provided"
         assert _response[1].status_code == 401
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

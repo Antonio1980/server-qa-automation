@@ -30,7 +30,7 @@ class TestGetConfigHash(object):
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_get_hash(self):
@@ -41,4 +41,4 @@ class TestGetConfigHash(object):
         assert "currentHash" in _response.keys()
         assert _response["currentHash"] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

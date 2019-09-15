@@ -30,7 +30,7 @@ class TestGetRemoteConfig(object):
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_get_remote_config(self):
@@ -42,4 +42,4 @@ class TestGetRemoteConfig(object):
         assert isinstance(_response["data"], dict)
         assert "swagger" and "param1" and "param2" and "param3" in _response["data"].keys()
 
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

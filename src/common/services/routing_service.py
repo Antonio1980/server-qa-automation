@@ -103,8 +103,8 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_route_v4(self, location):
-        uri = self.url + "v4/route"
+    def add_route_v3(self, location):
+        uri = self.url + "v3/route"
         try:
             payload = RoutingServiceRequest().add_route(location)
             logger.logger.info(F"API Service URL is POST- {uri}")
@@ -120,7 +120,7 @@ class RoutingService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} add_route failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} add_route_v3 failed with error: {e}")
             raise e
 
     @automation_logger(logger)
