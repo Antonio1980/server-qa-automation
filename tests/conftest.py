@@ -12,7 +12,7 @@ from src.common.udp_socket import UdpSocket
 def check_environment_marks(pytestconfig, env):
     markers_arg = pytestconfig.getoption('-m')
     if env.lower() == "prod" and markers_arg != "liveness":
-        pytest.skip("Those tests shouldn't run on PRODUCTION !!!", allow_module_level=True)
+        pytest.exit("Production env can only run liveness!")
 
 
 @pytest.fixture(scope="class")
