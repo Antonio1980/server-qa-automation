@@ -38,6 +38,6 @@ pipeline:
       JOB: qa-regression-testing
       TOKEN: gCzkLaa1cQUiMFGhYAKE
       TEST: regression
-      BUILDNUM: 
-      REPO:
+      BUILDNUM: ${DRONE_COMMIT}
+      REPO: qa_automation
       ENV: int
