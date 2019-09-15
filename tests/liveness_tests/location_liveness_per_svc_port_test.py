@@ -8,7 +8,7 @@ from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
-test_case = "LIVENESS PER PORT"
+test_case = "LIVENESS LOCATION PER PORT"
 BUFSIZ = 1024
 
 

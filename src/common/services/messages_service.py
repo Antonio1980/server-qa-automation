@@ -9,10 +9,11 @@ from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 
 
 class MessagesService(ServiceBase):
-    def __init__(self):
+    def __init__(self, auth_token):
         super(MessagesService, self).__init__()
         self.proxy_url = "api/"
         self.url = self.api_base_url + "messages-service/" + self.proxy_url
+        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
     def get_messages(self):
