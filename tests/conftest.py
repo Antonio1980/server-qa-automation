@@ -8,6 +8,13 @@ from src.common.log_decorator import automation_logger
 from src.common.udp_socket import UdpSocket
 
 
+@pytest.fixture(scope="session", autouse=True)
+def check_environment_marks(pytestconfig, env):
+    markers_arg = pytestconfig.getoption('-m')
+    if env.lower() == "prod" and markers_arg != "liveness":
+        pytest.skip("Those tests shouldn't run on PRODUCTION !!!", allow_module_level=True)
+
+
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def run_time_counter(request):
@@ -29,15 +36,15 @@ def run_time_counter(request):
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def socket_(request):
-    socket_ = UdpSocket()
-    logger.logger.info(f"UDP Socket ready for connection: {socket_.__class__.__name__}")
+    sock = UdpSocket()
+    logger.logger.info(f"UDP Socket ready for connection: {sock.__class__.__name__}")
 
     def close_socket():
         logger.logger.info(f"Closing UDP Socket.")
-        socket_.__exit__()
+        sock.__exit__()
 
     request.addfinalizer(close_socket)
-    return socket_
+    return sock
 
 
 @pytest.fixture(scope="class")
@@ -56,6 +63,7 @@ def add_task():
 @pytest.fixture
 @automation_logger(logger)
 def get_task(add_task):
+    logger.logger.info(f"Task is added- {add_task}")
     response_ = ApiClient().log_fetch_svc.get_tasks()[0]
 
     for item in response_["tasks"]:
@@ -102,9 +110,9 @@ def stderr_stdout(capsys):
 
 @pytest.fixture(scope="session")
 def env():
-    env = os.environ.get('ENV')
-    if isinstance(env, str):
-        return env
+    env_ = os.environ.get('ENV')
+    if isinstance(env_, str):
+        return env_
     else:
         os.environ["ENV"] = Environment.STAGING.value
         return Environment.STAGING.value
