@@ -15,12 +15,12 @@ test_case = "ROUTING CACHE"
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. Verify that 'KeepAlive' until 5 sec will create Route in Routing svc cache.
-    2. Verify that if 'KeepAlive' didn't send for 4 sec. it will be removed from Routing svc. cache.
+    1. Verify that sending 'KeepAlive' request for 5 sec. will create Route record in Routing svc cache.
+    2. Verify that if 'KeepAlive' didn't send for 4 sec. Route record will be removed from Routing svc. cache.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/routing_service_cache_test.py", "TestRoutingSvcCache")
-@pytest.mark.usefixtures("run_time_counter", )
+@pytest.mark.usefixtures("run_time_counter", "endpoints")
 @pytest.mark.functional
 class TestRoutingSvcCache(object):
     box = BoundingBox().set_bounding_box(ne_lat=32.19428911708705, ne_lon=34.769648982994454,
@@ -29,10 +29,10 @@ class TestRoutingSvcCache(object):
     route = route.set_route(ip=route.ip, name="AntonQA", priority=1, port_list=[88, 99])
 
     api_ = ApiClient()
-    endpoints = None
+    _endpoints = None
 
     @automation_logger(logger)
-    def test_routing_svc_cache(self):
+    def test_routing_svc_cache(self, endpoints):
         allure.step("Verify that new Route can be saved in Routing service cache.")
         cars = 500
         pedestrian = 1000
@@ -44,14 +44,14 @@ class TestRoutingSvcCache(object):
             self.api_.routing_svc.keep_alive(self.box, self.route, cars, pedestrian, bikes)
 
         allure.step("Verify that My Endpoint is returned from Service cache.")
-        TestRoutingSvcCache.endpoints = self.api_.routing_svc.get_endpoints()[0]
+        TestRoutingSvcCache._endpoints = self.api_.routing_svc.get_endpoints()[0]
 
-        assert isinstance(TestRoutingSvcCache.endpoints, list)
-        assert len(TestRoutingSvcCache.endpoints) > 0 and len(TestRoutingSvcCache.endpoints) == 3
-        for item in TestRoutingSvcCache.endpoints:
+        assert isinstance(TestRoutingSvcCache._endpoints, list)
+        assert len(TestRoutingSvcCache._endpoints) > 0 and len(TestRoutingSvcCache._endpoints) == len(endpoints) + 1
+        for item in TestRoutingSvcCache._endpoints:
             assert isinstance(item, dict)
 
-        my_endpoint = TestRoutingSvcCache.endpoints[-1]
+        my_endpoint = TestRoutingSvcCache._endpoints[-1]
         assert "primaryBoundary" and "insideBoundary" and "outsideBoundary" and "distantBoundary" in my_endpoint.keys()
         assert my_endpoint["ip"] == self.route.ip
         assert my_endpoint["name"] == self.route.name
@@ -64,11 +64,11 @@ class TestRoutingSvcCache(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_endpoints_after(self):
+    def test_endpoints_after(self, endpoints):
         time.sleep(4.0)
         allure.step("Verify that My Endpoint is removed from svc. cache if keep alive request didn't send for 4 sec.")
         endpoints_after = self.api_.routing_svc.get_endpoints()[0]
 
-        assert len(TestRoutingSvcCache.endpoints) - 1 == len(endpoints_after)
+        assert len(endpoints) == len(endpoints_after)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

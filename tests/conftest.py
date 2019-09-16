@@ -144,7 +144,7 @@ def pytest_report_header(config):
 #
 # def pytest_addoption(parser):
 #     parser.addoption(
-#         "--expect_endpoints", action="store", default="2", help="Please, set an expected endpoints (int).")
+#         "--expect_endpoints", action="store", default="2", help="Please, set an expected _endpoints (int).")
 #
 #
 # @pytest.fixture

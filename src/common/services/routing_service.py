@@ -36,7 +36,7 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def delete_endpoints(self):
-        uri = self.url + "endpoints"
+        uri = self.url + "_endpoints"
         try:
             logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(url=uri, headers=self.headers_without_token)
