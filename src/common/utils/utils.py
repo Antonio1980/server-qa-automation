@@ -73,19 +73,23 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
-    def get_synch_timestamp(left_time_seconds=3):
-        import ntplib
+    def get_synch_timestamp(left_time_seconds=3, ntp=False):
 
-        if left_time_seconds > 0:
-
+        if ntp:
+            import ntplib
             ntp_client = ntplib.NTPClient()
-            try:
-                ntp_response = ntp_client.request("time.google.com", version=3)
-                time_offset = ntp_response.offset
-                return (datetime.datetime.utcnow() + datetime.timedelta(seconds=time_offset)).strftime(
-                    "%Y-%m-%dT%H:%M:%S.%fZ")
-            except ntplib.NTPException as e:
-                logger.logger.exception(F"NTPException: {e}")
-                time.sleep(0.3)
-                left_time_seconds -= 1
-                return Utils.get_synch_timestamp(left_time_seconds)
+
+            if left_time_seconds > 0:
+
+                try:
+                    ntp_response = ntp_client.request("time.google.com", version=3)
+                    time_offset = ntp_response.offset
+                    return (datetime.datetime.utcnow() + datetime.timedelta(seconds=time_offset)).strftime(
+                        "%Y-%m-%dT%H:%M:%S.%fZ")
+                except ntplib.NTPException as e:
+                    logger.logger.exception(F"NTPException: {e}")
+                    time.sleep(0.3)
+                    left_time_seconds -= 1
+                    return Utils.get_synch_timestamp(left_time_seconds)
+        else:
+            return datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
