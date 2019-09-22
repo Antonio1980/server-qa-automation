@@ -5,7 +5,7 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = "HEALTH ROUTING"
+test_case = "HEALTH MESSAGE SYNC"
 
 
 @allure.title(test_case)
@@ -14,20 +14,24 @@ test_case = "HEALTH ROUTING"
     1. Check that service is responded on "Health" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/health_test.py", "TestHealth")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/message_sync_health_test.py",
+                 "TestHealthMessageSync")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_messages_synch
-class TestHealth(object):
+class TestHealthMessageSync(object):
 
     @automation_logger(logger)
-    def test_health_routing(self):
+    def test_health_message_sync(self):
         allure.step("Verify response status code is 200 and properties of the response.")
-        _response = ApiClient().routing_svc.health()
+        _response = ApiClient().messages_synch_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
-        assert "status" in _response[0].keys()
-        assert _response[0]["status"] == "UP"
+        assert 'memoryUsage' and 'cpuUsage' and 'uptime' and 'version' in _response[0].keys(), "OBJECT KEYS MISMATCHING"
+        assert isinstance(_response[0]["memoryUsage"], dict)
+        assert "rss" and "heapTotal" and "heapUsed" and "external" in _response[0]["memoryUsage"].keys()
+        assert isinstance(_response[0]["cpuUsage"], dict)
+        assert "user" and "system" in _response[0]["cpuUsage"]
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

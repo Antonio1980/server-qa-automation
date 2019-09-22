@@ -120,11 +120,11 @@ class LogFetchService(ServiceBase):
     @automation_logger(logger)
     def upload_file_task(self, task_id, text):
         uri = self.url + "upload/" + str(task_id)
-        headers_ = {"Content-Type": "application/octet-stream"}
-        payload = LogFetchServiceRequest().upload_file(text) #SHOULD NOT SEND TOKEN
+        _headers = {"Content-Type": "application/octet-stream"}
+        payload = LogFetchServiceRequest().upload_file(text)
         try:
             logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.post(uri, data=payload, headers=headers_)
+            _response = requests.post(uri, data=payload, headers=_headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -144,7 +144,7 @@ class LogFetchService(ServiceBase):
         uri = self.url + "tasks/" + str(user_id)
         try:
             logger.logger.info(F"API Service URL is DELETE- {uri}")
-            _response = requests.delete(uri, headers=self.headers_without_token)
+            _response = requests.delete(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:

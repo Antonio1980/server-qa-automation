@@ -13,10 +13,10 @@ test_case = "LIVENESS HEALTH"
 @allure.title(test_case)
 @allure.description("""
     Health tests.
-    1. Liveness for AreBlackList service.
+    1. Liveness for AreasBlackList service.
     2. Liveness for LogFetch service.
-    3. Liveness for MessagesSynch service.
-    4. Liveness for Messages service.
+    3. Liveness for MessageSync service.
+    4. Liveness for Message service.
     5. Liveness for RemoteConfig service.
     6. Liveness for Reporting service.
     7. Liveness for Routing service.
@@ -30,7 +30,7 @@ class TestHealthLiveness(object):
     api_ = ApiClient()
 
     @automation_logger(logger)
-    def test_health_area_black_list(self):
+    def test_health_areas_black_list(self):
         allure.step("Verify that status code is 200 and response properties.")
 
         _response = self.api_.areas_blacklist_svc.health()
@@ -76,7 +76,7 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_message_synch(self):
+    def test_health_message_sync(self):
         allure.step("Verify response status code is 200 and properties of the response.")
 
         _response = self.api_.messages_synch_svc.health()
@@ -92,7 +92,7 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_messages(self):
+    def test_health_message(self):
         allure.step("Verify that status code is 200 and response properties.")
 
         _response = self.api_.messages_svc.health()

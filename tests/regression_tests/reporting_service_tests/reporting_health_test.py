@@ -14,11 +14,12 @@ test_case = "HEALTH REPORTING"
     1. Check that service is responded on "Health" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/health_test.py", "TestHealth")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/reporting_health_test.py",
+                 "TestHealthReporting")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_reporting
-class TestHealth(object):
+class TestHealthReporting(object):
 
     @automation_logger(logger)
     def test_health_reporting(self):

@@ -2,17 +2,17 @@ import os
 import time
 import pytest
 from src.common import logger
-from src.common.api_client import ApiClient
 from src.common.enums import Environment
-from src.common.log_decorator import automation_logger
+from src.common.api_client import ApiClient
 from src.common.udp_socket import UdpSocket
+from src.common.log_decorator import automation_logger
 
 
 @pytest.fixture(scope="session", autouse=True)
 def check_environment_marks(pytestconfig, env):
     markers_arg = pytestconfig.getoption('-m')
     if env.lower() == "prod" and markers_arg != "liveness":
-        pytest.exit("Production env can only run liveness!")
+        pytest.exit("PRODUCTION env. accepts ONLY LIVENESS tests !!!")
 
 
 @pytest.fixture(scope="class")
@@ -121,7 +121,7 @@ def env():
 @pytest.mark.usefixtures("env")
 def pytest_report_header(config):
     if config.getoption("verbose") > 0:
-        return [f"Environment is {os.environ.get('ENV').upper()}", "Let's test eyenet..."]
+        return [f"Environment is {os.environ.get('ENV').upper()}", "Let's test eyenet API..."]
 
 
 # @pytest.hookimpl(tryfirst=True, hookwrapper=True)

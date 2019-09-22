@@ -5,25 +5,25 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = "GET SYNCH ACCESS"
+test_case = "GET SYNC ACCESS"
 
 
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. Check that service is responded on "GetSynchAccess" request properly.
+    1. Check that service is responded on "GetSyncAccess" request properly.
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_synch_service_tests/get_synch_access_test.py",
-                 "TestGetSynchAccess")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/get_sync_access_test.py",
+                 "TestGetSyncAccess")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
-@pytest.mark.regression_messages_synch
-class TestGetSynchAccess(object):
+@pytest.mark.regression_messages_sync
+class TestGetSyncAccess(object):
 
     @automation_logger(logger)
-    def test_get_synch_access_method_works(self):
+    def test_get_sync_access_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
         _response = ApiClient().messages_synch_svc.get_synch_access()
 
@@ -33,7 +33,7 @@ class TestGetSynchAccess(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_synch_access_method(self):
+    def test_attributes_in_get_sync_access_method(self):
         allure.step("Verify response properties and that 'response' is list object.")
         _response = ApiClient().messages_synch_svc.get_synch_access()[0]
 
