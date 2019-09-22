@@ -9,16 +9,15 @@ class AreasBlacklistServiceRequest(RequestSchema):
         super(AreasBlacklistServiceRequest, self).__init__()
 
     @automation_logger(logger)
-    def add_areas(self, description, *args):
-        ((ne_lng, ne_lat, sw_lng, sw_lat, ), ) = args
+    def add_areas(self, description, bounding_box):
         self.inner[DESCRIPTION] = str(description)
         self.inner[POSITION] = dict()
         self.inner[POSITION][SW] = dict()
-        self.inner[POSITION][SW][LNG] = sw_lng
-        self.inner[POSITION][SW][LAT] = sw_lat
+        self.inner[POSITION][SW][LNG] = bounding_box.min_lon
+        self.inner[POSITION][SW][LAT] = bounding_box.min_lat
         self.inner[POSITION][NE] = dict()
-        self.inner[POSITION][NE][LNG] = ne_lng
-        self.inner[POSITION][NE][LAT] = ne_lat
+        self.inner[POSITION][NE][LNG] = bounding_box.max_lon
+        self.inner[POSITION][NE][LAT] = bounding_box.max_lat
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

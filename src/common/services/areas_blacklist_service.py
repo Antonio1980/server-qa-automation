@@ -56,15 +56,15 @@ class AreasBlacklistService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_areas(self, description, *args):
+    def add_areas(self, description, bounding_box):
         """
         Sends POST HTTP "AddAreas" request to AreasBlacklistService
         :param description: Any string.
-        :param args: sw_lng, sw_lat, ne_lng, ne_lat
+        :param bounding_box: Object consists from: sw_lng, sw_lat, ne_lng, ne_lat
         :return: tuple with: body- response text as dict and pure HTTP response
         """
         uri = self.url + "areas"
-        payload = AreasBlacklistServiceRequest().add_areas(description, args)
+        payload = AreasBlacklistServiceRequest().add_areas(description, bounding_box)
         try:
             logger.logger.info(F"API Service URL is POST - {uri}")
             _response = requests.post(uri, data=payload, headers=self.headers)

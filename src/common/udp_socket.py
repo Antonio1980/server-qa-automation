@@ -15,7 +15,11 @@ class UdpSocket(object):
         self.udp_socket.close()
 
     @automation_logger(logger)
-    def udp_connect(self, address):
+    def udp_connect(self, address: tuple):
+        """
+        Making connection via udp_socket to the provided address.
+        :param address: tuple consist from IP (str) and port (int).
+        """
         try:
             self.udp_socket.connect(address)
             logger.logger.info('UDP client is Up!')

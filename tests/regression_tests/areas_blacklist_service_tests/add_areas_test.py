@@ -3,6 +3,7 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
+from src.common.entities.bounding_box import BoundingBox
 from src.common.log_decorator import automation_logger
 from src.common.utils.utils import Utils
 
@@ -23,14 +24,15 @@ test_case = "ADD AREAS"
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
 class TestAddAreas(object):
+    ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
+    sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
+    tel_aviv_box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
 
     @automation_logger(logger)
     def test_add_areas_method_works(self):
         allure.step("Verify that response is not empty and status code is 201")
         # sw_lng, sw_lat, ne_lng, ne_lat
-        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(),
-                                                              34.820289208679924, 32.009745169079615,
-                                                              34.960364892273674, 32.14007552880953)
+        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
 
         assert _response[0] is not None
         assert _response[1].status_code == 201
@@ -41,9 +43,7 @@ class TestAddAreas(object):
     @automation_logger(logger)
     def test_attributes_in_add_areas_method(self):
         allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
-        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(),
-                                                              34.820289208679924, 32.009745169079615,
-                                                              34.960364892273674, 32.14007552880953)[0]
+        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)[0]
 
         assert isinstance(_response, dict)
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
@@ -59,9 +59,7 @@ class TestAddAreas(object):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         api_.reporting_svc.headers.pop("Authorization")
-        _response = api_.areas_blacklist_svc.add_areas(Utils.get_random_string(),
-                                                       34.820289208679924, 32.009745169079615,
-                                                       34.960364892273674, 32.14007552880953)
+        _response = api_.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()

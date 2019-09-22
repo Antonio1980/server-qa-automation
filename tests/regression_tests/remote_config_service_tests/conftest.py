@@ -8,8 +8,8 @@ from src.common.log_decorator import automation_logger
 @pytest.fixture
 @automation_logger(logger)
 def config_hash():
-    response_ = ApiClient().remote_config_svc.get_config_hash()[0]
-    return response_["currentHash"]
+    _response = ApiClient().remote_config_svc.get_config_hash()[0]
+    return _response["currentHash"]
 
 
 @pytest.fixture

@@ -50,8 +50,8 @@ def socket_(request):
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def endpoints():
-    response_ = ApiClient().routing_svc.get_endpoints()[0]
-    return response_
+    _response = ApiClient().routing_svc.get_endpoints()[0]
+    return _response
 
 
 @pytest.fixture
@@ -64,9 +64,9 @@ def add_task():
 @automation_logger(logger)
 def get_task(add_task):
     logger.logger.info(f"Task is added- {add_task}")
-    response_ = ApiClient().log_fetch_svc.get_tasks()[0]
+    _response = ApiClient().log_fetch_svc.get_tasks()[0]
 
-    for item in response_["tasks"]:
+    for item in _response["tasks"]:
         if (item["userid"] == "qa_test_qa" or item["userid"] == "another_qa_test_qa") and item["status"] == "Pending":
             return item
 
