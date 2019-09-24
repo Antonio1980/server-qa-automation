@@ -25,7 +25,7 @@ class TestAddMessage(object):
     @automation_logger(logger)
     def test_add_message_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().messages_svc.add_messages("anton", "sendLog", "task_id")
+        _response = ApiClient().message_svc.add_messages("anton", "sendLog", "task_id")
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -35,7 +35,7 @@ class TestAddMessage(object):
     @automation_logger(logger)
     def test_attributes_in_add_message_method(self):
         allure.step("Verify response properties and that 'newMsg' is dict object.")
-        _response = ApiClient().messages_svc.add_messages("anton", "sendLog", "task_id")[0]
+        _response = ApiClient().message_svc.add_messages("anton", "sendLog", "task_id")[0]
 
         assert isinstance(_response, dict)
         assert "newMsg" in _response.keys()

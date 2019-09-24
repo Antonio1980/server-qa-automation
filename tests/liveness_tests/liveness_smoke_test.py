@@ -85,7 +85,7 @@ class TestSmokeLiveness(object):
     def test_user_messages_liveness(self):
         allure.step("Verify that service returns messages per user id")
 
-        _response = ApiClient().messages_svc.get_user_messages("aaa")
+        _response = ApiClient().message_svc.get_user_messages("aaa")
 
         if _response[1].status_code != 200 or _response[0] is None or "messages" not in _response[0].keys() \
                 or not isinstance(_response[0]["messages"], list) or len(_response[0]["messages"]) <= 0:

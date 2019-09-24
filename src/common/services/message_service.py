@@ -4,13 +4,13 @@ from src.common import logger
 from json import JSONDecodeError
 from src.common.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
-from src.common.services.svc_requests.messages_requests import MessagesServiceRequest
+from src.common.services.svc_requests.message_requests import MessagesServiceRequest
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 
 
-class MessagesService(ServiceBase):
+class MessageService(ServiceBase):
     def __init__(self, auth_token):
-        super(MessagesService, self).__init__()
+        super(MessageService, self).__init__()
         self.proxy_url = "api/"
         self.url = self.api_base_url + "messages-service/" + self.proxy_url
         self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})

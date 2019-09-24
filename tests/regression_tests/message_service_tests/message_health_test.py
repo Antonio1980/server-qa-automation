@@ -24,7 +24,7 @@ class TestHealthMessage(object):
     @automation_logger(logger)
     def test_health_message(self):
         allure.step("Verify that status code is 200 and response properties.")
-        _response = ApiClient().messages_svc.health()
+        _response = ApiClient().message_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)

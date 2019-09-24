@@ -7,19 +7,19 @@ from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 
 
-class MessagesSynchService(ServiceBase):
+class MessagesSyncService(ServiceBase):
     def __init__(self, auth_token):
-        super(MessagesSynchService, self).__init__()
+        super(MessagesSyncService, self).__init__()
         self.proxy_url = "api/"
         self.url = self.api_base_url + "messages-sync-service/" + self.proxy_url
         self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
-    def get_synch_run(self):
+    def get_sync_run(self):
         uri = self.url + "sync/run"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(uri, headers=self.headers_without_token)
+            _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -31,11 +31,11 @@ class MessagesSynchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_synch_run failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_sync_run failed with error: {e}")
             raise e
 
     @automation_logger(logger)
-    def get_synch_access(self):
+    def get_sync_access(self):
         uri = self.url + "sync/access"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -51,7 +51,7 @@ class MessagesSynchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_synch_access failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_sync_access failed with error: {e}")
             raise e
 
     @automation_logger(logger)

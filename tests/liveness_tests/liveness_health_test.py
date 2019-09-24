@@ -79,7 +79,7 @@ class TestHealthLiveness(object):
     def test_health_message_sync(self):
         allure.step("Verify response status code is 200 and properties of the response.")
 
-        _response = self.api_.messages_synch_svc.health()
+        _response = self.api_.messages_sync_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -95,7 +95,7 @@ class TestHealthLiveness(object):
     def test_health_message(self):
         allure.step("Verify that status code is 200 and response properties.")
 
-        _response = self.api_.messages_svc.health()
+        _response = self.api_.message_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)

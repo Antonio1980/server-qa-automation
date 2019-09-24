@@ -25,7 +25,7 @@ class TestUserMessage(object):
     @automation_logger(logger)
     def test_user_message_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().messages_svc.get_user_messages("aaa")
+        _response = ApiClient().message_svc.get_user_messages("aaa")
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -35,7 +35,7 @@ class TestUserMessage(object):
     @automation_logger(logger)
     def test_attributes_in_user_message_method(self):
         allure.step("Verify response properties and that 'messages' is list object.")
-        _response = ApiClient().messages_svc.get_user_messages("aaa")[0]
+        _response = ApiClient().message_svc.get_user_messages("aaa")[0]
 
         assert isinstance(_response, dict)
         assert "messages" in _response.keys()

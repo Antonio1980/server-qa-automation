@@ -25,7 +25,7 @@ class TestGetSyncRun(object):
     @automation_logger(logger)
     def test_get_sync_run_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().messages_synch_svc.get_synch_run()
+        _response = ApiClient().messages_sync_svc.get_sync_run()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -35,7 +35,7 @@ class TestGetSyncRun(object):
     @automation_logger(logger)
     def test_attributes_in_get_sync_run_method(self):
         allure.step("Verify response properties and that 'newMessages' is list object.")
-        _response = ApiClient().messages_synch_svc.get_synch_run()[0]
+        _response = ApiClient().messages_sync_svc.get_sync_run()[0]
 
         assert isinstance(_response, dict)
         assert "processTime" and "logFetchRes" and "remoteConfigRes" in _response.keys()
