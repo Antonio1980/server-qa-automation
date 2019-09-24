@@ -50,3 +50,18 @@ class TestKeepAlive(object):
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+
+    @automation_logger(logger)
+    def test_keepalive_negative(self):
+        allure.step("Verify that without authorization status code is 401")
+        api_ = ApiClient()
+        api_.routing_svc.headers.pop("Authorization")
+        _response = api_.routing_svc.keep_alive(self.tel_aviv_box, self.route)
+
+        assert isinstance(_response[0], dict)
+        assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()
+        assert _response[0]['error'] == "Unauthorized"
+        assert _response[0]['message'] == "the token received is not valid: No token was provided"
+        assert _response[1].status_code == 401
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
