@@ -50,7 +50,7 @@ class TestGetTasksById(object):
         api_ = ApiClient()
         task_id = get_uploaded_task['taskid']
         api_.reporting_svc.headers.pop("Authorization")
-        _response = api_.log_fetch_svc.get_tasks_by_id(task_id, False)
+        _response = api_.log_fetch_svc.get_tasks_by_id(task_id)
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
