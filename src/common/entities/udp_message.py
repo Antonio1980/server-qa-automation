@@ -22,8 +22,7 @@ class UdpMessage(Entity):
         """
         (latitude, longitude, bearing, velocity, accuracy) = args
         self.data[CLIENT_DATA] = dict()
-        timestamp_ = Utils.get_synch_timestamp()
-        self.data[CLIENT_DATA][TIMESTAMP] = timestamp_
+        self.data[CLIENT_DATA][TIMESTAMP] = Utils.get_times()
         self.data[CLIENT_DATA][ID] = "QA_test_" + str(random.randint(0, 1000))
         self.data[CLIENT_DATA][CLIENT_DATA_TYPE] = DetectedType.CAR.value
         self.data[CLIENT_DATA][LATITUDE] = str(latitude)

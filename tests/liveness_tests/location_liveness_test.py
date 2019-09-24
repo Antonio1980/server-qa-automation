@@ -7,6 +7,7 @@ from config_definitions import BaseConfig
 from src.common.entities.udp_message import UdpMessage
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
+from src.common.utils.utils import Utils
 
 test_case = "LIVENESS LOCATION"
 BUFSIZ = 1024
