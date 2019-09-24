@@ -53,9 +53,9 @@ class TestAddRemoteConfig(object):
         _response = api_.remote_config_svc.add_remote_config(remote_config)
 
         assert isinstance(_response[0], dict)
-        assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()
-        assert _response[0]['error'] == "Unauthorized"
-        assert _response[0]['message'] == "the token received is not valid: No token was provided"
+        assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
+        assert _response[0]['code'] == "credentials_required"
+        assert _response[0]['message'] == "No authorization token was found"
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
