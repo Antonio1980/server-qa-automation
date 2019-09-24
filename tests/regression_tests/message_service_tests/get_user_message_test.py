@@ -19,7 +19,7 @@ test_case = "GET USER MESSAGE"
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_service_tests/get_user_message_test.py",
                  "TestUserMessage")
 @pytest.mark.regression
-@pytest.mark.regression_messages
+@pytest.mark.regression_message
 class TestUserMessage(object):
 
     @automation_logger(logger)

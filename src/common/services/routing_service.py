@@ -39,7 +39,7 @@ class RoutingService(ServiceBase):
         uri = self.url + "_endpoints"
         try:
             logger.logger.info(F"API Service URL is DELETE- {uri}")
-            _response = requests.delete(url=uri, headers=self.headers_without_token)
+            _response = requests.delete(url=uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:

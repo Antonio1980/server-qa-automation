@@ -19,7 +19,7 @@ test_case = "GET SYNC RUN"
                  "TestGetSyncRun")
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
-@pytest.mark.regression_messages_synch
+@pytest.mark.regression_message_sync
 class TestGetSyncRun(object):
 
     @automation_logger(logger)
