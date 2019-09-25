@@ -13,6 +13,7 @@ test_case = "GET COUNT BY TYPE"
     Functional tests.
     1. Check that service is responded on "GetCountByType" request properly.
     2. Check that service response contains desired properties.
+    3. Check that service response on get_count_by_type_v1 (1 version) with empty countByType object. 
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/get_count_by_type_test.py",
@@ -25,7 +26,7 @@ class TestGetCountByType(object):
     @automation_logger(logger)
     def test_get_count_by_type_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.get_count_by_type()
+        _response = ApiClient().routing_svc.get_count_by_type_v2()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -35,7 +36,7 @@ class TestGetCountByType(object):
     @automation_logger(logger)
     def test_attributes_in_get_count_by_type_method(self):
         allure.step("Verify response properties and that response is list object.")
-        _response = ApiClient().routing_svc.get_count_by_type()[0]
+        _response = ApiClient().routing_svc.get_count_by_type_v2()[0]
 
         assert isinstance(_response, dict)
         assert "countByType" in _response.keys()
@@ -43,4 +44,13 @@ class TestGetCountByType(object):
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
-    # TODO coverage foer v1 - verify empty.
+    @automation_logger(logger)
+    def test_get_count_by_type_v1_method(self):
+        allure.step("Verify that v1 returned empty.")
+        _response = ApiClient().routing_svc.get_count_by_type_v1()
+        assert _response[0] is not None
+        assert _response[1].status_code == 200
+        assert isinstance(_response[0], dict)
+        assert _response[0]["countByType"] is None
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

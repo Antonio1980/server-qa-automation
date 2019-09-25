@@ -55,7 +55,7 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_count_by_type(self):
+    def get_count_by_type_v2(self):
         uri = self.url + "v2/count-by-type"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -71,7 +71,27 @@ class RoutingService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_count_by_type failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_count_by_type_v2 failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def get_count_by_type_v1(self):
+        uri = self.url + "v1/count-by-type"
+        try:
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(url=uri, headers=self.headers_without_token)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_count_by_type_v2 failed with error: {e}")
             raise e
 
     @automation_logger(logger)
