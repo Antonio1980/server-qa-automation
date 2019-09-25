@@ -42,3 +42,5 @@ class TestGetCountByType(object):
         assert isinstance(_response["countByType"], dict)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+
+    # TODO coverage foer v1 - verify empty.

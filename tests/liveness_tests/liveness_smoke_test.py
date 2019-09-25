@@ -19,9 +19,8 @@ test_case = "LIVENESS SMOKE"
 @allure.description("""
     Functional test.
     1. AreasBlacklist svc: Check that "get_areas_inbox" request returned not empty "areas" list.
-    2. Reporting svc: Check that "analytics" request returned status 201- Created.
-    3. RemoteConfig svc: Check that "get_config" request returned current config.
-    4. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
+    2. RemoteConfig svc: Check that "get_config" request returned current config.
+    3. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
     """)
 @pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.CRITICAL)
@@ -45,24 +44,6 @@ class TestSmokeLiveness(object):
                 F"{_response} \n"
 
             raise AutomationError(F"Test case {test_case} /1 failed!")
-
-        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
-
-    @automation_logger(logger)
-    def test_liveness_analytics_report(self):
-        allure.step("Verify that service returns valid status code and reason.")
-
-        client_ = AppClient()
-        report_type, session_id = "TestReport", "Test QA Test"
-        report_item = ReportItem(report_type, session_id)
-
-        _response = ApiClient().reporting_svc.add_analytics_report(client_, report_item)
-
-        if _response[1].status_code != 201 or _response[1].reason != 'Created':
-            TestSmokeLiveness.issues += F"{self.__class__.__name__} test_liveness_analytics_report failed with " \
-                F"response: {_response} \n"
-
-            raise AutomationError(F"Test case {test_case} /2 failed!")
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 

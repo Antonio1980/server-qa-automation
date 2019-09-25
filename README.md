@@ -20,8 +20,7 @@ The "server-qa-automation"- automation test project for the back-end side of Eye
 LOCATION
 ---------
 
-- SSH: git@http://git-v2x.foresight.com/server-qa-automation.git
-- HTTPS: https://http://git-v2x.foresight.com/server-qa-automation.git
+- SSH: git@git-v2x.foresight.com:qa-automation/server-qa-automation.git
 
 TECHNOLOGIES
 -------------
