@@ -30,7 +30,7 @@ class TestAddLocationHistoryReport(object):
         allure.step("Verify that status code is 200")
         _response = ApiClient().reporting_svc.location_history_report(self.location)
 
-        assert _response[1].status_code == 200 # TODO open ticket to change to 201 created
+        assert _response[1].status_code == 200 # V2X-1698
         assert _response[1].reason == 'OK'
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
