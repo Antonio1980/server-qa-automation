@@ -113,7 +113,6 @@ def stderr_stdout(capsys):
 @pytest.fixture(scope="session")
 def env():
     env_ = os.environ.get('ENV')
-    os.environ["ALLURE_DIR"] = BaseConfig.ALLURE_DIR
     if isinstance(env_, str):
         return env_
     else:
