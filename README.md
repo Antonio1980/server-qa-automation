@@ -9,7 +9,7 @@ CONTENTS OF THIS FILE
  * Requirements
  * Tests
  * Configuration
- * Troubleshooting
+ * Tips (Python, Docker, Git, Protobuf)
  * Maintainers
 
 INTRODUCTION
@@ -66,7 +66,7 @@ TESTS
 3 Run specific test:
 * $ pytest -v tests/regression_tests/message_sync_service_tests/get_sync_run_test.py  --alluredir=src/repository/allure/allure_results
 
-4 Run per test group (public_api group as example):
+4 Run per test group (regression group as example):
 * $ pytest -v tests -m regression --alluredir=src/repository/allure/allure_results
 
 5 Generate temporary allure report:
@@ -88,22 +88,24 @@ TESTS
 * Test Groups:
 
 1. liveness
-2. ui - ui tests except smoke
-3. functional
-4. regression
-5. regression_areas_blacklist
-6. regression_log_fetch
-7. regression_message
-8. regression_message_sync
-9. regression_remote_config
-10. regression_reporting
-11. regression_routing
+2. functional
+3. regression
+4. regression_areas_blacklist
+5. regression_log_fetch
+6. regression_message
+7. regression_message_sync
+8. regression_remote_config
+9. regression_reporting
+10. regression_routing
 
 
 CONFIGURATION
 --------------
 
-- Project base configuration stores in staging.cfg (per env) that processes by config_definitions.py class.
+Project Configuration:
+------------------
+
+- Project base configuration stores in staging.cfg (per env) that processes by config_definitions.py -> BaseConfig class.
 
 *  logger = if True will append into ./logs/ with cur timestamp as [timestamp]_automation_test.log
 *  cloud = if True due to KIBANA endpoint is different on cloud.
@@ -116,8 +118,26 @@ CONFIGURATION
 - pytest configuration specified in pytest.ini
 ! currently using: ignore::DeprecationWarning
 
+Git Configuration:
+------------------
+* $ git init
 
-TROUBLESHOOTING
+* $ git status
+
+* $ git config --global --list
+
+* $ git config --global user.name ""
+
+* $ git config --global user.email ""
+
+* $ cat ~/.gitconfig
+
+* $ git config --global help.autocorrect 1
+
+* $ git config core.autorlf true/false
+
+
+TIPS
 ---------------
 
 Docker:
@@ -143,8 +163,6 @@ Docker:
 7 Log In to GitLab Registry:
 * $ docker login registry.gitlab.com
 
-Solving DB conflict (site not responding):
-------------------------------------------
 * Remove by ID:
 $ docker network rm
 
@@ -160,28 +178,10 @@ $ cd /usr/local/zend/var/log
 * View logs:
 $ tail -f | grep *.log
 
-Git Configuration:
-------------------
-* $ git init
-
-* $ git status
-
-* $ git config --global --list
-
-* $ git config --global user.name ""
-
-* $ git config --global user.email ""
-
-* $ cat ~/.gitconfig
-
-* $ git config --global help.autocorrect 1
-
-* $ git config core.autorlf true/false
-
 
 Python Installation:  
 --------------------
-https://www.python.org/downloads/windows/
+https://www.python.org/downloads/
 -----------------------------------------
 
 * install pip:
@@ -207,18 +207,17 @@ $ python -m pip install --upgrade pip
 
 PROTOBUF
 -------- 
+
 - Download and Installation:
 
 https://github.com/protocolbuffers/protobuf/releases/tag/v3.6.1
----------------------------------------------------------------
 
 - Proto contracts:
 
 https://gitlab.com/cx_group/common/proto_contracts
----------------------------------------------------- 
 
 * Generate python proto:
-* $ GitLab\protoc-3.6.1-win32\bin\protoc -I=GitLab\proto_contracts\src --python_out=GitLab\proto_contracts\gen      
+$ GitLab\protoc-3.6.1-win32\bin\protoc -I=GitLab\proto_contracts\src --python_out=GitLab\proto_contracts\gen      
 
 
 MAINTAINERS
