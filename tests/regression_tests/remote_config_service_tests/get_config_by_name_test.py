@@ -51,8 +51,8 @@ class TestGetRemoteConfigByName(object):
         _response = ApiClient().remote_config_svc.get_config_by_name("any_stam")
 
         assert _response[1].status_code == 404
-        assert "error" and "statusCode" in _response[0].keys()
-        assert _response[0]["error"] == "no hash found for: any_stam"
+        assert "message" and "statusCode" in _response[0].keys()
+        assert _response[0]["message"] == "no config found for: any_stam"
         assert _response[0]["statusCode"] == 404
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
