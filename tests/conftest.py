@@ -1,8 +1,6 @@
 import os
 import time
 import pytest
-
-from config_definitions import BaseConfig
 from src.common import logger
 from src.common.enums import Environment
 from src.common.api_client import ApiClient

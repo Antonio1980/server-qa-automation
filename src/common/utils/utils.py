@@ -41,6 +41,11 @@ class Utils:
 
     @staticmethod
     @automation_logger(logger)
+    def get_timestamp():
+        return str(int(str(datetime.datetime.utcnow().timestamp()).replace('.', '')))
+
+    @staticmethod
+    @automation_logger(logger)
     def get_dates():
         past_date = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%S") + \
                     ".918 +00:00"

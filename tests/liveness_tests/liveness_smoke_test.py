@@ -19,7 +19,7 @@ test_case = "LIVENESS SMOKE"
 @allure.description("""
     Functional test.
     1. AreasBlacklist svc: Check that "get_areas_inbox" request returned not empty "areas" list.
-    2. RemoteConfig svc: Check that "get_config" request returned current config.
+    2. RemoteConfig svc: Check that "get_default_config" request returned current config.
     3. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
     """)
 @pytest.mark.usefixtures("run_time_counter")
@@ -51,7 +51,7 @@ class TestSmokeLiveness(object):
     def test_get_remote_config_liveness(self):
         allure.step("Verify that service returns remote config data.")
 
-        _response = ApiClient().remote_config_svc.get_config()
+        _response = ApiClient().remote_config_svc.get_default_config()
 
         if _response[1].status_code != 200 or _response[0] is None \
                 or "_id" and "hash" and "data" not in _response[0].keys() or not isinstance(_response[0]["data"], dict):
