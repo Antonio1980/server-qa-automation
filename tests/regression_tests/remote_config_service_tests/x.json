@@ -1,0 +1,12 @@
+{
+  "_id": "5d9b23b28a4132a3b767403a",
+  "name": "1d32w72b",
+  "data": {
+    "param1": True,
+    "param2": 12345,
+    "param3": "abc",
+    "swagger": False
+  },
+  "description": "QA Test",
+  "hash": "201910071138267600"
+}

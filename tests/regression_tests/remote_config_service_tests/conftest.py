@@ -22,14 +22,14 @@ def config_hash(get_config_default_name):
 
 @pytest.fixture
 @automation_logger(logger)
-def remote_config(config_hash):
-    remote_config = RemoteConfig(config_hash).set_config(False, True, 12345, "abc")
+def remote_config():
+    remote_config = RemoteConfig(Utils.get_timestamp()).set_config(False, True, 12345, "abc")
     return remote_config
 
 
 @pytest.fixture
 @automation_logger(logger)
-def add_new_config():
-    remote_config = RemoteConfig(Utils.get_timestamp).set_config(False, True, 12345, "qa")
+def new_remote_config():
+    remote_config = RemoteConfig(Utils.get_timestamp()).set_config(False, True, 12345, "qa")
     _response = ApiClient().remote_config_svc.add_remote_config(remote_config)
-    return _response
+    return _response[0]["name"]

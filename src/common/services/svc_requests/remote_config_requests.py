@@ -11,6 +11,8 @@ class RemoteConfigServiceRequest(RequestSchema):
     @automation_logger(logger)
     def add_config(self, remote_config):
         self.inner[HASH] = remote_config.config_hash
+        self.inner[NAME] = remote_config.name
+        self.inner[DESCRIPTION] = remote_config.description
         self.inner[DATA] = dict()
         self.inner[DATA].update(remote_config.data)
         body = self.from_json("inner")

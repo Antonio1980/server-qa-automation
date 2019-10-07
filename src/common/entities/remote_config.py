@@ -1,11 +1,14 @@
 from src.common.entities.entity import Entity
 from src.common.services.svc_requests.request_constants import SWAGGER, PARAM1, PARAM2, PARAM3
+from src.common.utils.utils import Utils
 
 
 class RemoteConfig(Entity):
     def __init__(self, config_hash=None):
         super(RemoteConfig, self).__init__()
         self.config_hash = config_hash
+        self.name = Utils.get_random_string()
+        self.description = "QA Test"
         self.data = dict()
 
     def set_config(self, swagger: bool, *args):

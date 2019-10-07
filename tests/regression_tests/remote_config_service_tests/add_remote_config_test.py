@@ -39,9 +39,10 @@ class TestAddRemoteConfig(object):
         _response = ApiClient().remote_config_svc.add_remote_config(remote_config)[0]
 
         assert isinstance(_response, dict)
-        assert "hash" and "data" and "last_updated" in _response.keys()
+        assert "_id" and "name" and "hash" and "data" and "description" in _response.keys()
         assert isinstance(_response["data"], dict)
-        assert _response["data"] is not None
+        assert "param1" and "param2" and "param3" and "swagger" in _response["data"].keys()
+        assert _response["name"] == remote_config.name
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

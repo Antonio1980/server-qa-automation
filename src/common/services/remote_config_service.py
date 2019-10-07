@@ -125,9 +125,8 @@ class RemoteConfigService(ServiceBase):
     def delete_remote_config(self, config_name):
         uri = self.url + "files/" + config_name
         try:
-            payload = RemoteConfigServiceRequest().add_config()
             logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.delete(uri, data=payload, headers=self.headers)
+            _response = requests.delete(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:

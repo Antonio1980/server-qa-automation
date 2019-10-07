@@ -14,7 +14,7 @@ test_case = "DELETE REMOTE CONFIG"
     1. Check that service is responded on "DeleteRemoteConfig" request properly.
     2. Check that service response contains desired properties.
     """)
-@pytest.mark.usefixtures("run_time_counter", "add_new_config")
+@pytest.mark.usefixtures("run_time_counter", "new_remote_config")
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/delete_config_test.py",
                  "TestDeleteRemoteConfig")
@@ -23,9 +23,9 @@ test_case = "DELETE REMOTE CONFIG"
 class TestDeleteRemoteConfig(object):
 
     @automation_logger(logger)
-    def test_delete_remote_config(self, add_new_config):
+    def test_delete_remote_config(self, new_remote_config):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().remote_config_svc.delete_remote_config()
+        _response = ApiClient().remote_config_svc.delete_remote_config(new_remote_config)
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -33,10 +33,16 @@ class TestDeleteRemoteConfig(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_delete_remote_config_negative(self):
-        allure.step("Verify response properties and that 'data' is dict object.")
-        _response = ApiClient().remote_config_svc.delete_remote_config()
+    def test_delete_remote_config_negative(self, new_remote_config):
+        allure.step("Verify that without authorization status code is 401")
+        api_ = ApiClient()
+        api_.routing_svc.headers.pop("Authorization")
+        _response = api_.remote_config_svc.delete_remote_config(new_remote_config)
 
-
+        assert isinstance(_response[0], dict)
+        assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
+        assert _response[0]['code'] == "credentials_required"
+        assert _response[0]['message'] == "No authorization token was found"
+        assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
