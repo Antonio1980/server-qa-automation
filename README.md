@@ -34,7 +34,7 @@ TECHNOLOGIES
 
 RECOMMENDED PLUGINS
 -------------------
-- bashsupport - ability to execute shell/bash scripts.
+- shell scripting - ability to execute shell/bash scripts.
 - multirun - ability to run several configurations.
 - .gitignore - prevents redundant uploads.
 - GitLab - projects integration with remote repo.
