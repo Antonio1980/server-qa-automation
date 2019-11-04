@@ -21,6 +21,7 @@ test_case = "GET COUNT BY TYPE"
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_routing
+@pytest.mark.client
 class TestGetCountByType(object):
 
     @automation_logger(logger)

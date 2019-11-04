@@ -20,6 +20,7 @@ test_case = "GET USER MESSAGE"
                  "TestUserMessage")
 @pytest.mark.regression
 @pytest.mark.regression_message
+@pytest.mark.client
 class TestUserMessage(object):
 
     @automation_logger(logger)

@@ -20,6 +20,7 @@ test_case = "UPLOAD FILE TASK"
 @pytest.mark.usefixtures("run_time_counter", "get_task")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
+@pytest.mark.client
 class TestUploadFileTask(object):
 
     @automation_logger(logger)

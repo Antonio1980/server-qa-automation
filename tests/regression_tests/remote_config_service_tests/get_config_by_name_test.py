@@ -21,6 +21,7 @@ test_case = "GET REMOTE CONFIG BY NAME"
                  "TestGetRemoteConfigByName")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config
+@pytest.mark.client
 class TestGetRemoteConfigByName(object):
 
     @automation_logger(logger)

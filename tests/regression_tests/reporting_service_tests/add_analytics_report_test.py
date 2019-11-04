@@ -21,6 +21,7 @@ test_case = "ADD ANALYTICS REPORT"
                  "TestAddAnalyticsReport")
 @pytest.mark.regression
 @pytest.mark.regression_reporting
+@pytest.mark.client
 class TestAddAnalyticsReport(object):
     client_ = AppClient()
     report_type, session_id = "TestReport", "Test QA Test"

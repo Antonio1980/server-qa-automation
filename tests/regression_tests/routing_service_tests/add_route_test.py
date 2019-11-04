@@ -20,6 +20,7 @@ test_case = "ADD ROUTE"
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_routing
+@pytest.mark.client
 class TestAddRoute(object):
 
     location = Location()

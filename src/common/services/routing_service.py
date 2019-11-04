@@ -15,26 +15,6 @@ class RoutingService(ServiceBase):
         self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
-    def get_endpoints(self):
-        uri = self.url + "endpoints"
-        try:
-            logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(url=uri, headers=self.headers)
-            try:
-                body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_endpoints failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
     def delete_endpoints(self):
         uri = self.url + "_endpoints"
         try:
