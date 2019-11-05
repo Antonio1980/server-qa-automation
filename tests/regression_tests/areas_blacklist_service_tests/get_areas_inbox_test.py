@@ -21,6 +21,7 @@ test_case = "GET AREAS IN BOX"
 @pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
+@pytest.mark.client
 class TestGetAreasInBox(object):
 
     ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
