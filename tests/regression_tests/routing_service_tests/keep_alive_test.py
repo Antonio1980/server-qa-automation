@@ -22,13 +22,13 @@ test_case = "KEEP ALIVE"
 @pytest.mark.regression
 @pytest.mark.regression_routing
 class TestKeepAlive(object):
-    ocean_box = BoundingBox()
+
     route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
 
     @automation_logger(logger)
     def test_keep_alive_method_works(self):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.keep_alive(self.ocean_box, self.route)
+        _response = ApiClient().routing_svc.keep_alive(self.route)
 
         assert _response[0] is not None
         assert _response[1].status_code == 201
@@ -41,7 +41,7 @@ class TestKeepAlive(object):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         api_.routing_svc.headers.pop("Authorization")
-        _response = api_.routing_svc.keep_alive(self.ocean_box, self.route)
+        _response = api_.routing_svc.keep_alive(self.route)
 
         assert isinstance(_response[0], dict)
         assert "timestamp" and "status" and "error" and "message" and "path" in _response[0].keys()

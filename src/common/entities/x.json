@@ -1,0 +1,19 @@
+{
+  "buildTime": "9dnv8yv3",
+  "countByType": {
+    "BIKE": 0,
+    "CAR": 0,
+    "PEDESTRIAN": 0
+  },
+  "instanceId": "o91d08hg",
+  "ip": "0.0.0.0",
+  "jvmLoad": 0,
+  "maxPort": 9000,
+  "minPort": 8000,
+  "name": "QA-Test",
+  "priority": 1,
+  "region": "QA",
+  "revision": "Test",
+  "systemLoad": 0,
+  "timeStarted": "2019-11-06T14:35:12.641507Z"
+}

@@ -4,7 +4,6 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
-from src.common.entities.bounding_box import BoundingBox
 from src.common.entities.route import Route
 from src.common.enums import DetectedType
 from src.common.log_decorator import automation_logger
@@ -23,8 +22,7 @@ test_case = "ROUTING CACHE"
 @pytest.mark.usefixtures("run_time_counter", "endpoints")
 @pytest.mark.functional
 class TestRoutingSvcCache(object):
-    box = BoundingBox().set_bounding_box(ne_lat=32.19428911708705, ne_lon=34.769648982994454,
-                                         sw_lat=32.166102800738855, sw_lon=34.74080987166633)
+
     route = Route()
     route = route.set_route(ip=route.ip, name="AntonQA", priority=1, port_list=[88, 99])
 
@@ -41,7 +39,7 @@ class TestRoutingSvcCache(object):
         run_time = time.perf_counter() + 5.0
         while time.perf_counter() <= run_time:
             time.sleep(0.8)
-            self.api_.routing_svc.keep_alive(self.box, self.route, cars, pedestrian, bikes)
+            self.api_.routing_svc.keep_alive(self.route, cars, pedestrian, bikes)
 
         allure.step("Verify that My Endpoint is returned from Service cache.")
         TestRoutingSvcCache._endpoints = self.api_.routing_svc.get_endpoints()[0]

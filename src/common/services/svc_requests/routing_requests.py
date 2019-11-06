@@ -2,6 +2,7 @@ from src.common import logger
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
 from src.common.services.svc_requests.request_schema import RequestSchema
+from src.common.utils.utils import Utils
 
 
 class RoutingServiceRequest(RequestSchema):
@@ -22,25 +23,28 @@ class RoutingServiceRequest(RequestSchema):
         return body
 
     @automation_logger(logger)
-    def keep_alive(self, bounding_box, route, *args):
+    def keep_alive(self, route, *args):
         if args and len(args[0]) > 0:
             ((car, pedestrian, bike, ), ) = args
         else:
             car, pedestrian, bike = 0, 0, 0
-        self.inner[BOUNDING_BOX] = dict()
-        self.inner[BOUNDING_BOX][MAX_LAT] = bounding_box.max_lat
-        self.inner[BOUNDING_BOX][MAX_LON] = bounding_box.max_lon
-        self.inner[BOUNDING_BOX][MIN_LAT] = bounding_box.min_lat
-        self.inner[BOUNDING_BOX][MIN_LON] = bounding_box.min_lon
+
+        self.inner[BUILD_TIME] = Utils.get_random_string()
         self.inner[COUNT_BY_TYPE] = dict()
         self.inner[COUNT_BY_TYPE][CAR] = car
         self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
         self.inner[COUNT_BY_TYPE][BIKE] = bike
+        self.inner[INSTANCE_ID] = Utils.get_random_string()
         self.inner[IP] = route.ip
+        self.inner[JVM_LOAD] = 0
         self.inner[NAME] = route.name
         self.inner[MIN_PORT] = route.min_port
         self.inner[MAX_PORT] = route.max_port
         self.inner[PRIORITY] = route.priority
+        self.inner[REGION] = "QA"
+        self.inner[REVISION] = "Test"
+        self.inner[SYSTEM_LOAD] = 0
+        self.inner[TIME_STARTED] = Utils.get_timestamp()
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

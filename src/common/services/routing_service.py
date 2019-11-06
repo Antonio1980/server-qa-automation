@@ -75,7 +75,7 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def keep_alive(self, bounding_box, route, *args):
+    def keep_alive(self, route, *args):
         """
 
         :param bounding_box: BoundingBox object.
@@ -85,7 +85,7 @@ class RoutingService(ServiceBase):
         """
         uri = self.url + "v2/keepalive"
         try:
-            payload = RoutingServiceRequest().keep_alive(bounding_box, route, args)
+            payload = RoutingServiceRequest().keep_alive(route, args)
             logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers)
             try:
