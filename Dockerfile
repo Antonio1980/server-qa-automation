@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-MAINTAINER fnndsc "antons@eyenet-mobile.com"
+MAINTAINER "antons@eyenet-mobile.com"
 
 ENV PATH /usr/local/bin:$PATH
 

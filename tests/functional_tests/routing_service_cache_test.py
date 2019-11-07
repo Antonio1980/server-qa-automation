@@ -23,8 +23,7 @@ test_case = "ROUTING CACHE"
 @pytest.mark.functional
 class TestRoutingSvcCache(object):
 
-    route = Route()
-    route = route.set_route(ip=route.ip, name="AntonQA", priority=1, port_list=[88, 99])
+    route = Route().set_route(ip=Route().ip, name="AntonQA", priority=1, port_list=[88, 99])
 
     api_ = ApiClient()
     _endpoints = None
