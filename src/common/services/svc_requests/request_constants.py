@@ -41,6 +41,11 @@ MAX_DECELERATION = "maxDeceleration"
 RAW_HORIZONTAL_ACCURACY = "rawHorizontalAccuracy"
 SESSION_ID = "sessionId"
 VERTICAL_ACCURACY = "verticalAccuracy"
+DEFINITIONS_DELETE = "definitionsToDelete"
+DEFINITIONS_UPDATE = "definitionsToUpdate"
+DEFINITION_ID = "definitionId"
+NICKNAME = "nickname"
+
 
 # Log-fetch
 NOTIFY_SLACK = "notifySlack"

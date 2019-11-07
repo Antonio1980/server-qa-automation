@@ -1,8 +1,8 @@
 from src.common import logger
+from src.common.utils.utils import Utils
 from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import *
 from src.common.services.svc_requests.request_schema import RequestSchema
-from src.common.utils.utils import Utils
 
 
 class RoutingServiceRequest(RequestSchema):
@@ -18,6 +18,29 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[REPORT_TYPE] = report_item.report_type
         self.inner[SESSION_ID] = report_item.session_id
         self.inner[TIMESTAMP] = report_item.timestamp
+        body = self.from_json("inner")
+        logger.logger.info(REQUEST_BODY.format(body))
+        return body
+
+    @automation_logger(logger)
+    def update_definitions(self, box, *args):
+        if args and len(args[0]) > 0:
+            ((id_, priority, region,),) = args
+        else:
+            id_, priority, region = None, None, None
+        self.inner[DEFINITIONS_DELETE] = list()
+        self.inner[DEFINITIONS_UPDATE] = list()
+        self.inner[DEFINITIONS_UPDATE].append(dict())
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX] = dict()
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MAX_LAT] = box.max_lat
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MAX_LON] = box.max_lon
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MIN_LAT] = box.min_lat
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MIN_LON] = box.min_lat
+        self.inner[DEFINITIONS_UPDATE][0][DEFINITION_ID] = id_
+        self.inner[DEFINITIONS_UPDATE][0][DESCRIPTION] = "QA Test"
+        self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = "qa"
+        self.inner[DEFINITIONS_UPDATE][0][PRIORITY] = priority
+        self.inner[DEFINITIONS_UPDATE][0][REGION] = region
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

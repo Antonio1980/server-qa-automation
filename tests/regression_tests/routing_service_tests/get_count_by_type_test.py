@@ -54,4 +54,4 @@ class TestGetCountByType(object):
         assert isinstance(_response[0], dict)
         assert _response[0]["countByType"] is None
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

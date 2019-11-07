@@ -3,7 +3,6 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
-from src.common.entities.bounding_box import BoundingBox
 from src.common.entities.route import Route
 from src.common.log_decorator import automation_logger
 

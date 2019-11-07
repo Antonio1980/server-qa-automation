@@ -15,11 +15,11 @@ class RoutingService(ServiceBase):
         self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
-    def delete_endpoints(self):
-        uri = self.url + "_endpoints"
+    def get_location_services_v1(self):
+        uri = self.url + "v1/location-services"
         try:
-            logger.logger.info(F"API Service URL is DELETE- {uri}")
-            _response = requests.delete(url=uri, headers=self.headers)
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(url=uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -31,7 +31,34 @@ class RoutingService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} delete_endpoints failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_location_services_v1 failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def update_location_definitions(self, box, *args):
+        """
+
+        :param box: BoundingBox object.
+        :param args: types: definition_id, priority, region.
+        :return: tuple - (response body as text and pure response)
+        """
+        uri = self.url + "v1/location-services/definitions"
+        try:
+            payload = RoutingServiceRequest().update_definitions(box, args)
+            logger.logger.info(F"API Service URL is POST- {uri}")
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} keep_alive failed with error: {e}")
             raise e
 
     @automation_logger(logger)
@@ -78,8 +105,7 @@ class RoutingService(ServiceBase):
     def keep_alive(self, route, *args):
         """
 
-        :param bounding_box: BoundingBox object.
-        :param route: Route object
+        :param route: Route object.
         :param args: types: "CAR", "PEDESTRIAN", "BIKE"
         :return: tuple - (response body as text and pure response)
         """
