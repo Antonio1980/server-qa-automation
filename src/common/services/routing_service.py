@@ -16,6 +16,10 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_location_services_v1(self):
+        """
+
+        :return:
+        """
         uri = self.url + "v1/location-services"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -35,12 +39,62 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
+    def get_location_services_configuration(self):
+        """
+
+        :return:
+        """
+        uri = self.url + "v1/location-service-configuration"
+        try:
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(url=uri, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_location_services_v1 failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def create_location_instance(self, region):
+        """
+        TODO: waiting implementation on int.
+        :param region:
+        :return: tuple - (response body as text and pure HTTP response)
+        """
+        uri = self.url + "v1/location-services/instances/" + region
+        try:
+            payload = RoutingServiceRequest().create_instance(region)
+            logger.logger.info(F"API Service URL is POST- {uri}")
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} keep_alive failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
     def update_location_definitions(self, box, *args):
         """
 
         :param box: BoundingBox object.
         :param args: types: definition_id, priority, region.
-        :return: tuple - (response body as text and pure response)
+        :return: tuple - (response body as text and pure HTTP response)
         """
         uri = self.url + "v1/location-services/definitions"
         try:
@@ -63,6 +117,10 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_count_by_type_v2(self):
+        """
+
+        :return: tuple - (response body as text and pure HTTP response)
+        """
         uri = self.url + "v2/count-by-type"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -83,6 +141,10 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_count_by_type_v1(self):
+        """
+
+        :return: tuple - (response body as text and pure HTTP response)
+        """
         uri = self.url + "v1/count-by-type"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -107,7 +169,7 @@ class RoutingService(ServiceBase):
 
         :param route: Route object.
         :param args: types: "CAR", "PEDESTRIAN", "BIKE"
-        :return: tuple - (response body as text and pure response)
+        :return: tuple - (response body as text and pure HTTP response)
         """
         uri = self.url + "v2/keepalive"
         try:
@@ -130,6 +192,11 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def add_route_v3(self, location):
+        """
+
+        :param location:
+        :return: tuple - (response body as text and pure HTTP response)
+        """
         uri = self.url + "v3/route"
         try:
             payload = RoutingServiceRequest().add_route(location)
@@ -151,6 +218,10 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def get_version_info(self):
+        """
+
+        :return: tuple - (response body as text and pure HTTP response)
+        """
         uri = self.url + "version-info"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -171,6 +242,10 @@ class RoutingService(ServiceBase):
 
     @automation_logger(logger)
     def health(self):
+        """
+
+        :return: tuple - (response body as text and pure HTTP response)
+        """
         uri = self.url + "actuator/health"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
