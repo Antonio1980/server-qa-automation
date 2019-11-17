@@ -38,7 +38,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MIN_LON] = box.min_lat
         self.inner[DEFINITIONS_UPDATE][0][DEFINITION_ID] = id_
         self.inner[DEFINITIONS_UPDATE][0][DESCRIPTION] = "QA Test"
-        self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = "qa"
+        self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = Utils.get_random_string(size=6)
         self.inner[DEFINITIONS_UPDATE][0][PRIORITY] = priority
         self.inner[DEFINITIONS_UPDATE][0][REGION] = region
         body = self.from_json("inner")

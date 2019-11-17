@@ -40,6 +40,14 @@ class TestGetRemoteConfigDefault(object):
         assert isinstance(_response, dict)
         assert "_id" and "hash" and "data" and "last_updated" in _response.keys()
         assert isinstance(_response["data"], dict)
-        assert "swagger" and "param1" and "param2" and "param3" in _response["data"].keys()
+        assert "messagesPollTimeSeconds" and "versionParams" in _response["data"].keys()
+        assert isinstance(_response["data"]["versionParams"], dict)
+        assert "iOS" and "android" in _response["data"]["versionParams"].keys()
+        assert isinstance(_response["data"]["versionParams"]["iOS"], dict)
+        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["iOS"] \
+            .keys()
+        assert isinstance(_response["data"]["versionParams"]["android"], dict)
+        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["android"] \
+            .keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

@@ -15,6 +15,55 @@ class RoutingService(ServiceBase):
         self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
+    def get_location_service_configuration(self):
+        """
+
+        :return:
+        """
+        uri = self.url + "v1/location-service-configuration"
+        try:
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(url=uri, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_location_service_configuration failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def add_location_service_configuration(self):
+        """
+
+        :return:
+        """
+        uri = self.url + "v1/location-service-configuration"
+        try:
+            payload = RoutingServiceRequest().add_service_configuration()
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.post(url=uri, data=payload, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} add_location_service_configuration failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
     def get_location_services_v1(self):
         """
 

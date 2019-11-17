@@ -40,9 +40,17 @@ class TestGetRemoteConfigByName(object):
         _response = ApiClient().remote_config_svc.get_config_by_name(get_config_default_name)[0]
 
         assert isinstance(_response, dict)
-        assert "_id" and "hash" and "data" and "last_updated" in _response.keys()
+        assert "_id" and "hash" and "data" and "last_updated" and "name" and "description" in _response.keys()
         assert isinstance(_response["data"], dict)
-        assert "swagger" and "param1" and "param2" and "param3" in _response["data"].keys()
+        assert "messagesPollTimeSeconds" and "versionParams" in _response["data"].keys()
+        assert isinstance(_response["data"]["versionParams"], dict)
+        assert "iOS" and "android" in _response["data"]["versionParams"].keys()
+        assert isinstance(_response["data"]["versionParams"]["iOS"], dict)
+        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["iOS"]\
+            .keys()
+        assert isinstance(_response["data"]["versionParams"]["android"], dict)
+        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["android"]\
+            .keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
