@@ -21,8 +21,7 @@ def automation_logger(logger):
                 logger.logger.info(" {0} --> {1}".format(cls_name, f_name))
                 return func(*args, **kwargs)
             except Exception as e:
-                err = f_name + " {0} automation_wrapper throws an exception: {1}".format(e.__class__.__name__,
-                                                                                         e.__cause__)
+                err = f_name + f" The {f_name} throws an exception: {e.__class__.__name__} {e.__cause__}"
                 logger.logger.fatal(err, exc_info=True)
                 raise e
 
