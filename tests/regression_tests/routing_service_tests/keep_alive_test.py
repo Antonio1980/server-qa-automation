@@ -16,18 +16,18 @@ test_case = "KEEP ALIVE"
     2. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/keep_alive_test.py", "TestKeepAlive")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_routing
-class TestKeepAlive(object):
+class TestKeepAlive:
 
     route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
 
     @automation_logger(logger)
-    def test_keep_alive_method_works(self):
+    def test_keep_alive_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.keep_alive(self.route)
+        _response = api_client.routing_svc.keep_alive(self.route)
 
         assert _response[0] is not None
         assert _response[1].status_code == 201
@@ -39,7 +39,6 @@ class TestKeepAlive(object):
     def test_keep_alive_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.routing_svc.headers.pop("Authorization")
         _response = api_.routing_svc.keep_alive(self.route)
 
         assert isinstance(_response[0], dict)

@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "EXPORT AREAS"
@@ -15,17 +14,17 @@ test_case = "EXPORT AREAS"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/export_areas_test.py",
                  "TestExportAreas")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
-class TestExportAreas(object):
+class TestExportAreas:
 
     @automation_logger(logger)
-    def test_export_areas_method_works(self):
+    def test_export_areas_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().areas_blacklist_svc.export_areas()
+        _response = api_client.areas_blacklist_svc.export_areas()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -33,9 +32,9 @@ class TestExportAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_export_areas_method(self):
+    def test_attributes_in_export_areas_method(self, api_client):
         allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
-        _response = ApiClient().areas_blacklist_svc.export_areas()[0]
+        _response = api_client.areas_blacklist_svc.export_areas()[0]
 
         assert isinstance(_response, dict)
         assert "areas" in _response.keys() and isinstance(_response["areas"], list)

@@ -16,18 +16,18 @@ test_case = "GET CONFIG HASH"
     3. Check that service returned default config if name is not requested.
     4. Check that service returned 404 on not existing config name.
     """)
-@pytest.mark.usefixtures("run_time_counter", "get_config_default_name")
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/get_config_hash_test.py",
                  "TestGetConfigHash")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config
-class TestGetConfigHash(object):
+class TestGetConfigHash:
 
     @automation_logger(logger)
-    def test_get_hash_method_works(self, get_config_default_name):
+    def test_get_hash_method_works(self, get_config_default_name, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().remote_config_svc.get_remote_config_hash(get_config_default_name)
+        _response = api_client.remote_config_svc.get_remote_config_hash(get_config_default_name)
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -35,9 +35,9 @@ class TestGetConfigHash(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_hash(self, get_config_default_name):
+    def test_attributes_in_get_hash(self, get_config_default_name, api_client):
         allure.step("Verify response properties and 'currentHash' object.")
-        _response = ApiClient().remote_config_svc.get_remote_config_hash(get_config_default_name)[0]
+        _response = api_client.remote_config_svc.get_remote_config_hash(get_config_default_name)[0]
 
         assert isinstance(_response, dict)
         assert "hash" in _response.keys()
@@ -48,9 +48,9 @@ class TestGetConfigHash(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_get_hash_default(self):
+    def test_get_hash_default(self, api_client):
         allure.step("Verify that default config hash returned when name not given.")
-        _response = ApiClient().remote_config_svc.get_remote_config_hash()
+        _response = api_client.remote_config_svc.get_remote_config_hash()
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -58,9 +58,9 @@ class TestGetConfigHash(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
     @automation_logger(logger)
-    def test_get_hash_negative(self):
+    def test_get_hash_negative(self, api_client):
         allure.step("Verify that service responded with 404.")
-        _response = ApiClient().remote_config_svc.get_remote_config_hash("any_stam")
+        _response = api_client.remote_config_svc.get_remote_config_hash("any_stam")
 
         assert _response[1].status_code == 404
         assert "message" and "statusCode" in _response[0].keys()

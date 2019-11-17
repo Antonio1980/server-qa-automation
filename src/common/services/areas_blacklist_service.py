@@ -11,7 +11,8 @@ from src.common.services.svc_requests.areas_blacklist_requests import AreasBlack
 class AreasBlacklistService(ServiceBase):
     def __init__(self, auth_token):
         super(AreasBlacklistService, self).__init__()
-        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
+        if auth_token:
+            self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
         self.url_proxy = "api/"
         self.url = self.api_base_url + "areas-blacklist-manager/" + self.url_proxy
 

@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "GET VERSION INFO"
@@ -15,17 +14,17 @@ test_case = "GET VERSION INFO"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/get_version_info_test.py",
                  "TestGetVersionInfo")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_routing
-class TestGetVersionInfo(object):
+class TestGetVersionInfo:
 
     @automation_logger(logger)
-    def test_get_version_info_method_works(self):
+    def test_get_version_info_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.get_version_info()
+        _response = api_client.routing_svc.get_version_info()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -33,9 +32,9 @@ class TestGetVersionInfo(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_version_info_method(self):
+    def test_attributes_in_get_version_info_method(self, api_client):
         allure.step("Verify response properties and 'revision' object.")
-        _response = ApiClient().routing_svc.get_version_info()[0]
+        _response = api_client.routing_svc.get_version_info()[0]
 
         assert isinstance(_response, dict)
         assert "appName" and "appVersion" and "buildTime" and "revision" in _response.keys()

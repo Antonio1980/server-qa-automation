@@ -11,9 +11,10 @@ from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 class LogFetchService(ServiceBase):
     def __init__(self, auth_token):
         super(LogFetchService, self).__init__()
+        if auth_token:
+            self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
         self.proxy_url = "api/"
         self.url = self.api_base_url + "log-fetch-service/" + self.proxy_url
-        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
     def get_tasks(self):

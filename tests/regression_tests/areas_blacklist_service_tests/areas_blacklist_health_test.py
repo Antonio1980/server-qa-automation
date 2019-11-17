@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "HEALTH AREAS BLACKLIST"
@@ -14,17 +13,17 @@ test_case = "HEALTH AREAS BLACKLIST"
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/areas_blacklist_health_test.py",
                  "TestHealthAreasBlackList")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
-class TestHealthAreasBlackList(object):
+class TestHealthAreasBlackList:
 
     @automation_logger(logger)
-    def test_health_area_black_list(self):
+    def test_health_area_black_list(self, api_client):
         allure.step("Verify that status code is 200 and response properties.")
-        _response = ApiClient().areas_blacklist_svc.health()
+        _response = api_client.areas_blacklist_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)

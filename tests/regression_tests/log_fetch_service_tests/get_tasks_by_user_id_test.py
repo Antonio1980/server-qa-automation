@@ -16,17 +16,17 @@ test_case = "GET TASKS BY USER ID"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/get_tasks_by_user_id_test.py",
                  "TestGetTasksByUserId")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
-class TestGetTasksByUserId(object):
+class TestGetTasksByUserId:
 
     @automation_logger(logger)
-    def test_get_tasks_by_user_id_method_works(self):
+    def test_get_tasks_by_user_id_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().log_fetch_svc.get_tasks_by_user_id("userid")
+        _response = api_client.log_fetch_svc.get_tasks_by_user_id("userid")
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -34,9 +34,9 @@ class TestGetTasksByUserId(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_by_user_id_method(self):
+    def test_attributes_in_get_tasks_by_user_id_method(self, api_client):
         allure.step("Verify response properties and that 'response' is list object.")
-        _response = ApiClient().log_fetch_svc.get_tasks_by_user_id("userid")[0]
+        _response = api_client.log_fetch_svc.get_tasks_by_user_id("userid")[0]
 
         assert isinstance(_response, list)
         assert len(_response) > 0
@@ -47,7 +47,6 @@ class TestGetTasksByUserId(object):
     def test_get_tasks_by_user_id_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.log_fetch_svc.get_tasks_by_user_id("userid")
 
         assert isinstance(_response[0], dict)

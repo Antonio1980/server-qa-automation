@@ -11,8 +11,9 @@ from src.common.services.svc_requests.routing_requests import RoutingServiceRequ
 class RoutingService(ServiceBase):
     def __init__(self, auth_token):
         super(RoutingService, self).__init__()
+        if auth_token:
+            self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
         self.url = self.api_base_url + "routing-service/"
-        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
 
     @automation_logger(logger)
     def get_location_service_configuration(self):

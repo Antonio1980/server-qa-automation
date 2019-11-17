@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "GET SYNC RUN"
@@ -15,17 +14,17 @@ test_case = "GET SYNC RUN"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/get_sync_run_test.py",
                  "TestGetSyncRun")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_message_sync
-class TestGetSyncRun(object):
+class TestGetSyncRun:
 
     @automation_logger(logger)
-    def test_get_sync_run_method_works(self):
+    def test_get_sync_run_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().messages_sync_svc.get_sync_run()
+        _response = api_client.messages_sync_svc.get_sync_run()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -33,9 +32,9 @@ class TestGetSyncRun(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_sync_run_method(self):
+    def test_attributes_in_get_sync_run_method(self, api_client):
         allure.step("Verify response properties and that 'newMessages' is list object.")
-        _response = ApiClient().messages_sync_svc.get_sync_run()[0]
+        _response = api_client.messages_sync_svc.get_sync_run()[0]
 
         assert isinstance(_response, dict)
         assert "processTime" and "logFetchRes" and "remoteConfigRes" in _response.keys()

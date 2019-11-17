@@ -16,17 +16,17 @@ test_case = "GET TASKS"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/get_tasks_test.py",
                  "TestGetTasks")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
-class TestGetTasks(object):
+class TestGetTasks:
 
     @automation_logger(logger)
-    def test_get_tasks_method_works(self):
+    def test_get_tasks_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().log_fetch_svc.get_tasks()
+        _response = api_client.log_fetch_svc.get_tasks()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -34,9 +34,9 @@ class TestGetTasks(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_method(self):
+    def test_attributes_in_get_tasks_method(self, api_client):
         allure.step("Verify response properties and that 'tasks' is list object.")
-        _response = ApiClient().log_fetch_svc.get_tasks()[0]
+        _response = api_client.log_fetch_svc.get_tasks()[0]
 
         assert isinstance(_response, dict)
         assert "tasks" in _response.keys()
@@ -49,7 +49,6 @@ class TestGetTasks(object):
     def test_get_task_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.log_fetch_svc.get_tasks()
 
         assert isinstance(_response[0], dict)

@@ -18,21 +18,22 @@ test_case = "ADD AREAS"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/add_areas_test.py",
                  "TestAddAreas")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
-class TestAddAreas(object):
+class TestAddAreas:
+
     ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
     sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
     tel_aviv_box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
 
     @automation_logger(logger)
-    def test_add_areas_method_works(self):
+    def test_add_areas_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 201")
         # sw_lng, sw_lat, ne_lng, ne_lat
-        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
+        _response = api_client.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
 
         assert _response[0] is not None
         assert _response[1].status_code == 201
@@ -41,9 +42,9 @@ class TestAddAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_add_areas_method(self):
+    def test_attributes_in_add_areas_method(self, api_client):
         allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
-        _response = ApiClient().areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)[0]
+        _response = api_client.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)[0]
 
         assert isinstance(_response, dict)
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
@@ -58,7 +59,6 @@ class TestAddAreas(object):
     def test_add_areas_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
 
         assert isinstance(_response[0], dict)

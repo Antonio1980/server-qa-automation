@@ -15,19 +15,19 @@ test_case = "GET REMOTE CONFIG BY NAME"
     2. Check that service response contains desired properties.
     3. Check that service returned 404 on not existing config name.
     """)
-@pytest.mark.usefixtures("run_time_counter", "get_config_default_name")
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/get_config_by_name_test.py",
                  "TestGetRemoteConfigByName")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config
 @pytest.mark.client
-class TestGetRemoteConfigByName(object):
+class TestGetRemoteConfigByName:
 
     @automation_logger(logger)
-    def test_get_remote_config_by_name_method_works(self, get_config_default_name):
+    def test_get_remote_config_by_name_method_works(self, get_config_default_name, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().remote_config_svc.get_config_by_name(get_config_default_name)
+        _response = api_client.remote_config_svc.get_config_by_name(get_config_default_name)
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -35,22 +35,13 @@ class TestGetRemoteConfigByName(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_remote_config_by_name(self, get_config_default_name):
+    def test_attributes_in_get_remote_config_by_name(self, get_config_default_name, api_client):
         allure.step("Verify response properties and that 'data' is dict object.")
-        _response = ApiClient().remote_config_svc.get_config_by_name(get_config_default_name)[0]
+        _response = api_client.remote_config_svc.get_config_by_name(get_config_default_name)[0]
 
         assert isinstance(_response, dict)
         assert "_id" and "hash" and "data" and "last_updated" and "name" and "description" in _response.keys()
         assert isinstance(_response["data"], dict)
-        assert "messagesPollTimeSeconds" and "versionParams" in _response["data"].keys()
-        assert isinstance(_response["data"]["versionParams"], dict)
-        assert "iOS" and "android" in _response["data"]["versionParams"].keys()
-        assert isinstance(_response["data"]["versionParams"]["iOS"], dict)
-        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["iOS"]\
-            .keys()
-        assert isinstance(_response["data"]["versionParams"]["android"], dict)
-        assert "storeURL" and "latestVersion" and "minRunnableVersion" in _response["data"]["versionParams"]["android"]\
-            .keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

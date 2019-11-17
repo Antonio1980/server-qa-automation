@@ -11,7 +11,8 @@ from src.common.services.svc_requests.reporting_requests import ReportingService
 class ReportingService(ServiceBase):
     def __init__(self, auth_token):
         super(ReportingService, self).__init__()
-        self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
+        if auth_token:
+            self.headers.update({'Authorization': 'Bearer {0}'.format(auth_token)})
         self.version = "v1/"
         self.url = self.api_base_url + "reporting-service/"
 

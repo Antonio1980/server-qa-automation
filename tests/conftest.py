@@ -4,6 +4,7 @@ import pytest
 from src.common import logger
 from src.common.enums import Environment
 from src.common.api_client import ApiClient
+from src.common.instruments import Instruments
 from src.common.udp_socket import UdpSocket
 from src.common.log_decorator import automation_logger
 
@@ -33,6 +34,13 @@ def run_time_counter(request):
     request.addfinalizer(stop_counter)
 
 
+@pytest.fixture(scope="session")
+@automation_logger(logger)
+def api_client():
+    auth_token = Instruments.get_authorization_token()["access_token"]
+    return ApiClient(auth_token)
+
+
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def socket_(request):
@@ -49,22 +57,22 @@ def socket_(request):
 
 @pytest.fixture(scope="class")
 @automation_logger(logger)
-def endpoints():
-    _response = ApiClient().routing_svc.get_endpoints()[0]
+def endpoints(api_client):
+    _response = api_client.routing_svc.get_endpoints()[0]
     return _response
 
 
 @pytest.fixture
 @automation_logger(logger)
-def add_task():
-    ApiClient().log_fetch_svc.add_task("qa_test_qa")
+def add_task(api_client):
+    api_client.log_fetch_svc.add_task("qa_test_qa")
 
 
 @pytest.fixture
 @automation_logger(logger)
-def get_task(add_task):
+def get_task(add_task, api_client):
     logger.logger.info(f"Task is added- {add_task}")
-    _response = ApiClient().log_fetch_svc.get_tasks()[0]
+    _response = api_client.log_fetch_svc.get_tasks()[0]
 
     for item in _response["tasks"]:
         if (item["userid"] == "qa_test_qa" or item["userid"] == "another_qa_test_qa") and item["status"] == "Pending":
@@ -73,10 +81,10 @@ def get_task(add_task):
 
 @pytest.fixture
 @automation_logger(logger)
-def get_uploaded_task(get_task):
+def get_uploaded_task(get_task, api_client):
     task_id = get_task["taskid"]
     try:
-        return ApiClient().log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
+        return api_client.log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
     except Exception as e:
         logger.logger(F"Error on fixture get_uploaded_task: {e}")
         raise e

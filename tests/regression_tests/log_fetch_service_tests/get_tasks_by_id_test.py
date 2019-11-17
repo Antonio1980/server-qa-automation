@@ -16,18 +16,18 @@ test_case = "GET TASKS BY ID"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/get_tasks_by_id_test.py",
                  "TestGetTasksById")
-@pytest.mark.usefixtures("run_time_counter", "get_uploaded_task")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
-class TestGetTasksById(object):
+class TestGetTasksById:
 
     @automation_logger(logger)
-    def test_get_tasks_by_id_method_works(self, get_uploaded_task):
+    def test_get_tasks_by_id_method_works(self, get_uploaded_task, api_client):
         allure.step("Verify that response is not empty and status code is 200")
         task_id = get_uploaded_task['taskid']
-        _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)
+        _response = api_client.log_fetch_svc.get_tasks_by_id(task_id)
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -35,10 +35,10 @@ class TestGetTasksById(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task):
+    def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task, api_client):
         allure.step("Verify response properties and that 'tasks' is list object.")
         task_id = get_uploaded_task['taskid']
-        _response = ApiClient().log_fetch_svc.get_tasks_by_id(task_id)[0]
+        _response = api_client.log_fetch_svc.get_tasks_by_id(task_id)[0]
 
         assert "Do the current tasks" in _response
 
@@ -49,7 +49,6 @@ class TestGetTasksById(object):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         task_id = get_uploaded_task['taskid']
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.log_fetch_svc.get_tasks_by_id(task_id)
 
         assert isinstance(_response[0], dict)

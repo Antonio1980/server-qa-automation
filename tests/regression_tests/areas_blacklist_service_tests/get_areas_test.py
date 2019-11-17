@@ -16,17 +16,17 @@ test_case = "GET AREAS"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/get_areas_test.py",
                  "TestGetAreas")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_areas_blacklist
-class TestGetAreas(object):
+class TestGetAreas:
 
     @automation_logger(logger)
-    def test_get_areas_method_works(self):
+    def test_get_areas_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().areas_blacklist_svc.get_areas()
+        _response = api_client.areas_blacklist_svc.get_areas()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -34,9 +34,9 @@ class TestGetAreas(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_areas_method(self):
+    def test_attributes_in_get_areas_method(self, api_client):
         allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
-        _response = ApiClient().areas_blacklist_svc.get_areas()[0]
+        _response = api_client.areas_blacklist_svc.get_areas()[0]
 
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
         assert "areas" in _response.keys() and isinstance(_response["areas"], list)
@@ -50,7 +50,6 @@ class TestGetAreas(object):
     def test_get_areas_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.areas_blacklist_svc.get_areas()
 
         assert isinstance(_response[0], dict)

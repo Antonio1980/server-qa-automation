@@ -16,17 +16,17 @@ test_case = "GET LOCATION SERVICES"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/get_location_services_test.py",
                  "TestGetLocationServices")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_routing
-class TestGetLocationServices(object):
+class TestGetLocationServices:
 
     @automation_logger(logger)
-    def test_get_location_services_method_works(self):
+    def test_get_location_services_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.get_location_services_v1()
+        _response = api_client.routing_svc.get_location_services_v1()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -35,9 +35,9 @@ class TestGetLocationServices(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_location_services_method(self):
+    def test_attributes_in_get_location_services_method(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().routing_svc.get_location_services_v1()[0]
+        _response = api_client.routing_svc.get_location_services_v1()[0]
 
         assert "definitions" and "instances" in _response.keys()
         assert isinstance(_response["definitions"], list)
@@ -51,7 +51,6 @@ class TestGetLocationServices(object):
     def test_get_location_services_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.routing_svc.headers.pop("Authorization")
         _response = api_.routing_svc.get_location_services_v1()
 
         assert isinstance(_response[0], dict)

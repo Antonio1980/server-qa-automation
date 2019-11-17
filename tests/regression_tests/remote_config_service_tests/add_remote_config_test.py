@@ -3,7 +3,9 @@ import pytest
 from src.common import logger
 from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
+from src.common.entities.remote_config import RemoteConfig
 from src.common.log_decorator import automation_logger
+from src.common.utils.utils import Utils
 
 test_case = "ADD REMOTE CONFIG"
 
@@ -15,18 +17,18 @@ test_case = "ADD REMOTE CONFIG"
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
     """)
-@pytest.mark.usefixtures("run_time_counter", "remote_config")
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/add_remote_config_test.py",
                  "TestAddRemoteConfig")
 @pytest.mark.regression
 @pytest.mark.regression_remote_config
-class TestAddRemoteConfig(object):
+class TestAddRemoteConfig:
 
     @automation_logger(logger)
-    def test_add_remote_config_method_works(self, remote_config):
+    def test_add_remote_config_method_works(self, remote_config, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().remote_config_svc.add_remote_config(remote_config)
+        _response = api_client.remote_config_svc.add_remote_config(remote_config)
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -34,9 +36,9 @@ class TestAddRemoteConfig(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_add_remote_config_method(self, remote_config):
+    def test_attributes_in_add_remote_config_method(self, remote_config, api_client):
         allure.step("Verify response properties and that 'data' is dict object.")
-        _response = ApiClient().remote_config_svc.add_remote_config(remote_config)[0]
+        _response = api_client.remote_config_svc.add_remote_config(remote_config)[0]
 
         assert isinstance(_response, dict)
         assert "_id" and "name" and "hash" and "data" and "description" in _response.keys()
@@ -47,10 +49,10 @@ class TestAddRemoteConfig(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_add_remote_config_negative(self, remote_config):
+    def test_add_remote_config_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        api_.routing_svc.headers.pop("Authorization")
+        remote_config = RemoteConfig(Utils.get_timestamp()).set_config(False, True, 12345, Utils.get_random_string(6))
         _response = api_.remote_config_svc.add_remote_config(remote_config)
 
         assert isinstance(_response[0], dict)

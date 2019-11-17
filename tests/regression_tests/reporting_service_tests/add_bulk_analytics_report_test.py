@@ -16,24 +16,25 @@ test_case = "ADD BULK ANALYTICS REPORT"
     1. Check that service is responded on "postReport" request properly.
     2. Negative: Check that without authorization it forbidden.
     """)
-@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/add_bulk_analytics_report_test.py",
                  "TestAddBulkAnalyticsReport")
 @pytest.mark.regression
 @pytest.mark.regression_reporting
-class TestAddBulkAnalyticsReport(object):
+class TestAddBulkAnalyticsReport:
+
     client_ = AppClient()
     report_type, session_id = "QaReport", "Test Report"
     report_item = ReportItem(report_type, session_id)
 
     @automation_logger(logger)
-    def test_add_bulk_analytics_report_method_works(self):
+    def test_add_bulk_analytics_report_method_works(self, api_client):
         allure.step("Verify that status code is 201")
         report_type, session_id = "TestReport", "Test QA Test"
         report_item = ReportItem(report_type, session_id)
 
-        _response = ApiClient().reporting_svc.add_bulk_analytics_report(self.client_, [self.report_item, report_item])
+        _response = api_client.reporting_svc.add_bulk_analytics_report(self.client_, [self.report_item, report_item])
 
         assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'
@@ -47,7 +48,6 @@ class TestAddBulkAnalyticsReport(object):
         report_item = ReportItem(report_type, session_id)
 
         api_ = ApiClient()
-        api_.reporting_svc.headers.pop("Authorization")
         _response = api_.reporting_svc.add_bulk_analytics_report(self.client_, [self.report_item, report_item])
 
         assert isinstance(_response[0], dict)

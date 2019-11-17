@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "HEALTH MESSAGE SYNC"
@@ -14,17 +13,17 @@ test_case = "HEALTH MESSAGE SYNC"
     1. Check that service is responded on "Health" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/message_sync_health_test.py",
                  "TestHealthMessageSync")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.regression
 @pytest.mark.regression_message_sync
-class TestHealthMessageSync(object):
+class TestHealthMessageSync:
 
     @automation_logger(logger)
-    def test_health_message_sync(self):
+    def test_health_message_sync(self, api_client):
         allure.step("Verify response status code is 200 and properties of the response.")
-        _response = ApiClient().messages_sync_svc.health()
+        _response = api_client.messages_sync_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)

@@ -1,7 +1,6 @@
 import allure
 import pytest
 from src.common import logger
-from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
 from src.common.log_decorator import automation_logger
 
@@ -14,18 +13,18 @@ test_case = "GET MESSAGE"
     1. Check that service is responded on "GetMessage" request properly.
     2. Check that service response contains desired properties.
     """)
-@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.BLOCKER)
+@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_service_tests/get_message_test.py",
                  "TestGetMessage")
 @pytest.mark.regression
 @pytest.mark.regression_message
-class TestGetMessage(object):
+class TestGetMessage:
 
     @automation_logger(logger)
-    def test_get_message_method_works(self):
+    def test_get_message_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = ApiClient().message_svc.get_messages()
+        _response = api_client.message_svc.get_messages()
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -33,9 +32,9 @@ class TestGetMessage(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_message_method(self):
+    def test_attributes_in_get_message_method(self, api_client):
         allure.step("Verify response properties and that 'messages' is list object.")
-        _response = ApiClient().message_svc.get_messages()[0]
+        _response = api_client.message_svc.get_messages()[0]
 
         assert isinstance(_response, dict)
         assert "messagesArray" in _response.keys()
