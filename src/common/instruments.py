@@ -6,4 +6,6 @@ from src.common.utils.auth_zero import AuthorizationZero
 
 
 class Instruments(AuthorizationZero, Slack, Utils, MongoCli, KibanaCli):
-    pass
+    def __init__(self):
+        super(Instruments, self).__init__(AuthorizationZero.__init__(self))
+        pass

@@ -23,6 +23,7 @@ test_case = "UPDATE LOCATION DEFINITIONS"
 @pytest.mark.regression
 @pytest.mark.regression_routing
 @pytest.mark.client
+@pytest.mark.skip
 class TestUpdateLocationDefinitions:
 
     ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
