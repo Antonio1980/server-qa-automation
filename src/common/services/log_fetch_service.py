@@ -57,19 +57,14 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_tasks_by_id(self, task_id):
+    def get_tasks_by_id(self, task_id): #ANTONTODO: change name to 'get_file_by_task_id'
         uri = self.url + "tasks/" + str(task_id) + "/file"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers)
-            try:
-                body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
+
+            body = _response.text
+
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
