@@ -23,7 +23,7 @@ LOCATION
 - SSH: git@git-v2x.foresight.com:qa-automation/server-qa-automation.git
 
 TECHNOLOGIES
--------------
+------------
 
 - pytest - advanced test framework.
 - allure-pytest - reporting framework.
@@ -52,7 +52,7 @@ REQUIREMENTS
 4. Python interpreter configured.
 5. Project requirements installed.
 6. Project plugins installed.
-7. Allure installed locally to: ~/Tools/Allure/
+7. Allure installed locally to: ~/Allure/bin/allure
 
 TESTS
 -----
@@ -103,7 +103,7 @@ CONFIGURATION
 --------------
 
 Project Configuration:
-------------------
+----------------------
 
 - Project base configuration stores in staging.cfg (per env) that processes by config_definitions.py -> BaseConfig class.
 
@@ -118,27 +118,34 @@ Project Configuration:
 - pytest configuration specified in pytest.ini
 ! currently using: ignore::DeprecationWarning
 
-Git Configuration:
-------------------
-* $ git init
 
-* $ git status
+TIPS: (Python, Docker, Git, Protobuf)
+------------------------------------
 
-* $ git config --global --list
+Python:  
+-------
+https://www.python.org/downloads/
 
-* $ git config --global user.name ""
+* install pip:
+$ python get-pip.py
 
-* $ git config --global user.email ""
+* install virtual environment:
+$ pip install virtualenv
 
-* $ cat ~/.gitconfig
+* create virtual environment:
+$ virtualenv venv --python=python3.7
 
-* $ git config --global help.autocorrect 1
+* activate environment for Windows:
+$ venv\Scripts\activate
 
-* $ git config core.autorlf true/false
+* activate environment for Unix:
+$ source venv/bin/activate
 
+* list all packages installed in the environment:
+$ pip freeze
 
-TIPS
----------------
+* upgrade pip:  
+$ python -m pip install --upgrade pip
 
 Docker:
 -------
@@ -178,32 +185,23 @@ $ cd /usr/local/zend/var/log
 * View logs:
 $ tail -f | grep *.log
 
+Git:
+----
+* $ git init
 
-Python Installation:  
---------------------
-https://www.python.org/downloads/
------------------------------------------
+* $ git status
 
-* install pip:
-$ python get-pip.py
+* $ git config --global --list
 
-* install virtual environment:
-$ pip install virtualenv
+* $ git config --global user.name ""
 
-* create virtual environment:
-$ virtualenv venv --python=python3.7
+* $ git config --global user.email ""
 
-* activate environment for Windows:
-$ venv\Scripts\activate
+* $ cat ~/.gitconfig
 
-* activate environment for Unix:
-$ source venv/bin/activate
+* $ git config --global help.autocorrect 1
 
-* list all packages installed in the environment:
-$ pip freeze
-
-* upgrade pip:  
-$ python -m pip install --upgrade pip
+* $ git config core.autorlf true/false
 
 PROTOBUF
 -------- 
