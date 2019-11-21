@@ -84,7 +84,7 @@ def get_task(add_task, api_client):
 def get_uploaded_task(get_task, api_client):
     task_id = get_task["taskid"]
     try:
-        return api_client.log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
+        return api_client.log_fetch_svc.upload_file_task(task_id, "server-qa-automation")[0]
     except Exception as e:
         logger.logger(F"Error on fixture get_uploaded_task: {e}")
         raise e
