@@ -1,3 +1,5 @@
+import json
+
 import allure
 import pytest
 from src.common import logger
@@ -27,7 +29,7 @@ class TestGetTasksById:
     def test_get_tasks_by_id_method_works(self, get_uploaded_task, api_client):
         allure.step("Verify that response is not empty and status code is 200")
         task_id = get_uploaded_task['taskid']
-        _response = api_client.log_fetch_svc.get_tasks_by_id(task_id)
+        _response = api_client.log_fetch_svc.get_file_by_task_id(task_id)
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -38,9 +40,9 @@ class TestGetTasksById:
     def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task, api_client):
         allure.step("Verify response properties and that 'tasks' is list object.")
         task_id = get_uploaded_task['taskid']
-        _response = api_client.log_fetch_svc.get_tasks_by_id(task_id)[0]
+        _response = api_client.log_fetch_svc.get_file_by_task_id(task_id)[0]
 
-        assert "Do the current tasks" in _response
+        assert "Test QA" in _response
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
@@ -49,12 +51,13 @@ class TestGetTasksById:
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         task_id = get_uploaded_task['taskid']
-        _response = api_.log_fetch_svc.get_tasks_by_id(task_id)
+        _response = api_.log_fetch_svc.get_file_by_task_id(task_id)
+        json_body = json.loads(_response[0])
 
-        assert isinstance(_response[0], dict)
-        assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
-        assert _response[0]['code'] == "credentials_required"
-        assert _response[0]['message'] == "No authorization token was found"
+        assert "name" and "message" and "code" and "status" and "inner" in json_body.keys()
+        assert json_body['name'] == "UnauthorizedError"
+        assert json_body['code'] == "credentials_required"
+        assert json_body['message'] == "No authorization token was found"
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

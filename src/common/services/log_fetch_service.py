@@ -57,7 +57,7 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_tasks_by_id(self, task_id): #ANTONTODO: change name to 'get_file_by_task_id'
+    def get_file_by_task_id(self, task_id):
         uri = self.url + "tasks/" + str(task_id) + "/file"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
@@ -68,7 +68,7 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_tasks_by_id failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_file_by_task_id failed with error: {e}")
             raise e
 
     @automation_logger(logger)
