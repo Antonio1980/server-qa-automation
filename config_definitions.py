@@ -1,5 +1,6 @@
 import os
 import configparser
+from src import src_dir
 from src.common.enums import Environment
 from src.common.automation_error import AutomationError
 
@@ -9,6 +10,13 @@ def get_parser(config):
     with open(config, mode="r", buffering=-1, closefd=True):
         parser.read(config)
         return parser
+
+
+def save_environment(env_dir, env_var):
+    if not os.path.exists(env_dir):
+        os.makedirs(env_dir)
+    with open(os.path.join(env_dir + "environment.properties"), "x") as f:
+        f.write(env_var)
 
 
 if "ENV" in os.environ.keys():
@@ -55,3 +63,6 @@ class BaseConfig:
 
     AUTH_ZERO_USER = parser.get("AUTOMATION", "auth_zero_user")
     AUTH_ZERO_PASSWORD = parser.get("AUTOMATION", "auth_zero_password")
+
+    ALLURE_DIR = src_dir + parser.get("PATH", "allure_dir")
+    save_environment(ALLURE_DIR, "env=" + os.environ.__getitem__("ENV").lower())
