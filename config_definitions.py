@@ -15,7 +15,7 @@ def get_parser(config):
 def save_environment(env_dir, env_var):
     if not os.path.exists(env_dir):
         os.makedirs(env_dir)
-    with open(os.path.join(env_dir + "environment.properties"), "x") as f:
+    with open(os.path.join(env_dir + "environment.properties"), "w+") as f:
         f.write(env_var)
 
 
