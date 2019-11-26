@@ -60,10 +60,9 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[INSTANCE_ID] = Utils.get_random_string()
         self.inner[IP] = route.ip
         self.inner[JVM_LOAD] = 0
-        self.inner[NAME] = route.name
+        self.inner[PROVIDER] = route.name
         self.inner[MIN_PORT] = route.min_port
         self.inner[MAX_PORT] = route.max_port
-        self.inner[PRIORITY] = route.priority
         self.inner[REGION] = "QA"
         self.inner[REVISION] = "Test"
         self.inner[SYSTEM_LOAD] = 0
