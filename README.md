@@ -58,25 +58,25 @@ TESTS
 -----
 
 1 Run all tests:
-* $ pytest -v tests --alluredir=src/repository/allure/allure_result
+* $ pytest -v tests --alluredir=src/repository/allure/allure_results
 
 2 Run tests as a package:
-* $ pytest -v tests/regression_tests/message_service_tests --alluredir=src/repository/allure/allure_result
+* $ pytest -v tests/regression_tests/message_service_tests --alluredir=src/repository/allure/allure_results
 
 3 Run specific test:
-* $ pytest -v tests/regression_tests/message_sync_service_tests/get_sync_run_test.py  --alluredir=src/repository/allure/allure_result
+* $ pytest -v tests/regression_tests/message_sync_service_tests/get_sync_run_test.py  --alluredir=src/repository/allure/allure_results
 
 4 Run per test group (regression group as example):
-* $ pytest -v tests -m regression --alluredir=src/repository/allure/allure_result
+* $ pytest -v tests -m regression --alluredir=src/repository/allure/allure_results
 
 5 Generate temporary allure report:
-* $ allure serve src/repository/allure_result
+* $ allure serve src/repository/allure_results
   
 6 Generate report:
-* $ allure generate src/repository/allure/allure_result -o src/repository/allure/allure_report --clean
+* $ allure generate src/repository/allure/allure_results -o src/repository/allure/allure_reports --clean
   
 7 Open allure report:
-* $ allure open src/repository/allure_report
+* $ allure open src/repository/allure_reports
 
 8 Show pytest fixtures and execution plan:
 * $ pytest --collect-only

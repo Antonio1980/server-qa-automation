@@ -28,7 +28,7 @@ RUN find project/ -name \*.pyc -delete
 
 RUN pwd && ls -la
 
-VOLUME ["src/repository/allure_result"]
+VOLUME ["src/repository/allure_results"]
 
 WORKDIR project
 
