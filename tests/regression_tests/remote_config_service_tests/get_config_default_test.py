@@ -14,7 +14,6 @@ test_case = "GET REMOTE CONFIG DEFAULT"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/get_config_default_test.py",
                  "TestGetRemoteConfigDefault")
 @pytest.mark.regression

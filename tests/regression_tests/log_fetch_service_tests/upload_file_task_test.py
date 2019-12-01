@@ -14,7 +14,6 @@ test_case = "UPLOAD FILE TASK"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/upload_file_task_test.py",
                  "TestUploadFileTask")
 @pytest.mark.regression

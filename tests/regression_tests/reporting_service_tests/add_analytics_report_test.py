@@ -15,7 +15,6 @@ test_case = "ADD ANALYTICS REPORT"
     1. Check that service is responded on "postReport" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/reporting_service_tests/add_analytics_report_test.py",
                  "TestAddAnalyticsReport")
 @pytest.mark.regression

@@ -13,7 +13,6 @@ test_case = "HEALTH AREAS BLACKLIST"
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/areas_blacklist_health_test.py",
                  "TestHealthAreasBlackList")
 @pytest.mark.regression

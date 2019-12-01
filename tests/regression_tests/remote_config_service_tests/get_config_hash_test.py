@@ -17,7 +17,6 @@ test_case = "GET CONFIG HASH"
     4. Check that service returned 404 on not existing config name.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/get_config_hash_test.py",
                  "TestGetConfigHash")
 @pytest.mark.regression

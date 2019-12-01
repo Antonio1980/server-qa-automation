@@ -16,7 +16,6 @@ test_case = "NOTIFY SLACK"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/notify_slack_test.py",
                  "TestNotifySlack")
 @pytest.mark.regression

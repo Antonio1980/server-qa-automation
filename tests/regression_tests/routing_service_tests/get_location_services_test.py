@@ -16,7 +16,6 @@ test_case = "GET LOCATION SERVICES"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/get_location_services_test.py",
                  "TestGetLocationServices")
 @pytest.mark.regression

@@ -16,7 +16,6 @@ test_case = "ADD TASK"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/add_task_test.py", "TestAddTask")
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch

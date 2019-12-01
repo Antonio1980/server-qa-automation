@@ -14,7 +14,6 @@ test_case = "ADD MESSAGE"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_service_tests/add_message_test.py",
                  "TestAddMessage")
 @pytest.mark.regression

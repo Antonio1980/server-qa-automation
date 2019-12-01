@@ -13,7 +13,6 @@ test_case = "HEALTH ROUTING"
     1. Check that service is responded on "Health" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/routing_health_test.py",
                  "TestHealthRouting")
 @pytest.mark.regression

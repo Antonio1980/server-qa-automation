@@ -16,7 +16,6 @@ test_case = "ACTIVATE AREA"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/activate_test.py",
                  "TestActivateArea")
 @pytest.mark.regression
@@ -25,10 +24,6 @@ class TestActivateArea:
 
     @automation_logger(logger)
     def test_activate_area_method_works(self, get_area, api_client):
-
-        api1 = ApiClient("A")
-        api2 = ApiClient("B")
-
         allure.step("Verify that response is not empty and status code is 200")
         _response = api_client.areas_blacklist_svc.activate_area(get_area["_id"], True)
 

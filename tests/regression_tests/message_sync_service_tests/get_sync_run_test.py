@@ -14,7 +14,6 @@ test_case = "GET SYNC RUN"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/get_sync_run_test.py",
                  "TestGetSyncRun")
 @pytest.mark.regression

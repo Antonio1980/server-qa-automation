@@ -13,7 +13,6 @@ test_case = "HEALTH MESSAGE SYNC"
     1. Check that service is responded on "Health" request properly.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/message_sync_health_test.py",
                  "TestHealthMessageSync")
 @pytest.mark.regression

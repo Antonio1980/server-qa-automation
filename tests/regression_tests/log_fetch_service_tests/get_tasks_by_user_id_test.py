@@ -16,7 +16,6 @@ test_case = "GET TASKS BY USER ID"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/get_tasks_by_user_id_test.py",
                  "TestGetTasksByUserId")
 @pytest.mark.regression

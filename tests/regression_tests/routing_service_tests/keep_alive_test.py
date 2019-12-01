@@ -16,7 +16,6 @@ test_case = "KEEP ALIVE"
     2. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/keep_alive_test.py", "TestKeepAlive")
 @pytest.mark.regression
 @pytest.mark.regression_routing

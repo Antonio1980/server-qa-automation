@@ -14,7 +14,6 @@ test_case = "GET USER MESSAGE"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_service_tests/get_user_message_test.py",
                  "TestUserMessage")
 @pytest.mark.regression

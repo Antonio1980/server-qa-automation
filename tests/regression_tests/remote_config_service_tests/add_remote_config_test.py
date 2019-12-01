@@ -18,7 +18,6 @@ test_case = "ADD REMOTE CONFIG"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/add_remote_config_test.py",
                  "TestAddRemoteConfig")
 @pytest.mark.regression

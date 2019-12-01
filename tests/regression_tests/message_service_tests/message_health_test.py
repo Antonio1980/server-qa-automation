@@ -13,7 +13,6 @@ test_case = "HEALTH MESSAGE"
     1. Check that service responded on 'Health' request properly and that "mongooseStatus" is UP.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_service_tests/message_health_test.py",
                  "TestHealthMessage")
 @pytest.mark.regression

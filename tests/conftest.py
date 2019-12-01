@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 import pytest
@@ -25,10 +26,12 @@ def run_time_counter(request):
     def stop_counter():
         end_time = time.perf_counter()
         logger.logger.info(F"END TIME: {end_time}")
-        average_time = time.strptime(time.ctime(end_time - start_time), "%a %b %d %H:%M:%S %Y")
-        min_ = average_time.tm_min
-        sec_ = average_time.tm_sec
-        logger.logger.info("AVERAGE OF THE TEST CASE RUN TIME: {0} minutes {1} seconds".format(min_, sec_))
+        average_time = datetime.datetime.strptime(time.ctime(end_time - start_time), "%a %b %d %H:%M:%S %Y")
+        min_ = average_time.minute
+        sec_ = average_time.second
+        m_sec = average_time.microsecond
+        logger.logger.info("AVERAGE OF THE TEST CASE RUN TIME: {0} minutes {1} seconds {2} microseconds".format(
+            min_, sec_, m_sec))
         time.sleep(1.0)
 
     request.addfinalizer(stop_counter)

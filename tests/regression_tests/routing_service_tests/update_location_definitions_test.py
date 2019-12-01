@@ -17,7 +17,6 @@ test_case = "UPDATE LOCATION DEFINITIONS"
     3. Check that service response on get_count_by_type_v1 (1 version) with empty countByType object. 
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/update_location_definitions_test.py",
                  "TestUpdateLocationDefinitions")
 @pytest.mark.regression

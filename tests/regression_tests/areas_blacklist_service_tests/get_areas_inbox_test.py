@@ -15,7 +15,6 @@ test_case = "GET AREAS IN BOX"
     2. Check that service response contains desired properties.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-#@pytest.mark.usefixtures("run_time_counter", )
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/get_areas_in_box_test.py",
                  "TestGetAreasInBox")
 @pytest.mark.regression
