@@ -1,3 +1,5 @@
+import time
+
 import allure
 import pytest
 from src.common import logger
@@ -23,6 +25,7 @@ class TestAddTask:
 
     @automation_logger(logger)
     def test_add_task_method_works(self, api_client):
+        time.sleep(30000)
         allure.step("Verify that response is not empty and status code is 200")
         _response = api_client.log_fetch_svc.add_task("qa_test_qa")
 

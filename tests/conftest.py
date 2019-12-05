@@ -25,13 +25,12 @@ def run_time_counter(request):
 
     def stop_counter():
         end_time = time.perf_counter()
-        logger.logger.info(F"END TIME: {end_time}")
+        logger.logger.info("END TIME: {0}".format(end_time))
         average_time = datetime.datetime.strptime(time.ctime(end_time - start_time), "%a %b %d %H:%M:%S %Y")
         min_ = average_time.minute
         sec_ = average_time.second
         m_sec = average_time.microsecond
-        logger.logger.info("AVERAGE OF THE TEST CASE RUN TIME: {0} minutes {1} seconds {2} microseconds".format(
-            min_, sec_, m_sec))
+        logger.logger.info(f"AVERAGE OF THE TEST CASE RUN TIME: {min_} minutes {sec_} seconds {m_sec} microseconds")
         time.sleep(1.0)
 
     request.addfinalizer(stop_counter)
@@ -51,7 +50,7 @@ def socket_(request):
     logger.logger.info(f"UDP Socket ready for connection: {sock.__class__.__name__}")
 
     def close_socket():
-        logger.logger.info(f"Closing UDP Socket.")
+        logger.logger.info("Closing UDP Socket.")
         sock.__exit__()
 
     request.addfinalizer(close_socket)
@@ -132,7 +131,7 @@ def env():
 @pytest.mark.usefixtures("env")
 def pytest_report_header(config):
     if config.getoption("verbose") > 0:
-        return [f"Environment is {os.environ.get('ENV').upper()}", "Let's test eyenet API..."]
+        return [f"Environment is {os.environ.get('ENV').upper()}", "Let's test eyenet API ..."]
 
 
 # @pytest.hookimpl(tryfirst=True, hookwrapper=True)
