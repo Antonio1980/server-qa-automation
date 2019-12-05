@@ -57,13 +57,6 @@ def socket_(request):
     return sock
 
 
-@pytest.fixture(scope="class")
-@automation_logger(logger)
-def endpoints(api_client):
-    _response = api_client.routing_svc.get_endpoints()[0]
-    return _response
-
-
 @pytest.fixture
 @automation_logger(logger)
 def add_task(api_client):
