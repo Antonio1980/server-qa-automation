@@ -1,12 +1,12 @@
-import datetime
 import os
 import time
 import pytest
+import datetime
 from src.common import logger
 from src.common.enums import Environment
+from src.common.udp_socket import UdpSocket
 from src.common.api_client import ApiClient
 from src.common.instruments import Instruments
-from src.common.udp_socket import UdpSocket
 from src.common.log_decorator import automation_logger
 
 
