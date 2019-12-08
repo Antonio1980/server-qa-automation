@@ -37,9 +37,9 @@ else:
 
 
 executor = {
-    "buildName": "root project 'server-qa-automation'",
-    "name": "pytest 4.4.0",
-    "type": "Automation (Python 3)"
+    "buildName": "root project:- 'server-qa-automation'",
+    "type": "Python 3.7, pytest 4.4.0",
+    "name": "PyCharm 2019.2"
 }
 
 
