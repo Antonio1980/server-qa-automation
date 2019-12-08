@@ -47,11 +47,9 @@ class Utils:
     @staticmethod
     @automation_logger(logger)
     def get_dates():
-        past_date = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%S") + \
-                    ".918 +00:00"
-        curr_date = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + ".918 +00:00"
-        future_date = (datetime.datetime.utcnow() + datetime.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S") + \
-                      ".918 +00:00"
+        past_date = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).strftime("%Y-%m-%dT%H:%M:%S") + ".918"
+        curr_date = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + ".918"
+        future_date = (datetime.datetime.utcnow() + datetime.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%S") + ".918"
         return past_date, curr_date, future_date
 
     @staticmethod

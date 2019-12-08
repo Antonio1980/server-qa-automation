@@ -6,5 +6,5 @@ if [[ ! -d ~/Allure/bin/ ]]; then
 fi
 
 ~/Allure/bin/allure generate src/repository/allure_results/ -o src/repository/allure_reports/ --clean
-sleep 5
 cp -r src/repository/allure_reports/history src/repository/allure_results/history
+~/Allure/bin/allure generate src/repository/allure_results/ -o src/repository/allure_reports/ --clean

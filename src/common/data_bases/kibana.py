@@ -16,15 +16,16 @@ class SetEncoder(JSONSerializer):
 
 
 class KibanaCli:
-    if "kibana" in BaseConfig.KIBANA:
-        kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA}], serializer=SetEncoder())
-    else:
-        kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA, 'port': int(BaseConfig.KIBANA_PORT)}],
-                                      serializer=SetEncoder())
+    def __init__(self):
+        if "kibana" in BaseConfig.KIBANA:
+            self.kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA}], serializer=SetEncoder())
+        else:
+            self.kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA, 'port': int(BaseConfig.KIBANA_PORT)}],
+                                          serializer=SetEncoder())
 
-    @classmethod
+    @staticmethod
     @automation_logger(logger)
-    def check_connection(cls):
+    def check_connection():
         try:
             _response = requests.get(BaseConfig.KIBANA_HOST + ":" + BaseConfig.KIBANA_PORT)
             assert _response.status_code == 200
@@ -36,13 +37,12 @@ class KibanaCli:
             logger.logger.error(F"{e.__class__.__name__} No connection were made, failed with error: {e}")
             raise AutomationError(f"No connection were made, failed with error: {e}")
 
-    @classmethod
     @automation_logger(logger)
-    def search_document(cls, index_, query):
-        html_ = cls.check_connection()
+    def search_document(self, index_, query):
+        html_ = self.check_connection()
         if html_.div.text == 'Loading Kibana':
             try:
-                doc = cls.kibana_client.search(index=index_, body=query)
+                doc = self.kibana_client.search(index=index_, body=query)
                 logger.logger.info(f"Query result is: {doc}")
                 return doc
             except Exception as e:

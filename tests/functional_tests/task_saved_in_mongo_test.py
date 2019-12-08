@@ -27,7 +27,7 @@ class TestTaskSavedInMongo(object):
         task_id = get_uploaded_task['taskid']
         db_name = "log-fetch-service-" + env
         query = {"taskid": task_id}
-        q_result = MongoCli.find_by_query(db_name, self.collection_name, query)
+        q_result = MongoCli().find_by_query(db_name, self.collection_name, query)
 
         get_uploaded_task.update({"status": "Done"})
         q_result.update({"_id": q_result['_id']["$oid"]})

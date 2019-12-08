@@ -11,8 +11,8 @@ class LogFetchServiceRequest(RequestSchema):
     @automation_logger(logger)
     def add_task(self, user_id, description, notify_slack):
         self.inner[USER_ID] = user_id
-        self.inner[TO] = self.future_date
         self.inner[FROM] = self.curr_date
+        self.inner[TO] = self.future_date
         self.inner[DESCRIPTION] = description
         self.inner[NOTIFY_SLACK] = notify_slack
         body = self.from_json("inner")

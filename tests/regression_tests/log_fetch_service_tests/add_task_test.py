@@ -5,6 +5,7 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
+from src.common.automation_error import AutomationError
 from src.common.log_decorator import automation_logger
 
 test_case = "ADD TASK"
@@ -25,14 +26,16 @@ class TestAddTask:
 
     @automation_logger(logger)
     def test_add_task_method_works(self, api_client):
-        time.sleep(30000)
-        allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.log_fetch_svc.add_task("qa_test_qa")
+        _response = api_client.log_fetch_svc.health()[1]
+        if _response.status_code == 200:
+            allure.step("Verify that response is not empty and status code is 200")
+            _response = api_client.log_fetch_svc.add_task("qa_test_qa")
 
-        assert _response[0] is not None
-        assert _response[1].status_code == 200
-
-        logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+            assert _response[0] is not None
+            assert _response[1].status_code == 200
+            logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+        else:
+            raise AutomationError(F"============ TEST CASE {test_case} / 1 FAILED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_add_task_method(self, api_client):

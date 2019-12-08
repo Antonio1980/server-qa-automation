@@ -38,7 +38,7 @@ class TestAppStart(object):
         allure.step("Verify that 'AppStart' report is saved in Mongo -> Reporting svc db -> reportItem")
         db_name = "reporting-service-" + env
         query = {"report.sessionId": self.report_item.session_id}
-        q_result = MongoCli.find_by_query(db_name, self.collection_name, query)
+        q_result = MongoCli().find_by_query(db_name, self.collection_name, query)
 
         assert isinstance(q_result, dict)
         assert "_id" and "report" and "source" and "migratedFromMongo" and "env" in q_result.keys()
@@ -61,7 +61,7 @@ class TestAppStart(object):
         time.sleep(5.0)
         index_ = "analytics-" + env
         query = {"query": {"match": {'report.sessionId': self.report_item.session_id}}}
-        q_result = KibanaCli.search_document(index_, query)
+        q_result = KibanaCli().search_document(index_, query)
 
         assert isinstance(q_result, dict)
         assert "took" and "timed_out" and "_shards" and "hits" in q_result.keys()
