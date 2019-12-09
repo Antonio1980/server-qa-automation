@@ -12,10 +12,10 @@ def get_parser(config):
         return parser
 
 
-def save_allure_arguments(allure_dir, file_name, env_var):
-    if not os.path.exists(allure_dir):
-        os.makedirs(allure_dir)
-    with open(os.path.join(allure_dir + file_name), "w+") as f:
+def save_environment(env_dir, env_var):
+    if not os.path.exists(env_dir):
+        os.makedirs(env_dir)
+    with open(os.path.join(env_dir + "environment.properties"), "w+") as f:
         f.write(env_var)
 
 
@@ -34,13 +34,6 @@ elif environment == Environment.PRODUCTION.value:
 else:
     error = "Environment is not detected ! Please specify environment variable 'ENV', like one of ENV=[stg, int, prod]"
     raise AutomationError(error)
-
-
-executor = {
-    "buildName": "root project:- 'server-qa-automation'",
-    "type": "Python 3.7, pytest 4.4.0",
-    "name": "PyCharm 2019.2"
-}
 
 
 class BaseConfig:
@@ -72,5 +65,4 @@ class BaseConfig:
     AUTH_ZERO_PASSWORD = parser.get("AUTOMATION", "auth_zero_password")
 
     ALLURE_DIR = src_dir + parser.get("PATH", "allure_dir")
-    save_allure_arguments(ALLURE_DIR, "environment.properties", "env=" + os.environ.__getitem__("ENV").lower())
-    save_allure_arguments(ALLURE_DIR, "executor.json", executor.__repr__())
+    save_environment(ALLURE_DIR, "env=" + os.environ.__getitem__("ENV").lower())
