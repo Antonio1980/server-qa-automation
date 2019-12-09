@@ -5,6 +5,13 @@ from src.common.enums import Environment
 from src.common.automation_error import AutomationError
 
 
+executor = {
+    "buildName": "root project:- 'server-qa-automation'",
+    "type": "Python 3.7, pytest 4.4.0",
+    "name": "PyCharm 2019.2"
+}
+
+
 def get_parser(config):
     parser = configparser.ConfigParser()
     with open(config, mode="r", buffering=-1, closefd=True):
@@ -34,13 +41,6 @@ elif environment == Environment.PRODUCTION.value:
 else:
     error = "Environment is not detected ! Please specify environment variable 'ENV', like one of ENV=[stg, int, prod]"
     raise AutomationError(error)
-
-
-executor = {
-    "buildName": "root project:- 'server-qa-automation'",
-    "type": "Python 3.7, pytest 4.4.0",
-    "name": "PyCharm 2019.2"
-}
 
 
 class BaseConfig:
