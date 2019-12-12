@@ -38,12 +38,15 @@ class TestGetFullConfig:
         allure.step("Verify response properties and that i")
         _response = api_client.licensing_svc.get_full_config()[0]
 
-        assert isinstance(_response, list)
-        assert len(_response) > 0
-        assert "name" and "_id" and "apiKeys" in _response[0].keys()
-        assert isinstance(_response[0]["apiKeys"], list)
-        assert len(_response[0]["apiKeys"]) > 0
-        assert "applicationIds" and "_id" and "key" and "quotaWarning" and "quotaError" in _response[0]["apiKeys"][0].keys()
+        assert isinstance(_response, dict)
+        assert "clients" in _response.keys()
+        assert isinstance(_response["clients"], list)
+        assert len(_response["clients"]) > 0
+        assert "name" and "_id" and "apiKeys" in _response["clients"][0].keys()
+        assert isinstance(_response["clients"][0]["apiKeys"], list)
+        assert len(_response["clients"][0]["apiKeys"]) > 0
+        assert "applicationIds" and "_id" and "key" and "quotaWarning" and "quotaError" in \
+               _response["clients"][0]["apiKeys"][0].keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

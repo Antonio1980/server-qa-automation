@@ -18,9 +18,10 @@ class LicensingService(ServiceBase):
 
     @automation_logger(logger)
     def get_full_config(self):
+        uri = self.url + "config"
         try:
-            logger.logger.info(F"API Service URL is GET- {self.url}")
-            _response = requests.get(self.url, headers=self.headers)
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
@@ -37,10 +38,11 @@ class LicensingService(ServiceBase):
 
     @automation_logger(logger)
     def add_client(self, name: str, api_key: dict):
+        uri = self.url + "config"
         payload = LicencingServiceRequest().add_client(name, api_key)
         try:
-            logger.logger.info(F"API Service URL is GET- {self.url}")
-            _response = requests.post(self.url, data=payload, headers=self.headers)
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.post(uri, data=payload, headers=self.headers)
             try:
                 body = json.loads(_response.text)
             except JSONDecodeError as e:
