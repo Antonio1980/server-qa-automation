@@ -1,4 +1,4 @@
-from src.common.utils.auth_zero import AuthorizationZero
+from src.common.services.licensing_service import LicensingService
 from src.common.services.log_fetch_service import LogFetchService
 from src.common.services.message_synch_service import MessagesSyncService
 from src.common.services.message_service import MessageService
@@ -17,5 +17,6 @@ class ApiClient(object):
         self.reporting_svc = ReportingService(access_token)
         self.routing_svc = RoutingService(access_token)
         self.log_fetch_svc = LogFetchService(access_token)
+        self.licensing_svc = LicensingService(access_token)
         self.messages_sync_svc = MessagesSyncService(access_token)
         self.areas_blacklist_svc = AreasBlacklistService(access_token)

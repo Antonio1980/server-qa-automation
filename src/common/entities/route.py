@@ -1,5 +1,8 @@
 import json
 
+from src.common import logger
+from src.common.log_decorator import automation_logger
+
 
 class Route(object):
     def __init__(self, ip="127.0.0.1"):
@@ -10,6 +13,7 @@ class Route(object):
         self.max_port = None
         self.min_port = None
 
+    @automation_logger(logger)
     def set_route(self, ip: str, name: str, priority: int, port_list: list):
         self.ip = ip
         self.name = str(name)

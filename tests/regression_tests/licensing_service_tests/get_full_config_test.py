@@ -5,27 +5,27 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = "ACTIVATE AREA"
+test_case = "FULL CONFIG"
 
 
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. Check that service responded on 'ActivateArea' request properly.
+    1. Check that service responded on 'GetFullConfig' request properly.
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/activate_test.py",
-                 "TestActivateArea")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/licensing_service_tests/get_full_config_test.py",
+                 "TestGetFullConfig")
 @pytest.mark.regression
-@pytest.mark.regression_areas_blacklist
-class TestActivateArea:
+@pytest.mark.regression_licensing
+class TestGetFullConfig:
 
     @automation_logger(logger)
-    def test_activate_area_method_works(self, get_area, api_client):
+    def test_get_full_config_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.areas_blacklist_svc.activate_area(get_area["_id"], True)
+        _response = api_client.licensing_svc.get_full_config()
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
@@ -34,23 +34,24 @@ class TestActivateArea:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_activate_area_method(self, get_area, api_client):
-        allure.step("Verify response properties and that isActive is false.")
-        _response = api_client.areas_blacklist_svc.activate_area(get_area["_id"], False)[0]
+    def test_attributes_in_get_full_config_method(self, api_client):
+        allure.step("Verify response properties and that i")
+        _response = api_client.licensing_svc.get_full_config()[0]
 
-        assert isinstance(_response, dict)
-        assert "isActive" and "_id" and "description" and "position" in _response.keys()
-        assert _response["isActive"] is False
-        assert _response["_id"] == get_area["_id"]
-        assert "qa_test_qa" in _response["description"]
+        assert isinstance(_response, list)
+        assert len(_response) > 0
+        assert "name" and "_id" and "apiKeys" in _response[0].keys()
+        assert isinstance(_response[0]["apiKeys"], list)
+        assert len(_response[0]["apiKeys"]) > 0
+        assert "applicationIds" and "_id" and "key" and "quotaWarning" and "quotaError" in _response[0]["apiKeys"][0].keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_activate_area_negative(self, get_area):
+    def test_activate_area_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        _response = api_.areas_blacklist_svc.activate_area(get_area["_id"], True)
+        _response = api_.licensing_svc.get_full_config()
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()

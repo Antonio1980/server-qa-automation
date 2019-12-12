@@ -95,3 +95,7 @@ REVISION = "revision"
 SYSTEM_LOAD = "systemLoad"
 TIME_STARTED = "timeStarted"
 PROVIDER = "provider"
+
+# Licencing
+API_KEYS = "apiKeys"
+

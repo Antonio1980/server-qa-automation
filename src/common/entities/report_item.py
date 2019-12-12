@@ -1,3 +1,5 @@
+from src.common import logger
+from src.common.log_decorator import automation_logger
 from src.common.utils.utils import Utils
 from src.common.entities.entity import Entity
 from src.common.services.svc_requests.request_constants import PARAM1, PARAM2, PARAM3
@@ -12,6 +14,7 @@ class ReportItem(Entity):
         self.session_id = str(session_id)
         self.timestamp = self.curr_timestamp
 
+    @automation_logger(logger)
     def set_config(self, *args):
         (param1, param2, param3, ) = args
         self.params[PARAM1] = param1

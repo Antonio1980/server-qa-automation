@@ -1,4 +1,6 @@
+from src.common import logger
 from src.common.entities.entity import Entity
+from src.common.log_decorator import automation_logger
 from src.common.services.svc_requests.request_constants import SWAGGER, PARAM1, PARAM2, PARAM3
 from src.common.utils.utils import Utils
 
@@ -11,6 +13,7 @@ class RemoteConfig(Entity):
         self.description = "QA Test"
         self.data = dict()
 
+    @automation_logger(logger)
     def set_config(self, swagger: bool, *args):
         (param1, param2, param3, ) = args
         self.data[SWAGGER] = swagger
