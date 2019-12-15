@@ -20,5 +20,9 @@ class LicencingServiceRequest(RequestSchema):
     @automation_logger(logger)
     def validate(self, api_key: str, app_id: str, client_id: str):
         body = self.from_json("inner")
+        self.inner[API_KEY] = api_key
+        self.inner[APPLICATION_ID] = app_id
+        self.inner[CLIENT_ID] = client_id
+        body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body

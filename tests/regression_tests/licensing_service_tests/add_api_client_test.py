@@ -18,7 +18,7 @@ test_case = "ADD CLIENT"
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/licensing_service_tests/add_client_test.py",
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/licensing_service_tests/add_api_client_test.py",
                  "TestAddApiClient")
 @pytest.mark.regression
 @pytest.mark.regression_licensing

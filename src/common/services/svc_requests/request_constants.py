@@ -98,4 +98,6 @@ PROVIDER = "provider"
 
 # Licencing
 API_KEYS = "apiKeys"
+API_KEY = "apiKey"
+APPLICATION_ID = "applicationId"
 
