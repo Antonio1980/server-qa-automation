@@ -3,7 +3,6 @@ import pytest
 from src.common import logger
 from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
-from src.common.entities.api_key import ApiKey
 from src.common.log_decorator import automation_logger
 from src.common.utils.utils import Utils
 
@@ -70,5 +69,3 @@ class TestAddClient:
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
-
-

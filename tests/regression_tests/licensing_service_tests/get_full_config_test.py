@@ -5,7 +5,7 @@ from config_definitions import BaseConfig
 from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
-test_case = "FULL CONFIG"
+test_case = "GET CONFIG"
 
 
 @allure.title(test_case)
@@ -35,7 +35,7 @@ class TestGetFullConfig:
 
     @automation_logger(logger)
     def test_attributes_in_get_full_config_method(self, api_client):
-        allure.step("Verify response properties and that i")
+        allure.step("Verify response properties and that response is dict.")
         _response = api_client.licensing_svc.get_full_config()[0]
 
         assert isinstance(_response, dict)

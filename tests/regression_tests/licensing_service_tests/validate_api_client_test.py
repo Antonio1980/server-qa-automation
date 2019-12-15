@@ -2,10 +2,7 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
-from src.common.entities.api_key import ApiKey
 from src.common.log_decorator import automation_logger
-from src.common.utils.utils import Utils
 
 test_case = "VALIDATE CLIENT"
 
@@ -38,7 +35,7 @@ class TestValidateClient:
 
     @automation_logger(logger)
     def test_attributes_in_validate_client_method(self, api_client):
-        allure.step("Verify response properties and that i")
+        allure.step("Verify response properties and that response is dict.")
         _response = api_client.licensing_svc.validate_client("C", "api_id", "client_id")[0]
 
         assert isinstance(_response, dict)
