@@ -2,11 +2,8 @@ import allure
 import pytest
 from src.common import logger
 from src.common.utils.slack import Slack
-from src.common.api_client import ApiClient
 from config_definitions import BaseConfig
-from src.common.entities.app_client import AppClient
 from src.common.entities.bounding_box import BoundingBox
-from src.common.entities.report_item import ReportItem
 from src.common.log_decorator import automation_logger
 from src.common.automation_error import AutomationError
 
@@ -14,7 +11,7 @@ test_case = "LIVENESS SMOKE"
 
 
 @allure.feature("LIVENESS")
-@allure.story('R&D team wants to know the basic statement of the services.')
+@allure.story('R&D team wants to know the basic functionality of some the services.')
 @allure.title(test_case)
 @allure.description("""
     Functional test.
@@ -22,7 +19,6 @@ test_case = "LIVENESS SMOKE"
     2. RemoteConfig svc: Check that "get_default_config" request returned current config.
     3. Messages svc: Check that "get_user_messages" request returned messages of provided user_id.
     """)
-@pytest.mark.usefixtures("run_time_counter")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/liveness_smoke_test.py", "TestSmokeLiveness")
 @pytest.mark.liveness
@@ -30,14 +26,14 @@ class TestSmokeLiveness(object):
     issues = None
 
     @automation_logger(logger)
-    def test_get_area_tel_aviv(self):
+    def test_get_area_tel_aviv(self, api_client):
         allure.step("Verify that service returns areas of Tel-Aviv.")
 
         ne_lat, ne_lng = 32.09434632337351, 34.82932599989067
         sw_lat, sw_lng = 32.039067310341956, 34.75310834852348
         box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
 
-        _response = ApiClient().areas_blacklist_svc.get_areas_inbox(box)
+        _response = api_client.areas_blacklist_svc.get_areas_inbox(box)
         if _response[1].status_code != 200 or _response[0] is None or "areas" not in _response[0].keys() \
                 or len(_response[0]["areas"]) <= 0:
             TestSmokeLiveness.issues += F"{self.__class__.__name__} test_get_area_tel_aviv failed with response: " \
@@ -48,10 +44,10 @@ class TestSmokeLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    def test_get_remote_config_liveness(self):
+    def test_get_remote_config_liveness(self, api_client):
         allure.step("Verify that service returns remote config data.")
 
-        _response = ApiClient().remote_config_svc.get_default_config()
+        _response = api_client.remote_config_svc.get_default_config()
 
         if _response[1].status_code != 200 or _response[0] is None \
                 or "_id" and "hash" and "data" not in _response[0].keys() or not isinstance(_response[0]["data"], dict):
@@ -63,10 +59,10 @@ class TestSmokeLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
     @automation_logger(logger)
-    def test_user_messages_liveness(self):
+    def test_user_messages_liveness(self, api_client):
         allure.step("Verify that service returns messages per user id")
 
-        _response = ApiClient().message_svc.get_user_messages("aaa")
+        _response = api_client.message_svc.get_user_messages("aaa")
 
         if _response[1].status_code != 200 or _response[0] is None or "messages" not in _response[0].keys() \
                 or not isinstance(_response[0]["messages"], list) or len(_response[0]["messages"]) <= 0:

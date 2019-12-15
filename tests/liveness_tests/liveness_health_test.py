@@ -2,7 +2,6 @@ import allure
 import pytest
 from src.common import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
 from src.common.log_decorator import automation_logger
 
 test_case = "LIVENESS HEALTH"
@@ -23,17 +22,14 @@ test_case = "LIVENESS HEALTH"
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/liveness_health_test.py", "TestHealthLiveness")
-@pytest.mark.usefixtures("run_time_counter")
 @pytest.mark.liveness
 class TestHealthLiveness(object):
 
-    api_ = ApiClient()
-
     @automation_logger(logger)
-    def test_health_areas_black_list(self):
+    def test_health_areas_black_list(self, api_client):
         allure.step("Verify that status code is 200 and response properties.")
 
-        _response = self.api_.areas_blacklist_svc.health()
+        _response = api_client.areas_blacklist_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -53,10 +49,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_log_fetch(self):
+    def test_health_log_fetch(self, api_client):
         allure.step("Verify that status code is 200 and response properties.")
 
-        _response = self.api_.log_fetch_svc.health()
+        _response = api_client.log_fetch_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -76,10 +72,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_message_sync(self):
+    def test_health_message_sync(self, api_client):
         allure.step("Verify response status code is 200 and properties of the response.")
 
-        _response = self.api_.messages_sync_svc.health()
+        _response = api_client.messages_sync_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -92,10 +88,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_message(self):
+    def test_health_message(self, api_client):
         allure.step("Verify that status code is 200 and response properties.")
 
-        _response = self.api_.message_svc.health()
+        _response = api_client.message_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -115,10 +111,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_remote_config(self):
+    def test_health_remote_config(self, api_client):
         allure.step("Verify that status code is 200 and response properties.")
 
-        _response = self.api_.remote_config_svc.health()
+        _response = api_client.remote_config_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -138,10 +134,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 5 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_reporting(self):
+    def test_health_reporting(self, api_client):
         allure.step("Verify response status code is 200 and properties of the response.")
 
-        _response = self.api_.reporting_svc.health()
+        _response = api_client.reporting_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)
@@ -151,10 +147,10 @@ class TestHealthLiveness(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 6 PASSED ===========")
 
     @automation_logger(logger)
-    def test_health_routing(self):
+    def test_health_routing(self, api_client):
         allure.step("Verify response status code is 200 and properties of the response.")
 
-        _response = self.api_.routing_svc.health()
+        _response = api_client.routing_svc.health()
 
         assert _response[1].status_code == 200
         assert isinstance(_response[0], dict)

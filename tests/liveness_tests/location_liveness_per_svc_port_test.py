@@ -12,6 +12,7 @@ test_case = "LIVENESS LOCATION PER PORT"
 BUFSIZ = 1024
 
 
+@pytest.mark.skip
 @allure.feature("LIVENESS")
 @allure.story('Client able to found and connect to Location service via configured ports.')
 @allure.title(test_case)
@@ -20,7 +21,7 @@ BUFSIZ = 1024
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
-@pytest.mark.usefixtures("run_time_counter", "endpoints", "socket_")
+@pytest.mark.usefixtures("endpoints", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
