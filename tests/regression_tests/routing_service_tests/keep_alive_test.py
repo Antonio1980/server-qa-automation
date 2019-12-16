@@ -21,7 +21,7 @@ test_case = "KEEP ALIVE"
 @pytest.mark.regression_routing
 class TestKeepAlive:
 
-    route = Route().set_route(ip="0.0.0.0", name="QA-Test", priority=1, port_list=[8000, 9000])
+    route = Route().set_route(ip="0.0.0.0", name="GOOGLE", priority=1, port_list=[8000, 9000])
 
     @automation_logger(logger)
     def test_keep_alive_method_works(self, api_client):
