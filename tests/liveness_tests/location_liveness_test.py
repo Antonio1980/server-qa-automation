@@ -1,12 +1,12 @@
 import random
 import allure
 import pytest
-from src.common.utils import logger
-from src.common.utils.slack import Slack
+from src.base.utils import logger
+from src.base.utils.slack import Slack
 from config_definitions import BaseConfig
-from src.common.entities.udp_message import UdpMessage
-from src.common.utils.log_decorator import automation_logger
-from src.common.automation_error import AutomationError
+from src.base.entities.udp_message import UdpMessage
+from src.base.utils.log_decorator import automation_logger
+from src.base.automation_error import AutomationError
 
 test_case = "LIVENESS LOCATION"
 BUFSIZ = 1024

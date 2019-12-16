@@ -1,9 +1,9 @@
 import allure
 import pytest
-from src.common.utils import logger
+from src.base.utils import logger
 from config_definitions import BaseConfig
-from src.common.instruments.api_client import ApiClient
-from src.common.utils.log_decorator import automation_logger
+from src.base.instruments.api_client import ApiClient
+from src.base.utils.log_decorator import automation_logger
 
 test_case = "GET AREAS"
 

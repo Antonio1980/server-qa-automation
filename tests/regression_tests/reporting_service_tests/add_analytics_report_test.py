@@ -1,10 +1,10 @@
 import allure
 import pytest
-from src.common.utils import logger
+from src.base.utils import logger
 from config_definitions import BaseConfig
-from src.common.entities.app_client import AppClient
-from src.common.entities.report_item import ReportItem
-from src.common.utils.log_decorator import automation_logger
+from src.base.entities.app_client import AppClient
+from src.base.entities.report_item import ReportItem
+from src.base.utils.log_decorator import automation_logger
 
 test_case = "ADD ANALYTICS REPORT"
 

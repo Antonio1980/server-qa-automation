@@ -1,10 +1,10 @@
 import allure
 import pytest
-from src.common.utils import logger
+from src.base.utils import logger
 from config_definitions import BaseConfig
-from src.common.instruments.api_client import ApiClient
-from src.common.entities.route import Route
-from src.common.utils.log_decorator import automation_logger
+from src.base.instruments.api_client import ApiClient
+from src.base.entities.route import Route
+from src.base.utils.log_decorator import automation_logger
 
 test_case = "KEEP ALIVE"
 
@@ -29,7 +29,7 @@ class TestKeepAlive:
         _response = api_client.routing_svc.keep_alive(self.route)
 
         assert _response[0] is not None
-        assert _response[1].status_code == 200
+        assert _response[1].status_code == 201
         assert _response[1].reason == 'Created'
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")

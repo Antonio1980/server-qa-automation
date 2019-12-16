@@ -2,12 +2,12 @@ import os
 import time
 import pytest
 import datetime
-from src.common.utils import logger
-from src.common.enums.enums import Environment
-from src.common.instruments.udp_socket import UdpSocket
-from src.common.instruments.api_client import ApiClient
-from src.common.utils.log_decorator import automation_logger
-from src.common.utils.auth_zero import AuthorizationZero
+from src.base.utils import logger
+from src.base.enums.enums import Environment
+from src.base.instruments.udp_socket import UdpSocket
+from src.base.instruments.api_client import ApiClient
+from src.base.utils.log_decorator import automation_logger
+from src.base.utils.auth_zero import AuthorizationZero
 
 
 @pytest.fixture(scope="session", autouse=True)

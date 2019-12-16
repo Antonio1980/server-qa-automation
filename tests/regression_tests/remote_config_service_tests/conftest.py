@@ -1,8 +1,8 @@
 import pytest
-from src.common.utils import logger
-from src.common.utils.utils import Utils
-from src.common.entities.remote_config import RemoteConfig
-from src.common.utils.log_decorator import automation_logger
+from src.base.utils import logger
+from src.base.utils.utils import Utils
+from src.base.entities.remote_config import RemoteConfig
+from src.base.utils.log_decorator import automation_logger
 
 
 @pytest.fixture

@@ -1,9 +1,9 @@
 import allure
 import pytest
-from src.common.utils import logger
+from src.base.utils import logger
 from config_definitions import BaseConfig
-from src.common.entities.location import Location
-from src.common.utils.log_decorator import automation_logger
+from src.base.entities.location import Location
+from src.base.utils.log_decorator import automation_logger
 
 test_case = "ADD ROUTE"
 

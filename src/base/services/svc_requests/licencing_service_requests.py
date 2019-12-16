@@ -1,0 +1,27 @@
+from src.base.utils import logger
+from src.base.utils.log_decorator import automation_logger
+from src.base.services.svc_requests.request_constants import *
+from src.base.services.svc_requests.request_schema import RequestSchema
+
+
+class LicencingServiceRequest(RequestSchema):
+    def __init__(self):
+        super(LicencingServiceRequest, self).__init__()
+
+    @automation_logger(logger)
+    def add_client(self, name: str, api_key: dict):
+        self.inner[NAME] = str(name)
+        self.inner[API_KEYS] = list()
+        self.inner[API_KEYS].append(api_key)
+        body = self.from_json("inner")
+        logger.logger.info(REQUEST_BODY.format(body))
+        return body
+
+    @automation_logger(logger)
+    def validate(self, api_key: str, app_id: str, client_id: str):
+        self.inner[API_KEY] = api_key
+        self.inner[APPLICATION_ID] = app_id
+        self.inner[CLIENT_ID] = client_id
+        body = self.from_json("inner")
+        logger.logger.info(REQUEST_BODY.format(body))
+        return body

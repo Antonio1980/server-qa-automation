@@ -2,12 +2,12 @@ import time
 import allure
 import pytest
 
-from src.common.enums.enums import DetectedType
-from src.common.utils import logger
+from src.base.enums.enums import DetectedType
+from src.base.utils import logger
 from config_definitions import BaseConfig
-from src.common.instruments.api_client import ApiClient
-from src.common.entities.route import Route
-from src.common.utils.log_decorator import automation_logger
+from src.base.instruments.api_client import ApiClient
+from src.base.entities.route import Route
+from src.base.utils.log_decorator import automation_logger
 
 test_case = "ROUTING CACHE"
 
