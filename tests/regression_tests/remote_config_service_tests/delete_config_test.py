@@ -1,10 +1,10 @@
 import allure
 import pytest
-from src.common import logger
-from src.common.api_client import ApiClient
+from src.common.utils import logger
+from src.common.instruments.api_client import ApiClient
 from config_definitions import BaseConfig
 from src.common.entities.remote_config import RemoteConfig
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 from src.common.utils.utils import Utils
 
 test_case = "DELETE REMOTE CONFIG"

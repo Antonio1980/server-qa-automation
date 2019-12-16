@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from src.common import logger
+from src.common.utils import logger
 from elasticsearch import Elasticsearch
 from config_definitions import BaseConfig
 from elasticsearch.serializer import JSONSerializer
 from src.common.automation_error import AutomationError
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 
 class SetEncoder(JSONSerializer):
@@ -21,7 +21,7 @@ class KibanaCli:
             self.kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA}], serializer=SetEncoder())
         else:
             self.kibana_client = Elasticsearch([{'host': BaseConfig.KIBANA, 'port': int(BaseConfig.KIBANA_PORT)}],
-                                          serializer=SetEncoder())
+                                               serializer=SetEncoder())
 
     @staticmethod
     @automation_logger(logger)

@@ -1,7 +1,7 @@
 import pytest
-from src.common import logger
+from src.common.utils import logger
 from src.common.entities.api_key import ApiKey
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 from src.common.utils.utils import Utils
 
 

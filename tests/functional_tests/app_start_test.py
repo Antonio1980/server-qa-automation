@@ -1,15 +1,15 @@
 import time
 import allure
 import pytest
-from src.common import logger
+from src.common.utils import logger
 from src.common.utils.utils import Utils
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
+from src.common.instruments.api_client import ApiClient
 from src.common.data_bases.kibana import KibanaCli
 from src.common.data_bases.mongo_cli import MongoCli
 from src.common.entities.app_client import AppClient
 from src.common.entities.report_item import ReportItem
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 test_case = "APP START"
 
@@ -23,7 +23,7 @@ test_case = "APP START"
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/app_start_test.py", "TestAppStart")
-@pytest.mark.usefixtures("run_time_counter", "env")
+@pytest.mark.usefixtures("env")
 @pytest.mark.functional
 class TestAppStart(object):
     client_ = AppClient()

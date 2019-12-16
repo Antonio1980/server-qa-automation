@@ -4,9 +4,9 @@ import uuid
 import random
 import string
 import datetime
-from src.common import logger
+from src.common.utils import logger
 from src.common.automation_error import AutomationError
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 
 class Utils:

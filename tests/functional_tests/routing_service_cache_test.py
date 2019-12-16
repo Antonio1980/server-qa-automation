@@ -1,12 +1,13 @@
 import time
 import allure
 import pytest
-from src.common import logger
+
+from src.common.enums.enums import DetectedType
+from src.common.utils import logger
 from config_definitions import BaseConfig
-from src.common.api_client import ApiClient
+from src.common.instruments.api_client import ApiClient
 from src.common.entities.route import Route
-from src.common.enums import DetectedType
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 test_case = "ROUTING CACHE"
 
@@ -19,7 +20,7 @@ test_case = "ROUTING CACHE"
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/routing_service_cache_test.py", "TestRoutingSvcCache")
-@pytest.mark.usefixtures("run_time_counter", "endpoints")
+@pytest.mark.usefixtures("endpoints")
 @pytest.mark.functional
 class TestRoutingSvcCache(object):
 

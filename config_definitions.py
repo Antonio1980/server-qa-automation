@@ -1,7 +1,7 @@
 import os
 import configparser
 from src import src_dir
-from src.common.enums import Environment
+from src.common.enums.enums import Environment
 from src.common.automation_error import AutomationError
 
 

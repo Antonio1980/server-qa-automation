@@ -1,4 +1,4 @@
-from src.common.enums import DetectedType
+from src.common.enums.enums import DetectedType
 
 REQUEST_BODY = "Request body: {0}"
 RESPONSE_TEXT = "Service Response: {0}"

@@ -1,9 +1,9 @@
 import allure
 import pytest
-from src.common import logger
+from src.common.utils import logger
 from config_definitions import BaseConfig
 from src.common.data_bases.mongo_cli import MongoCli
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 test_case = "TASK SAVED IN MONGO"
 
@@ -15,7 +15,7 @@ test_case = "TASK SAVED IN MONGO"
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/task_saved_in_mongo_test.py", "TestTaskSavedInMongo")
-@pytest.mark.usefixtures("run_time_counter", "get_uploaded_task", "env")
+@pytest.mark.usefixtures("get_uploaded_task", "env")
 @pytest.mark.functional
 class TestTaskSavedInMongo(object):
     collection_name = "tasks"

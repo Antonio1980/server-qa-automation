@@ -1,9 +1,9 @@
 import json
-from src.common import logger
+from src.common.utils import logger
 from pymongo import MongoClient
 from bson.json_util import dumps
 from src.common.automation_error import AutomationError
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 
 
 class MongoCli:

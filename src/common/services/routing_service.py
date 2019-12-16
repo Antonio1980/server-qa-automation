@@ -1,8 +1,8 @@
 import json
 import requests
-from src.common import logger
+from src.common.utils import logger
 from json import JSONDecodeError
-from src.common.log_decorator import automation_logger
+from src.common.utils.log_decorator import automation_logger
 from src.common.services.service_base import ServiceBase
 from src.common.services.svc_requests.request_constants import RESPONSE_TEXT
 from src.common.services.svc_requests.routing_requests import RoutingServiceRequest

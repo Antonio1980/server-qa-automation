@@ -1,4 +1,4 @@
-from src.common.enums import DetectedType
+from src.common.enums.enums import DetectedType
 from src.common.utils.utils import Utils
 from src.common.entities.entity import Entity
 

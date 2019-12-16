@@ -2,12 +2,12 @@ import os
 import time
 import pytest
 import datetime
-from src.common import logger
-from src.common.enums import Environment
-from src.common.udp_socket import UdpSocket
-from src.common.api_client import ApiClient
-from src.common.instruments import Instruments
-from src.common.log_decorator import automation_logger
+from src.common.utils import logger
+from src.common.enums.enums import Environment
+from src.common.instruments.udp_socket import UdpSocket
+from src.common.instruments.api_client import ApiClient
+from src.common.utils.log_decorator import automation_logger
+from src.common.utils.auth_zero import AuthorizationZero
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -39,7 +39,7 @@ def run_time_counter(request):
 @pytest.fixture(scope="session")
 @automation_logger(logger)
 def api_client():
-    auth_token = Instruments.get_authorization_token()["access_token"]
+    auth_token = AuthorizationZero.get_authorization_token()["access_token"]
     return ApiClient(auth_token)
 
 
