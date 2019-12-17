@@ -12,7 +12,7 @@ test_case = "LIVENESS LOCATION PER PORT"
 BUFSIZ = 1024
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 @allure.feature("LIVENESS")
 @allure.story('Client able to found and connect to Location service via configured ports.')
 @allure.title(test_case)
@@ -21,7 +21,7 @@ BUFSIZ = 1024
     1. Check that all running Location services returned in response "get endpoints" via Routing service.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
-@pytest.mark.usefixtures("endpoints", "socket_")
+@pytest.mark.usefixtures("locations", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/location_liveness_per_svc_port_test.py",
                  "TestLocationLivenessPerServicePort")
@@ -36,36 +36,36 @@ class TestLocationLivenessPerServicePort(object):
     accuracy = 5.0
 
     @automation_logger(logger)
-    def test_returned_endpoints(self, endpoints):
-        allure.step("Verify that Routing svc returns all active endpoints.")
+    def test_returned_endpoints(self, locations):
+        allure.step("Verify that Routing svc sum of returned location definitions equals to sum returned instances. ")
 
-        ex_endpoints = int(BaseConfig.EXPECTED_ENDPOINTS)
-        if_err_message = "Endpoints count != " + str(ex_endpoints) + " current number is " + str(len(endpoints)) + " \n"
+        definitions_len, instances_len = len(locations["definitions"]), len(locations["instances"])
+        if_err_message = f"Definitions count {definitions_len} != number of instances {instances_len}"
 
-        if len(endpoints) != ex_endpoints:
+        if definitions_len != instances_len:
             TestLocationLivenessPerServicePort.first_case_issues += if_err_message
             logger.logger.exception(if_err_message)
 
             raise AutomationError(if_err_message)
         else:
-            logger.logger.info(F"Routing svc returned {len(endpoints)} endpoints -> PASSED !")
+            logger.logger.info(F"Routing svc returned {definitions_len} endpoints -> PASSED !")
 
     @automation_logger(logger)
-    def test_endpoints_ports(self, endpoints, socket_):
+    def test_endpoints_ports(self, locations, socket_):
         allure.step("Verify that all provided ports are open and accept UDP connections.")
 
-        for endpoint in endpoints:
+        for instance in locations["instances"]:
             error_ports = []
-            port_range = [p for p in range(endpoint["minPort"], endpoint["maxPort"] + 1)]
+            port_range = [p for p in range(instance["minPort"], instance["maxPort"] + 1)]
             logger.logger.info(F"Accepted ports are: {port_range}")
 
             def check_ports(ports, tries=2):
                 if tries > 0:
                     for port in ports:
                         _response = None
-                        socket_.udp_connect((endpoint["ip"], port))
+                        socket_.udp_connect((instance["ip"], port))
 
-                        if_error = F"The endpoint {endpoint['name']} is not responding on port {port} ! \n"
+                        if_error = F"The instance {instance['instanceId']} is not responding on port {port} ! \n"
                         message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
                                                                 self.velocity, self.accuracy)
                         message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
@@ -84,7 +84,7 @@ class TestLocationLivenessPerServicePort(object):
 
                         if _response is not None:
                             logger.logger.info(
-                                F"The endpoint {endpoint['name']} is available for connect on port {port} !")
+                                F"The instance {instance['instanceId']} is available for connect on port {port} !")
                             logger.logger.info(F"UDP Response: {_response}")
 
                 if len(error_ports) > 0 and tries == 2:

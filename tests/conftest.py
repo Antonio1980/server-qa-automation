@@ -43,6 +43,14 @@ def api_client():
     return ApiClient(auth_token)
 
 
+@pytest.fixture(scope="session")
+@automation_logger(logger)
+def locations(api_client):
+    _response = api_client.routing_svc.get_location_services_v1()
+    assert _response[1].status_code == 200
+    return _response[0]
+
+
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def socket_(request):
