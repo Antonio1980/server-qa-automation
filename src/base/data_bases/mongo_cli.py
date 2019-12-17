@@ -1,4 +1,6 @@
 import json
+
+from config_definitions import BaseConfig
 from src.base.utils import logger
 from pymongo import MongoClient
 from bson.json_util import dumps
@@ -8,7 +10,7 @@ from src.base.utils.log_decorator import automation_logger
 
 class MongoCli:
     def __init__(self):
-        self.mongo_client = MongoClient('35.233.79.19', 27017)
+        self.mongo_client = MongoClient(f'mongodb://{BaseConfig.MONGO_USER}:{BaseConfig.MONGO_PASSWORD}@{BaseConfig.MONGO_HOST}', 27017)
 
     @automation_logger(logger)
     def get_data_bases(self):

@@ -17,7 +17,7 @@ BUFSIZ = 1024
 @allure.title(test_case)
 @allure.description("""
     Functional end to end test.
-    1. Check that all running Location services returned in response "get endpoints" via Routing service.
+    1. Check that number of Location definition returned in response "get state" equals to number of instances.
     2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
 @pytest.mark.usefixtures("locations", "socket_")
@@ -67,9 +67,9 @@ class TestLiveness(object):
 
                     socket_.udp_send(message2)
                     response_ = socket_.udp_receive(BUFSIZ)
-                except Exception as e:
+                except Exception as ex:
                     response_ = None
-                    if_data_error = F"Error occurred while receiving data: {e} \n"
+                    if_data_error = F"Error occurred while receiving data: {ex} \n"
                     logger.logger.exception(if_data_error)
                     TestLiveness.issues += if_data_error
                 if response_:

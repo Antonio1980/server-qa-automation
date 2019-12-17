@@ -126,7 +126,7 @@ class RemoteConfigService(ServiceBase):
     def delete_remote_config(self, config_name):
         uri = self.url + "files/" + config_name
         try:
-            logger.logger.info(F"API Service URL is POST- {uri}")
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
             _response = requests.delete(uri, headers=self.headers)
             try:
                 body = json.loads(_response.text)

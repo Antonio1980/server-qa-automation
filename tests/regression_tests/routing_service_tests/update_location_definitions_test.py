@@ -9,6 +9,7 @@ from src.base.utils.log_decorator import automation_logger
 test_case = "UPDATE LOCATION DEFINITIONS"
 
 
+@pytest.mark.skip
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
@@ -19,10 +20,9 @@ test_case = "UPDATE LOCATION DEFINITIONS"
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/update_location_definitions_test.py",
                  "TestUpdateLocationDefinitions")
+@pytest.mark.client
 @pytest.mark.regression
 @pytest.mark.regression_routing
-@pytest.mark.client
-@pytest.mark.skip
 class TestUpdateLocationDefinitions:
 
     ne_lat, ne_lng = 32.09434632337351, 34.82932599989067

@@ -25,3 +25,9 @@ class Location(Entity):
         self.velocity = 0
         self.vertical_accuracy = 0
         self.raw_horizontal_accuracy = 0
+
+    def set_location(self, latitude, longitude, source):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.source = source
+        return self

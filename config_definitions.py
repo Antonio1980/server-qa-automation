@@ -48,7 +48,6 @@ class BaseConfig:
     config_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), environment_conf_file)
     parser = get_parser(config_file)
 
-    EXPECTED_ENDPOINTS = parser.get("ARGS", "location_endpoints")
     LOG_FILE = parser.get("ARGS", "logger")
     CLOUD = parser.get("ARGS", "cloud")
 
@@ -67,6 +66,9 @@ class BaseConfig:
     else:
         KIBANA = ELASTIC_LOCAL
         KIBANA_PORT = ELASTIC_LOCAL_PORT
+    MONGO_HOST = parser.get("URLS", "mongo_host")
+    MONGO_USER = parser.get("CREDENTIALS", "mongo_user")
+    MONGO_PASSWORD = parser.get("CREDENTIALS", "mongo_password")
 
     AUTH_ZERO_USER = parser.get("AUTOMATION", "auth_zero_user")
     AUTH_ZERO_PASSWORD = parser.get("AUTOMATION", "auth_zero_password")

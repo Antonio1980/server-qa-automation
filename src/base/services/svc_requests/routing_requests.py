@@ -40,24 +40,55 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[DEFINITIONS_UPDATE][0][DESCRIPTION] = "QA Test"
         self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = Utils.get_random_string(size=6)
         self.inner[DEFINITIONS_UPDATE][0][PRIORITY] = priority
+        self.inner[DEFINITIONS_UPDATE][0][PROVIDER] = "OTHER"
         self.inner[DEFINITIONS_UPDATE][0][REGION] = region
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))
         return body
 
     @automation_logger(logger)
-    def keep_alive(self, route, *args):
+    def create_definitions(self, box, *args):
+        if args and len(args[0]) > 0:
+            ((id_, priority, region,),) = args
+        else:
+            id_, priority, region = None, None, None
+        self.inner[DEFINITIONS_UPDATE] = list()
+        self.inner[DEFINITIONS_UPDATE].append(dict())
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX] = dict()
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MAX_LAT] = box.max_lat
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MAX_LON] = box.max_lon
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MIN_LAT] = box.min_lat
+        self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX][MIN_LON] = box.min_lat
+        self.inner[DEFINITIONS_UPDATE][0][DESCRIPTION] = "QA Test"
+        self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = Utils.get_random_string(size=6)
+        self.inner[DEFINITIONS_UPDATE][0][PRIORITY] = priority
+        self.inner[DEFINITIONS_UPDATE][0][PROVIDER] = "OTHER"
+        self.inner[DEFINITIONS_UPDATE][0][REGION] = region
+        body = self.from_json("inner")
+        logger.logger.info(REQUEST_BODY.format(body))
+        return body
+
+    @automation_logger(logger)
+    def delete_definitions(self, difinition_id):
+        self.inner[DEFINITIONS_DELETE] = list()
+        self.inner[DEFINITIONS_DELETE].append(difinition_id)
+        body = self.from_json("inner")
+        logger.logger.info(REQUEST_BODY.format(body))
+        return body
+
+    @automation_logger(logger)
+    def keep_alive(self, route, instance_id, *args):
         if args and len(args[0]) > 0:
             ((car, pedestrian, bike, ), ) = args
         else:
             car, pedestrian, bike = 0, 0, 0
 
-        self.inner[BUILD_TIME] = Utils.get_random_string()
+        self.inner[BUILD_TIME] = Utils.get_timestamp()
         self.inner[COUNT_BY_TYPE] = dict()
         self.inner[COUNT_BY_TYPE][CAR] = car
         self.inner[COUNT_BY_TYPE][PEDESTRIAN] = pedestrian
         self.inner[COUNT_BY_TYPE][BIKE] = bike
-        self.inner[INSTANCE_ID] = Utils.get_random_string()
+        self.inner[INSTANCE_ID] = instance_id
         self.inner[IP] = route.ip
         self.inner[JVM_LOAD] = 0
         self.inner[PROVIDER] = route.name

@@ -43,12 +43,39 @@ def api_client():
     return ApiClient(auth_token)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="class")
 @automation_logger(logger)
 def locations(api_client):
     _response = api_client.routing_svc.get_location_services_v1()
     assert _response[1].status_code == 200
     return _response[0]
+
+
+@pytest.fixture(scope="class")
+@automation_logger(logger)
+def definition(request, api_client):
+    ne_lat, ne_lng = 45.680180, -92.807291
+    sw_lat, sw_lng = 37.029238, -113.338244
+    definition_id, res = "", dict()
+
+    from src.base.entities.bounding_box import BoundingBox
+
+    usa_box = BoundingBox().set_bounding_box(max_lat=ne_lat, max_lon=ne_lng, min_lat=sw_lat, min_lon=sw_lng)
+
+    _response = api_client.routing_svc.create_location_definitions(usa_box, "", 1, "TEST")
+    assert _response[1].status_code == 200
+
+    for item in _response[0]["definitions"]:
+        if item["region"] == "TEST":
+            definition_id = item["definitionId"]
+            res = item
+
+    def clean_definition():
+        api_client.routing_svc.delete_location_definitions(definition_id)
+
+    request.addfinalizer(clean_definition)
+
+    return res
 
 
 @pytest.fixture(scope="class")

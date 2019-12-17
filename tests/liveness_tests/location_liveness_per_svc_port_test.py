@@ -12,13 +12,12 @@ test_case = "LIVENESS LOCATION PER PORT"
 BUFSIZ = 1024
 
 
-# @pytest.mark.skip
 @allure.feature("LIVENESS")
 @allure.story('Client able to found and connect to Location service via configured ports.')
 @allure.title(test_case)
 @allure.description("""
     Functional test.
-    1. Check that all running Location services returned in response "get endpoints" via Routing service.
+    1. Check that number of Location definition returned in response "get state" equals to number of instances.
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @pytest.mark.usefixtures("locations", "socket_")
@@ -75,7 +74,8 @@ class TestLocationLivenessPerServicePort(object):
 
                             socket_.udp_send(message2)
                             _response = socket_.udp_receive(BUFSIZ)
-                        except Exception:
+                        except Exception as ex:
+                            logger.logger.error(ex)
                             logger.logger.exception(f"{if_error}")
                             if tries != 2:
                                 TestLocationLivenessPerServicePort.second_case_issues += if_error
