@@ -18,6 +18,7 @@ test_case = "GET SYNC RUN"
                  "TestGetSyncRun")
 @pytest.mark.regression
 @pytest.mark.regression_message_sync
+@pytest.mark.liveness
 class TestGetSyncRun:
 
     @automation_logger(logger)
