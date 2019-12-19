@@ -16,6 +16,7 @@ test_case = "ADD REMOTE CONFIG"
     1. Check that service is responded on "AddRemoteConfig" request properly.
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
+    3. Negative: Check that with not valid json body it's returned Bad Request..
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/add_remote_config_test.py",
@@ -69,8 +70,8 @@ class TestAddRemoteConfig:
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
     @automation_logger(logger)
-    def test_add_remote_config_bad_json(self, api_client):  # BUG V2X-1882
-        allure.step("Verify that without authorization status code is 401")
+    def test_add_remote_config_bad_json(self, api_client):
+        allure.step("Verify that broken json causes 400 (Bad Request) error.")
 
         remote_config = """
         {
@@ -87,7 +88,7 @@ class TestAddRemoteConfig:
 
         _response = api_client.remote_config_svc.add_remote_config_negative(remote_config)
 
-        assert _response[1].status_code == 400
+        assert _response[1].status_code == 400, "Known Issue # BUG V2X-1882"
         assert isinstance(_response[0], dict)
         assert "expose" and "statusCode" and "status" and "body" and "type" in _response[0].keys()
         assert _response[0]['statusCode'] == 400

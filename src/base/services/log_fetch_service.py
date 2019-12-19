@@ -37,8 +37,8 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def get_tasks_by_user_id(self, user_id):
-        uri = self.url + "tasks/group/" + str(user_id)
+    def get_tasks_grouped_by_user_id(self):
+        uri = self.url + "tasks/group/userId"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers)
@@ -53,7 +53,7 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} get_tasks_by_user_id failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} get_tasks_grouped_by_user_id failed with error: {e}")
             raise e
 
     @automation_logger(logger)

@@ -63,7 +63,7 @@ class TestDeleteUserMessages:
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_delete_user_messages_negative(self, new_message):  # BUG  V2X-1890
+    def test_delete_user_messages_negative(self, new_message):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         _response = api_.message_svc.delete_user_messages(new_message["userid"])
@@ -72,6 +72,6 @@ class TestDeleteUserMessages:
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
         assert _response[0]['code'] == "credentials_required"
         assert _response[0]['message'] == "No authorization token was found"
-        assert _response[1].status_code == 401
+        assert _response[1].status_code == 401, "Known Issue # BUG  V2X-1890"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

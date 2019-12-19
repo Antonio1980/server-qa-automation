@@ -99,7 +99,7 @@ def new_task(request, api_client):
 
     def delete_task():
         del_res = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
-        assert del_res[1].status_code == 200
+        assert del_res[1].status_code == 200, "Known Issue V2X-1878"
 
     delete_task()
 

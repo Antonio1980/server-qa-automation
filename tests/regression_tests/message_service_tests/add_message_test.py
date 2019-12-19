@@ -49,7 +49,7 @@ class TestAddMessage:
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
-    @automation_logger(logger)  # BUG  V2X-1888
+    @automation_logger(logger)
     def test_add_message_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
@@ -59,6 +59,6 @@ class TestAddMessage:
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
         assert _response[0]['code'] == "credentials_required"
         assert _response[0]['message'] == "No authorization token was found"
-        assert _response[1].status_code == 401
+        assert _response[1].status_code == 401, "Known Issue # BUG  V2X-1888"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

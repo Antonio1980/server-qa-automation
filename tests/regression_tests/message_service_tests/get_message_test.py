@@ -45,7 +45,7 @@ class TestGetMessage:
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_get_message_negative(self):  # BUG  V2X-1889
+    def test_get_message_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
         _response = api_.message_svc.get_messages()
@@ -54,6 +54,6 @@ class TestGetMessage:
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
         assert _response[0]['code'] == "credentials_required"
         assert _response[0]['message'] == "No authorization token was found"
-        assert _response[1].status_code == 401
+        assert _response[1].status_code == 401, "Known Issue # BUG  V2X-1889"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

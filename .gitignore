@@ -214,7 +214,7 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-src/repository/allure_results/*
-src/repository/allure_reports/*
 .log
 /failures
+src/allure_reports/
+src/allure_results/
