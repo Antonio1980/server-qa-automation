@@ -99,6 +99,26 @@ class RemoteConfigService(ServiceBase):
             raise e
 
     @automation_logger(logger)
+    def add_remote_config_negative(self, remote_config_str):
+        uri = self.url + "files/"
+        try:
+            logger.logger.info(F"API Service URL is POST- {uri}")
+            _response = requests.post(uri, data=remote_config_str, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} add_remote_config_negative failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
     def get_remote_config_hash(self, config_name=None):
         if config_name:
             uri = self.url + "get/hash/" + config_name
@@ -123,7 +143,7 @@ class RemoteConfigService(ServiceBase):
 
     @automation_logger(logger)
     @pytest.mark.skipif(os.environ.get("ENV") == "prod", reason="This test shouldn't run on production!")
-    def delete_remote_config(self, config_name):
+    def delete_remote_config(self, config_name: str):
         uri = self.url + "files/" + config_name
         try:
             logger.logger.info(F"API Service URL is DELETE- {uri}")

@@ -22,9 +22,9 @@ test_case = "UPLOAD FILE TASK"
 class TestUploadFileTask:
 
     @automation_logger(logger)
-    def test_upload_file_task_method_works(self, get_task, api_client):
+    def test_upload_file_task_method_works(self, new_task, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        task_id = get_task["taskid"]
+        task_id = new_task["taskid"]
         _response = api_client.log_fetch_svc.upload_file_task(task_id, " Do the current tasks")
 
         assert _response[0] is not None
@@ -33,9 +33,9 @@ class TestUploadFileTask:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_upload_file_task_method(self, get_task, api_client):
+    def test_attributes_in_upload_file_task_method(self, new_task, api_client):
         allure.step("Verify response property - updated")
-        task_id = get_task["taskid"]
+        task_id = new_task["taskid"]
         _response = api_client.log_fetch_svc.upload_file_task(task_id, " Do the current tasks")[0]
 
         assert isinstance(_response, dict)

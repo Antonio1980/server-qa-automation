@@ -4,7 +4,7 @@ from src.base.entities.entity import Entity
 
 
 class Location(Entity):
-    def __init__(self, client_type=DetectedType.PEDESTRIAN.value):
+    def __init__(self, client_type=DetectedType.CAR.value):
         super(Location, self).__init__()
         self.id = Utils.get_random_string()
         self.altitude = 0.0

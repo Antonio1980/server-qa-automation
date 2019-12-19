@@ -5,4 +5,4 @@ if [[ ! -d ~/Allure/bin/ ]]; then
   exit "You should install Allure locally first."
 fi
 
-~/Allure/bin/allure open src/repository/allure_reports/
+~/Allure/bin/allure open ../allure_reports/

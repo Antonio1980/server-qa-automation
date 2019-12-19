@@ -15,25 +15,25 @@ test_case = "TASK SAVED IN MONGO"
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/task_saved_in_mongo_test.py", "TestTaskSavedInMongo")
-@pytest.mark.usefixtures("get_uploaded_task", "env")
+@pytest.mark.usefixtures("uploaded_task", "env")
 @pytest.mark.functional
 class TestTaskSavedInMongo(object):
     collection_name = "tasks"
 
     @automation_logger(logger)
-    def test_task_saved_in_mongo(self, env, get_uploaded_task):
+    def test_task_saved_in_mongo(self, env, uploaded_task):
         allure.step("Verify that uploaded task is saved in Mongo with status 'Done'")
 
-        task_id = get_uploaded_task['taskid']
+        task_id = uploaded_task['taskid']
         db_name = "log-fetch-service-" + env
         query = {"taskid": task_id}
         q_result = MongoCli().find_by_query(db_name, self.collection_name, query)
 
-        get_uploaded_task.update({"status": "Done"})
+        uploaded_task.update({"status": "Done"})
         q_result.update({"_id": q_result['_id']["$oid"]})
         q_result.pop("__v")
 
         assert isinstance(q_result, dict)
-        assert get_uploaded_task == q_result
+        assert uploaded_task == q_result
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")

@@ -5,7 +5,6 @@ from config_definitions import BaseConfig
 from src.base.instruments.api_client import ApiClient
 from src.base.entities.bounding_box import BoundingBox
 from src.base.utils.log_decorator import automation_logger
-from src.base.utils.utils import Utils
 
 test_case = "ADD AREAS"
 
@@ -32,18 +31,24 @@ class TestAddAreas:
     def test_add_areas_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 201")
         # sw_lng, sw_lat, ne_lng, ne_lat
-        _response = api_client.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
+        _response = api_client.areas_blacklist_svc.add_areas("server-qa-automation", self.tel_aviv_box)
 
         assert _response[0] is not None
         assert _response[1].status_code == 201
         assert _response[1].reason == "Created"
+
+        del_resp = api_client.areas_blacklist_svc.get_areas()[0]["areas"]
+        for i in del_resp:
+            if i["description"] == "server-qa-automation":
+                d_resp = api_client.areas_blacklist_svc.delete_areas_by_id(i["_id"])
+                assert d_resp[1].status_code == 200
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_add_areas_method(self, api_client):
         allure.step("Verify response properties and that service response has 'areas' is list and it > 0")
-        _response = api_client.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)[0]
+        _response = api_client.areas_blacklist_svc.add_areas("server-qa-automation", self.tel_aviv_box)[0]
 
         assert isinstance(_response, dict)
         assert "hash" in _response.keys() and isinstance(_response["hash"], str)
@@ -52,13 +57,19 @@ class TestAddAreas:
         for item in _response["areas"]:
             assert isinstance(item, dict)
 
+        del_resp = api_client.areas_blacklist_svc.get_areas()[0]["areas"]
+        for i in del_resp:
+            if i["description"] == "server-qa-automation":
+                d_resp = api_client.areas_blacklist_svc.delete_areas_by_id(i["_id"])
+                assert d_resp[1].status_code == 200
+
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
     def test_add_areas_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        _response = api_.areas_blacklist_svc.add_areas(Utils.get_random_string(), self.tel_aviv_box)
+        _response = api_.areas_blacklist_svc.add_areas("server-qa-automation", self.tel_aviv_box)
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()

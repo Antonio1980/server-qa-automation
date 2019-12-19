@@ -22,27 +22,25 @@ test_case = "ADD CLIENT"
 @pytest.mark.regression
 @pytest.mark.regression_licensing
 class TestAddClient:
-
-    name1 = Utils.get_random_string(size=6)
-    name2 = Utils.get_random_string(size=6)
+    name = "server-qa-automation"
 
     @automation_logger(logger)
     def test_add_client_method_works(self, api_client, api_key):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.licensing_svc.add_client(self.name1, api_key.__dict__)
+        _response = api_client.licensing_svc.add_client(self.name, api_key.__dict__)
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
         assert _response[1].reason == "OK"
 
-        api_client.licensing_svc.delete_client(self.name1)
+        api_client.licensing_svc.delete_client(self.name)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
     def test_attributes_in_add_client_method(self, api_client, api_key):
         allure.step("Verify response properties and that i")
-        _response = api_client.licensing_svc.add_client(self.name2, api_key.__dict__)[0]
+        _response = api_client.licensing_svc.add_client(self.name, api_key.__dict__)[0]
 
         assert isinstance(_response, dict)
         assert "clients" in _response.keys()
@@ -52,7 +50,7 @@ class TestAddClient:
         assert len(_response["clients"]["apiKeys"]) > 0
         assert "applicationIds" and "_id" and "key" and "quotaWarning" and "quotaError" in _response["clients"]["apiKeys"][0].keys()
 
-        api_client.licensing_svc.delete_client(self.name2)
+        api_client.licensing_svc.delete_client(self.name)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

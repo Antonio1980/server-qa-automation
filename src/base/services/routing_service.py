@@ -90,32 +90,6 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def create_location_instance(self, region):
-        """
-        TODO: waiting implementation on int.
-        :param region:
-        :return: tuple - (response body as text and pure HTTP response)
-        """
-        uri = self.url + "v1/location-services/instances/" + region
-        try:
-            payload = RoutingServiceRequest().create_instance(region)
-            logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.post(url=uri, data=payload, headers=self.headers)
-            try:
-                body = json.loads(_response.text)
-            except JSONDecodeError as e:
-                logger.logger.error(f"Failed to parse response json: {e}")
-                if _response.text is not None:
-                    body = _response.text
-                else:
-                    body = _response.reason
-            logger.logger.info(RESPONSE_TEXT.format(body))
-            return body, _response
-        except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} create_location_instance failed with error: {e}")
-            raise e
-
-    @automation_logger(logger)
     def update_location_definitions(self, box, *args):
         """
 
@@ -147,7 +121,7 @@ class RoutingService(ServiceBase):
         """
 
         :param box: BoundingBox object.
-        :param args: definition_id, priority, region.
+        :param args: provider, priority, region.
         :return: tuple - (response body as text and pure HTTP response)
         """
         uri = self.url + "v1/location-services/definitions"
@@ -173,8 +147,7 @@ class RoutingService(ServiceBase):
     def delete_location_definitions(self, definition_id):
         """
 
-        :param box: BoundingBox object.
-        :param args: definition_id, priority, region.
+        :param definition_id: ID- str.
         :return: tuple - (response body as text and pure HTTP response)
         """
         uri = self.url + "v1/location-services/definitions"
@@ -242,6 +215,50 @@ class RoutingService(ServiceBase):
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} get_count_by_type_v2 failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def get_location_services_hash(self):
+        """
+
+        :return:
+        """
+        uri = self.url + "v1/location-services/instances/latest-hash"
+        try:
+            logger.logger.info(F"API Service URL is GET- {uri}")
+            _response = requests.get(url=uri, headers=self.headers_without_token)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_location_services_hash failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def add_location_services_hash(self):
+        """
+
+        :return:
+        """
+        uri = self.url + "v1/location-services/instances/latest-hash"
+        try:
+            logger.logger.info(F"API Service URL is POST- {uri}")
+            _response = requests.post(url=uri, headers=self.headers_without_token)
+            if _response.text is not None:
+                body = _response.text
+            else:
+                body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} get_location_services_hash failed with error: {e}")
             raise e
 
     @automation_logger(logger)

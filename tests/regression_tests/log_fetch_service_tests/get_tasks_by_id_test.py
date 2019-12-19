@@ -1,5 +1,4 @@
 import json
-
 import allure
 import pytest
 from src.base.utils import logger
@@ -25,9 +24,9 @@ test_case = "GET TASKS BY ID"
 class TestGetTasksById:
 
     @automation_logger(logger)
-    def test_get_tasks_by_id_method_works(self, get_uploaded_task, api_client):
+    def test_get_tasks_by_id_method_works(self, uploaded_task, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        task_id = get_uploaded_task['taskid']
+        task_id = uploaded_task['taskid']
         _response = api_client.log_fetch_svc.get_file_by_task_id(task_id)
 
         assert _response[0] is not None
@@ -36,9 +35,9 @@ class TestGetTasksById:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_by_id_method(self, get_uploaded_task, api_client):
+    def test_attributes_in_get_tasks_by_id_method(self, uploaded_task, api_client):
         allure.step("Verify response properties and that 'tasks' is list object.")
-        task_id = get_uploaded_task['taskid']
+        task_id = uploaded_task['taskid']
         _response = api_client.log_fetch_svc.get_file_by_task_id(task_id)[0]
 
         assert "Test QA" in _response
@@ -46,10 +45,10 @@ class TestGetTasksById:
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_get_tasks_by_id_negative(self, get_uploaded_task):
+    def test_get_tasks_by_id_negative(self, uploaded_task):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        task_id = get_uploaded_task['taskid']
+        task_id = uploaded_task['taskid']
         _response = api_.log_fetch_svc.get_file_by_task_id(task_id)
         json_body = json.loads(_response[0])
 

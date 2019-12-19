@@ -12,8 +12,7 @@ test_case = "DELETE CLIENT"
 @allure.description("""
     Functional tests.
     1. Check that service responded on 'DeleteClient' request properly.
-    2. Check that service response contains desired properties.
-    3. Negative: Check that without authorization it forbidden.
+    2. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/licensing_service_tests/delete_api_client_test.py",
@@ -30,19 +29,11 @@ class TestDeleteApiClient:
         assert _response[0] is not None
         assert _response[1].status_code == 200
         assert _response[1].reason == "OK"
+        assert isinstance(_response[0], dict)
+        assert "deletedCount" in _response[0].keys()
+        assert _response[0]["deletedCount"] == 1
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
-
-    @automation_logger(logger)
-    def test_attributes_in_delete_client_method(self, api_client, api_name):
-        allure.step("Verify response properties and that i")
-        _response = api_client.licensing_svc.delete_client(api_name)[0]
-
-        assert isinstance(_response, dict)
-        assert "deletedCount" in _response.keys()
-        assert _response["deletedCount"] == 1
-
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
     def test_delete_client_negative(self, api_key, api_name):
@@ -56,6 +47,6 @@ class TestDeleteApiClient:
         assert _response[0]['message'] == "No authorization token was found"
         assert _response[1].status_code == 401
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
 

@@ -53,7 +53,7 @@ def locations(api_client):
 
 @pytest.fixture(scope="class")
 @automation_logger(logger)
-def definition(request, api_client):
+def new_definition(request, api_client):
     ne_lat, ne_lng = 45.680180, -92.807291
     sw_lat, sw_lng = 37.029238, -113.338244
     definition_id, res = "", dict()
@@ -62,7 +62,7 @@ def definition(request, api_client):
 
     usa_box = BoundingBox().set_bounding_box(max_lat=ne_lat, max_lon=ne_lng, min_lat=sw_lat, min_lon=sw_lng)
 
-    _response = api_client.routing_svc.create_location_definitions(usa_box, "", 1, "TEST")
+    _response = api_client.routing_svc.create_location_definitions(usa_box, "GOOGLE", 1, "TEST")
     assert _response[1].status_code == 200
 
     for item in _response[0]["definitions"]:
@@ -94,29 +94,37 @@ def socket_(request):
 
 @pytest.fixture
 @automation_logger(logger)
-def add_task(api_client):
-    api_client.log_fetch_svc.add_task("qa_test_qa")
+def new_task(request, api_client):
+    res = None
 
+    def delete_task():
+        del_res = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
+        assert del_res[1].status_code == 200
 
-@pytest.fixture
-@automation_logger(logger)
-def get_task(add_task, api_client):
-    logger.logger.info(f"Task is added- {add_task}")
+    delete_task()
+
+    _response = api_client.log_fetch_svc.add_task("server-qa-automation")
+    assert _response[1].status_code == 200
+
     _response = api_client.log_fetch_svc.get_tasks()[0]
 
     for item in _response["tasks"]:
-        if (item["userid"] == "qa_test_qa" or item["userid"] == "another_qa_test_qa") and item["status"] == "Pending":
-            return item
+        if item["userid"] == "server-qa-automation" and item["status"] == "Pending":
+            res = item
+
+    request.addfinalizer(delete_task)
+
+    return res
 
 
 @pytest.fixture
 @automation_logger(logger)
-def get_uploaded_task(get_task, api_client):
-    task_id = get_task["taskid"]
+def uploaded_task(new_task, api_client):
+    task_id = new_task["taskid"]
     try:
         return api_client.log_fetch_svc.upload_file_task(task_id, "Test QA")[0]
     except Exception as e:
-        logger.logger(F"Error on fixture get_uploaded_task: {e}")
+        logger.logger(F"Error on fixture uploaded_task: {e}")
         raise e
 
 

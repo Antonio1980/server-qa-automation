@@ -22,9 +22,9 @@ test_case = "GET USER MESSAGE"
 class TestUserMessage(object):
 
     @automation_logger(logger)
-    def test_user_message_method_works(self, api_client):
+    def test_user_message_method_works(self, api_client, new_message):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.message_svc.get_user_messages("aaa")
+        _response = api_client.message_svc.get_user_messages("server-qa-automation")
 
         assert _response[1].status_code == 200
         assert _response[0] is not None
@@ -32,9 +32,9 @@ class TestUserMessage(object):
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_user_message_method(self, api_client):
+    def test_attributes_in_user_message_method(self, api_client, new_message):
         allure.step("Verify response properties and that 'messages' is list object.")
-        _response = api_client.message_svc.get_user_messages("aaa")[0]
+        _response = api_client.message_svc.get_user_messages("server-qa-automation")[0]
 
         assert isinstance(_response, dict)
         assert "messages" in _response.keys()

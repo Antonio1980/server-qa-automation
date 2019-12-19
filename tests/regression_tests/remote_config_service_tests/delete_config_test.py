@@ -26,7 +26,7 @@ class TestDeleteRemoteConfig:
     @automation_logger(logger)
     def test_delete_remote_config(self, new_remote_config, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.remote_config_svc.delete_remote_config(new_remote_config)
+        _response = api_client.remote_config_svc.delete_remote_config(new_remote_config["name"])
 
         assert _response[1].status_code == 200
         assert _response[0] is not None

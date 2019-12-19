@@ -2,7 +2,6 @@ import pytest
 from src.base.utils import logger
 from src.base.entities.api_key import ApiKey
 from src.base.utils.log_decorator import automation_logger
-from src.base.utils.utils import Utils
 
 
 @pytest.fixture
@@ -15,9 +14,18 @@ def api_key():
 
 @pytest.fixture
 @automation_logger(logger)
-def api_name(api_client, api_key):
-    name = Utils.get_random_string(size=6)
-    _response = api_client.licensing_svc.add_client(name, api_key.__dict__)
-    assert _response[0] is not None
-    assert _response[1].status_code == 200
-    return name
+def api_name(request, api_client, api_key):
+    name = "server-qa-automation"
+
+    def delete_api():
+        res_del = api_client.licensing_svc.delete_client("server-qa-automation")
+        assert res_del[1].status_code == 200
+
+    delete_api()
+
+    response_ = api_client.licensing_svc.add_client(name, api_key.__dict__)
+    assert response_[1].status_code == 200
+
+    request.addfinalizer(delete_api)
+
+    return response_[0]["clients"]["name"]

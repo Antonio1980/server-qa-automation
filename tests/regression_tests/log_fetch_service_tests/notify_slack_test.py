@@ -23,9 +23,9 @@ test_case = "NOTIFY SLACK"
 class TestNotifySlack:
 
     @automation_logger(logger)
-    def test_notify_slack_method_works(self, get_task, api_client):
+    def test_notify_slack_method_works(self, new_task, api_client):
         allure.step("Verify that response is not empty and status code is 200")
-        task_id = get_task["taskid"]
+        task_id = new_task["taskid"]
         _response = api_client.log_fetch_svc.notify_slack(task_id, False)
 
         assert _response[0] is not None
@@ -34,9 +34,9 @@ class TestNotifySlack:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_notify_slack_method(self, get_task, api_client):
+    def test_attributes_in_notify_slack_method(self, new_task, api_client):
         allure.step("Verify response properties and that 'response' is dict object.")
-        task_id = get_task["taskid"]
+        task_id = new_task["taskid"]
         _response = api_client.log_fetch_svc.notify_slack(task_id, False)[0]
 
         assert isinstance(_response, dict)
@@ -48,10 +48,10 @@ class TestNotifySlack:
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_notify_slack_negative(self, get_task):
+    def test_notify_slack_negative(self, new_task):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        task_id = get_task["taskid"]
+        task_id = new_task["taskid"]
         _response = api_.log_fetch_svc.notify_slack(task_id, False)
 
         assert isinstance(_response[0], dict)

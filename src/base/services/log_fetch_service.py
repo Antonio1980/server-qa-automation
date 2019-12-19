@@ -72,7 +72,7 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_task(self, user_id, description="A-Test", notify_slack=False):
+    def add_task(self, user_id, description="QA-Test", notify_slack=False):
         uri = self.url + "tasks/"
         payload = LogFetchServiceRequest().add_task(user_id, description, notify_slack)
         try:
@@ -136,7 +136,7 @@ class LogFetchService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def delete_tasks(self, user_id):
+    def delete_user_tasks(self, user_id):
         uri = self.url + "tasks/" + str(user_id)
         try:
             logger.logger.info(F"API Service URL is DELETE- {uri}")
@@ -152,7 +152,27 @@ class LogFetchService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} delete_tasks failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} delete_user_tasks failed with error: {e}")
+            raise e
+
+    @automation_logger(logger)
+    def delete_by_task_id(self, task_id):
+        uri = self.url + "tasks/task/" + str(task_id)
+        try:
+            logger.logger.info(F"API Service URL is DELETE- {uri}")
+            _response = requests.delete(uri, headers=self.headers)
+            try:
+                body = json.loads(_response.text)
+            except JSONDecodeError as e:
+                logger.logger.error(f"Failed to parse response json: {e}")
+                if _response.text is not None:
+                    body = _response.text
+                else:
+                    body = _response.reason
+            logger.logger.info(RESPONSE_TEXT.format(body))
+            return body, _response
+        except Exception as e:
+            logger.logger.error(F"{e.__class__.__name__} delete_by_task_id failed with error: {e}")
             raise e
 
     @automation_logger(logger)

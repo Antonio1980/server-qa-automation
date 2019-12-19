@@ -9,7 +9,7 @@ class RemoteConfig(Entity):
     def __init__(self, config_hash=None):
         super(RemoteConfig, self).__init__()
         self.config_hash = config_hash
-        self.name = Utils.get_random_string()
+        self.name = "server-qa-automation"
         self.description = "QA Test"
         self.data = dict()
 

@@ -32,6 +32,9 @@ class TestAddRemoteConfig:
         assert _response[1].status_code == 200
         assert _response[0] is not None
 
+        del_res = api_client.remote_config_svc.delete_remote_config(remote_config.name)
+        assert del_res[1].status_code == 200
+
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
@@ -45,13 +48,16 @@ class TestAddRemoteConfig:
         assert "param1" and "param2" and "param3" and "swagger" in _response["data"].keys()
         assert _response["name"] == remote_config.name
 
+        del_res = api_client.remote_config_svc.delete_remote_config(remote_config.name)
+        assert del_res[1].status_code == 200
+
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
     def test_add_remote_config_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        remote_config = RemoteConfig(Utils.get_timestamp()).set_config(False, True, 12345, Utils.get_random_string(6))
+        remote_config = RemoteConfig(Utils.get_timestamp()).set_config(False, True, 12345, "server-qa-automation")
         _response = api_.remote_config_svc.add_remote_config(remote_config)
 
         assert isinstance(_response[0], dict)
@@ -59,5 +65,33 @@ class TestAddRemoteConfig:
         assert _response[0]['code'] == "credentials_required"
         assert _response[0]['message'] == "No authorization token was found"
         assert _response[1].status_code == 401
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
+
+    @automation_logger(logger)
+    def test_add_remote_config_bad_json(self, api_client):  # BUG V2X-1882
+        allure.step("Verify that without authorization status code is 401")
+
+        remote_config = """
+        {
+            "data": {
+                "param1": true, 
+                "param2": 12345, 
+                "param3": "testing is fun", 
+                "swagger": false,
+                }, 
+            "description": "QA Test", 
+            "hash": "1576755879870034", 
+            "name": "server-qa-automation"
+        }"""
+
+        _response = api_client.remote_config_svc.add_remote_config_negative(remote_config)
+
+        assert _response[1].status_code == 400
+        assert isinstance(_response[0], dict)
+        assert "expose" and "statusCode" and "status" and "body" and "type" in _response[0].keys()
+        assert _response[0]['statusCode'] == 400
+        assert _response[0]['status'] == 400
+        assert isinstance(_response[0]["body"], str)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

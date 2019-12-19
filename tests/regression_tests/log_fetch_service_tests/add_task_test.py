@@ -25,31 +25,37 @@ class TestAddTask:
     @automation_logger(logger)
     def test_add_task_method_works(self, api_client):
         _response = api_client.log_fetch_svc.health()[1]
-        if _response.status_code == 200:
-            allure.step("Verify that response is not empty and status code is 200")
-            _response = api_client.log_fetch_svc.add_task("qa_test_qa")
+        try:
+            if _response.status_code == 200:
+                allure.step("Verify that response is not empty and status code is 200")
+                _response = api_client.log_fetch_svc.add_task("server-qa-automation")
 
-            assert _response[0] is not None
-            assert _response[1].status_code == 200
-            logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
-        else:
-            raise AutomationError(F"============ TEST CASE {test_case} / 1 FAILED ===========")
+                assert _response[0] is not None
+                assert _response[1].status_code == 200
+                logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+            else:
+                raise AutomationError(F"============ TEST CASE {test_case} / 1 FAILED ===========")
+        finally:
+            api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
 
     @automation_logger(logger)
     def test_attributes_in_add_task_method(self, api_client):
-        allure.step("Verify response properties and that 'response' is list object.")
-        _response = api_client.log_fetch_svc.add_task("qa_test_qa")[0]
+        try:
+            allure.step("Verify response properties and that 'response' is list object.")
+            _response = api_client.log_fetch_svc.add_task("server-qa-automation")[0]
 
-        assert isinstance(_response, list)
-        assert len(_response) > 0
+            assert isinstance(_response, list)
+            assert len(_response) > 0
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+            logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+        finally:
+            api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
 
     @automation_logger(logger)
     def test_add_task_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        _response = api_.log_fetch_svc.add_task("qa_test_qa")
+        _response = api_.log_fetch_svc.add_task("server-qa-automation")
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()

@@ -49,9 +49,9 @@ class RoutingServiceRequest(RequestSchema):
     @automation_logger(logger)
     def create_definitions(self, box, *args):
         if args and len(args[0]) > 0:
-            ((id_, priority, region,),) = args
+            ((provider, priority, region,),) = args
         else:
-            id_, priority, region = None, None, None
+            provider, priority, region = None, None, None
         self.inner[DEFINITIONS_UPDATE] = list()
         self.inner[DEFINITIONS_UPDATE].append(dict())
         self.inner[DEFINITIONS_UPDATE][0][BOUNDING_BOX] = dict()
@@ -62,7 +62,7 @@ class RoutingServiceRequest(RequestSchema):
         self.inner[DEFINITIONS_UPDATE][0][DESCRIPTION] = "QA Test"
         self.inner[DEFINITIONS_UPDATE][0][NICKNAME] = Utils.get_random_string(size=6)
         self.inner[DEFINITIONS_UPDATE][0][PRIORITY] = priority
-        self.inner[DEFINITIONS_UPDATE][0][PROVIDER] = "OTHER"
+        self.inner[DEFINITIONS_UPDATE][0][PROVIDER] = provider
         self.inner[DEFINITIONS_UPDATE][0][REGION] = region
         body = self.from_json("inner")
         logger.logger.info(REQUEST_BODY.format(body))

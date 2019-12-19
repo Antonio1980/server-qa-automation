@@ -1,6 +1,5 @@
 import pytest
 from src.base.utils import logger
-from src.base.utils.utils import Utils
 from src.base.entities.bounding_box import BoundingBox
 from src.base.utils.log_decorator import automation_logger
 
@@ -12,17 +11,29 @@ empty_box = BoundingBox().set_bounding_box(ne_lat, ne_lng, sw_lat, sw_lng)
 
 @pytest.fixture
 @automation_logger(logger)
-def add_area(api_client):
-    _response = api_client.areas_blacklist_svc.add_areas("qa_test_qa" + Utils.get_random_string(), empty_box)[1]
+def new_area(request, api_client):
+    del_resp = api_client.areas_blacklist_svc.get_areas()[0]["areas"]
+    for i in del_resp:
+        if i["description"] == "server-qa-automation":
+            d_resp = api_client.areas_blacklist_svc.delete_areas_by_id(i["_id"])
+            assert d_resp[1].status_code == 200
+
+    _response = api_client.areas_blacklist_svc.add_areas("server-qa-automation", empty_box)[1]
     assert _response.status_code == 201
 
-
-@pytest.fixture
-@automation_logger(logger)
-def get_area(add_area, api_client):
     _response = api_client.areas_blacklist_svc.get_areas()[0]
+    res, shape_id = None, None
 
     for area in _response["areas"]:
-        if "qa_test_qa" in area["description"] and area["isActive"] is True:
+        if "server-qa-automation" in area["description"] and area["isActive"] is True:
             logger.logger.info(f"Test area is found- {area}")
-            return area
+            shape_id = area["_id"]
+            res = area
+
+    def delete_area():
+        resp = api_client.areas_blacklist_svc.delete_areas_by_id(shape_id=shape_id)
+        assert resp[1].status_code == 200
+
+    request.addfinalizer(delete_area)
+
+    return res

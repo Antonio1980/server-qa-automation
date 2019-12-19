@@ -3,54 +3,50 @@ import pytest
 from src.base.utils import logger
 from config_definitions import BaseConfig
 from src.base.instruments.api_client import ApiClient
+from src.base.automation_error import AutomationError
 from src.base.utils.log_decorator import automation_logger
 
-test_case = "ACTIVATE AREA"
+test_case = "DELETE USER TASKS"
 
 
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. Check that service responded on 'ActivateArea' request properly.
+    1. Check that service is responded on "DeleteUserTasks" request properly.
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
-@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/areas_blacklist_service_tests/activate_test.py",
-                 "TestActivateArea")
+@allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/delete_user_tasks_test.py",
+                 "TestDeleteUserTasks")
 @pytest.mark.regression
-@pytest.mark.regression_areas_blacklist
-class TestActivateArea:
+@pytest.mark.regression_log_fetch
+class TestDeleteUserTasks:
 
     @automation_logger(logger)
-    def test_activate_area_method_works(self, new_area, api_client):
+    def test_delete_user_tasks_method_works(self, api_client, new_task):
         allure.step("Verify that response is not empty and status code is 200")
-        _response = api_client.areas_blacklist_svc.activate_area(new_area["_id"], True)
+        _response = api_client.log_fetch_svc.delete_user_tasks(new_task["userid"])
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
-        assert _response[1].reason == "OK"
-
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_activate_area_method(self, new_area, api_client):
-        allure.step("Verify response properties and that isActive is false.")
-        _response = api_client.areas_blacklist_svc.activate_area(new_area["_id"], False)[0]
+    def test_attributes_in_delete_user_tasks_method(self, api_client, new_task):
+        allure.step("Verify response properties and that 'response' is list object.")
+        _response = api_client.log_fetch_svc.delete_user_tasks(new_task["userid"])[0]
 
-        assert isinstance(_response, dict)
-        assert "isActive" and "_id" and "description" and "position" in _response.keys()
-        assert _response["isActive"] is False
-        assert _response["_id"] == new_area["_id"]
-        assert "server-qa-automation" in _response["description"]
+        assert isinstance(_response, list)
+        assert len(_response) > 0
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
     @automation_logger(logger)
-    def test_activate_area_negative(self, new_area):
+    def test_delete_user_tasks_negative(self):
         allure.step("Verify that without authorization status code is 401")
         api_ = ApiClient()
-        _response = api_.areas_blacklist_svc.activate_area(new_area["_id"], True)
+        _response = api_.log_fetch_svc.delete_user_tasks("server-qa-automation")
 
         assert isinstance(_response[0], dict)
         assert "name" and "message" and "code" and "status" and "inner" in _response[0].keys()
