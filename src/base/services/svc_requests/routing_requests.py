@@ -103,7 +103,7 @@ class RoutingServiceRequest(RequestSchema):
         return body
 
     @automation_logger(logger)
-    def add_route(self, location):
+    def route(self, location):
         self.inner[ID] = location.id
         self.inner[ALTITUDE] = location.altitude
         self.inner[AVG_ACCELERATION] = location.avg_acceleration

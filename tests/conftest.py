@@ -20,6 +20,7 @@ def check_environment_marks(pytestconfig, env):
 @pytest.fixture(scope="class")
 @automation_logger(logger)
 def run_time_counter(request):
+    time.sleep(1.0)
     start_time = time.perf_counter()
     logger.logger.info("START TIME: {0}".format(start_time))
 
@@ -27,9 +28,7 @@ def run_time_counter(request):
         end_time = time.perf_counter()
         logger.logger.info("END TIME: {0}".format(end_time))
         average_time = datetime.datetime.strptime(time.ctime(end_time - start_time), "%a %b %d %H:%M:%S %Y")
-        min_ = average_time.minute
-        sec_ = average_time.second
-        m_sec = average_time.microsecond
+        min_, sec_, m_sec = average_time.minute, average_time.second, average_time.microsecond
         logger.logger.info(f"AVERAGE OF THE TEST CASE RUN TIME: {min_} minutes {sec_} seconds {m_sec} microseconds")
         time.sleep(1.0)
 
@@ -99,7 +98,7 @@ def new_task(request, api_client):
 
     def delete_task():
         del_res = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
-        assert del_res[1].status_code == 200, "Known Issue V2X-1878"
+        assert del_res[1].status_code == 200, "Known Issue # BUG V2X-1878"
 
     delete_task()
 
@@ -149,9 +148,9 @@ def stderr_stdout(capsys):
     try:
         captured = capsys.readouterr()
         return captured.out, captured.err
-    except Exception as e:
-        logger.logger.exception(F"stderr_stdout failed wih error: {e}")
-        raise e
+    except Exception as ex:
+        logger.logger.exception(F"stderr_stdout failed wih error: {ex}")
+        raise ex
 
 
 @pytest.fixture(scope="session")

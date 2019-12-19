@@ -290,7 +290,7 @@ class RoutingService(ServiceBase):
             raise e
 
     @automation_logger(logger)
-    def add_route_v4(self, location):
+    def route_me_v4(self, location):
         """
 
         :param location:
@@ -298,7 +298,7 @@ class RoutingService(ServiceBase):
         """
         uri = self.url + "v4/route"
         try:
-            payload = RoutingServiceRequest().add_route(location)
+            payload = RoutingServiceRequest().route(location)
             logger.logger.info(F"API Service URL is POST- {uri}")
             _response = requests.post(url=uri, data=payload, headers=self.headers_without_token)
             try:
@@ -312,7 +312,7 @@ class RoutingService(ServiceBase):
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
-            logger.logger.error(F"{e.__class__.__name__} add_route_v4 failed with error: {e}")
+            logger.logger.error(F"{e.__class__.__name__} route_me_v4 failed with error: {e}")
             raise e
 
     @automation_logger(logger)

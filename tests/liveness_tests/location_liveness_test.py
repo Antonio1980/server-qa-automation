@@ -20,7 +20,6 @@ BUFSIZ = 1024
     1. Check that number of Location definition returned in response "get state" equals to number of instances.
     2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
-@pytest.mark.usefixtures("locations", "socket_")
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/location_liveness_test.py", "TestLiveness")
 @pytest.mark.liveness

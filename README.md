@@ -58,22 +58,22 @@ TESTS
 -----
 
 1 Run all tests:
-* $ pytest -v tests --alluredir=src/allure/allure_results
+* $ pytest -v tests --alluredir=src/allure_results
 
 2 Run tests as a package:
-* $ pytest -v tests/regression_tests/message_service_tests --alluredir=src/allure/allure_results
+* $ pytest -v tests/regression_tests/message_service_tests --alluredir=src/allure_results
 
 3 Run specific test:
-* $ pytest -v tests/regression_tests/message_sync_service_tests/get_sync_run_test.py  --alluredir=src/allure/allure_results
+* $ pytest -v tests/regression_tests/message_sync_service_tests/get_sync_run_test.py  --alluredir=src/allure_results
 
 4 Run per test group (regression group as example):
-* $ pytest -v tests -m regression --alluredir=src/allure/allure_results
+* $ pytest -v tests -m regression --alluredir=src/allure_results
 
 5 Generate temporary allure report:
 * $ allure serve src/allure_results
   
 6 Generate report:
-* $ allure generate src/allure/allure_results -o src/allure/allure_reports --clean
+* $ allure generate src/allure_results -o src/allure_reports --clean
   
 7 Open allure report:
 * $ allure open src/allure_reports
@@ -87,16 +87,18 @@ TESTS
 
 * Test Groups:
 
-1. liveness
-2. functional
-3. regression
-4. regression_areas_blacklist
-5. regression_log_fetch
-6. regression_message
-7. regression_message_sync
-8. regression_remote_config
-9. regression_reporting
-10. regression_routing
+1. liveness - Production tests.
+2. client - all API methods related to the client (App), without Authorization token
+3. functional - Heavy tests, could be with some DB or additional access (required isolated env.)
+4. regression - Simple API tests (checks basic functional of the services- smoke/sanity)
+5. regression_areas_blacklist
+6. regression_log_fetch
+7. regression_message
+8. regression_message_sync
+9. regression_remote_config
+10. regression_reporting
+11. regression_routing
+12. regression_licensing
 
 
 CONFIGURATION
