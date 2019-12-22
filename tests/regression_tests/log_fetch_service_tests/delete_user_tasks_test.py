@@ -3,7 +3,6 @@ import pytest
 from src.base.utils import logger
 from config_definitions import BaseConfig
 from src.base.instruments.api_client import ApiClient
-from src.base.automation_error import AutomationError
 from src.base.utils.log_decorator import automation_logger
 
 test_case = "DELETE USER TASKS"
@@ -15,6 +14,7 @@ test_case = "DELETE USER TASKS"
     1. Check that service is responded on "DeleteUserTasks" request properly.
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
+    4. Check that service able to delete 1000 messages.
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/log_fetch_service_tests/delete_user_tasks_test.py",
@@ -55,3 +55,16 @@ class TestDeleteUserTasks:
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
+
+    @automation_logger(logger)
+    def test_delete_1000_messages(self, api_client):
+        allure.step("Verify that service able to delete 1000 messages.")
+        for i in range(1000):
+            api_client.log_fetch_svc.add_task("server-qa-automation")
+
+        _response = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")[0]
+
+        assert isinstance(_response, list)
+        assert len(_response) > 0
+
+        logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")

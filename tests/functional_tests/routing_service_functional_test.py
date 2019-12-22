@@ -14,10 +14,9 @@ test_case = "ROUTING FUNCTIONAL"
 @allure.title(test_case)
 @allure.description("""
     Functional tests.
-    1. Route before.
-    2. Update definitions.
-    3. Create instance.
-    4. Route after. 
+    1. Route before = 2 definitions.
+    2. Update definitions + 1 new definition.
+    3. Route after = 3 instances. 
     """)
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "functional_tests/routing_service_test.py", "TestRoutingServiceFunctional")
@@ -34,6 +33,7 @@ class TestRoutingServiceFunctional(object):
     @pytest.fixture(scope="class")
     @automation_logger(logger)
     def definition(self, request, api_client):
+        allure.step("Create new definition.")
         _response = api_client.routing_svc.create_location_definitions(self.russia_box, "GOOGLE", 1, "europe-north1-a")
         assert _response[1].status_code == 200
 
@@ -51,7 +51,7 @@ class TestRoutingServiceFunctional(object):
 
     @automation_logger(logger)
     def test_route_before(self, api_client):
-        allure.step("Verify that ")
+        allure.step("Verify that client received route default.")
         _response = api_client.routing_svc.route_me_v4(self.location)
         assert _response[1].status_code == 200
         assert "default" in _response[0]["name"]
@@ -60,7 +60,7 @@ class TestRoutingServiceFunctional(object):
 
     @automation_logger(logger)
     def test_create_instance(self, api_client, definition):
-        allure.step("Verify that ")
+        allure.step("Verify that new definition is created.")
         TestRoutingServiceFunctional.definition_id = definition["definitionId"]
         TestRoutingServiceFunctional.nickname = definition["nickname"]
 
@@ -68,7 +68,7 @@ class TestRoutingServiceFunctional(object):
 
     @automation_logger(logger)
     def test_route_after(self, api_client):
-        allure.step("Verify that ")
+        allure.step("Verify that new instance is created according to new definition.")
         time.sleep(240.0)
         _response = api_client.routing_svc.route_me_v4(self.location)
         assert _response[1].status_code == 200
