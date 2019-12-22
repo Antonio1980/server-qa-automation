@@ -37,8 +37,8 @@ class TestDeleteUserTasks:
         allure.step("Verify response properties and that 'response' is list object.")
         _response = api_client.log_fetch_svc.delete_user_tasks(new_task["userid"])[0]
 
-        assert isinstance(_response, list)
-        assert len(_response) > 0
+        assert isinstance(_response, dict)
+        assert "deletedCount" in _response.keys()
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
@@ -64,7 +64,6 @@ class TestDeleteUserTasks:
 
         _response = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")[0]
 
-        assert isinstance(_response, list)
-        assert len(_response) > 0
+        assert _response["deletedCount"] == 1000
 
         logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")
