@@ -16,7 +16,7 @@ test_case = "ADD REMOTE CONFIG"
     1. Check that service is responded on "AddRemoteConfig" request properly.
     2. Check that service response contains desired properties.
     3. Negative: Check that without authorization it forbidden.
-    3. Negative: Check that with not valid json body it's returned Bad Request..
+    4. Negative: Check that with not valid json body it's returned Bad Request..
     """)
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/remote_config_service_tests/add_remote_config_test.py",

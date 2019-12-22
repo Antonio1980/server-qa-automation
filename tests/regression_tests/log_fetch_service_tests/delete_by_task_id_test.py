@@ -32,12 +32,13 @@ class TestDeleteByTaskId:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_delete_by_task_id_method(self, api_client, ):
+    def test_attributes_in_delete_by_task_id_method(self, api_client, new_task):
         allure.step("Verify response properties and that 'response' is list object.")
         _response = api_client.log_fetch_svc.delete_by_task_id(new_task["taskid"])[0]
 
-        assert isinstance(_response, list)
-        assert len(_response) > 0
+        assert isinstance(_response, dict)
+        assert isinstance(_response["tasks"], list)
+        assert len(_response["tasks"]) > 0
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
