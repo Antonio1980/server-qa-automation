@@ -218,3 +218,4 @@ fabric.properties
 /failures
 src/allure_reports/
 src/allure_results/
+!/src/proto/
