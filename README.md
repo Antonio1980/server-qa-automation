@@ -212,10 +212,6 @@ PROTOBUF
 
 https://github.com/protocolbuffers/protobuf/releases/tag/v3.6.1
 
-- Proto contracts:
-
-https://gitlab.com/cx_group/common/proto_contracts
-
 * Generate python proto:
 $ GitLab\protoc-3.6.1-win32\bin\protoc -I=GitLab\proto_contracts\src --python_out=GitLab\proto_contracts\gen      
 

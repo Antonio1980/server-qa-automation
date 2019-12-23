@@ -226,7 +226,7 @@ class RoutingService(ServiceBase):
         uri = self.url + "v1/location-services/instances/latest-hash"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
-            _response = requests.get(url=uri, headers=self.headers_without_token)
+            _response = requests.get(url=uri, headers=self.headers)
             body = _response.text
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
@@ -243,7 +243,7 @@ class RoutingService(ServiceBase):
         uri = self.url + "v1/location-services/instances/latest-hash"
         try:
             logger.logger.info(F"API Service URL is POST- {uri}")
-            _response = requests.post(url=uri, data=hash_)
+            _response = requests.post(url=uri, data=hash_, headers=self.headers)
             body = _response.reason
             logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
