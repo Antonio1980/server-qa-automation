@@ -29,7 +29,7 @@ class TestValidateClient:
 
         assert _response[0] is not None
         assert _response[1].status_code == 200
-        assert _response[1].reason == "OK"
+        assert _response[1].reason == "VALID"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
@@ -40,6 +40,6 @@ class TestValidateClient:
 
         assert isinstance(_response, dict)
         assert "responseType" in _response.keys()
-        assert _response["responseType"] == "OK"
+        assert _response["responseType"] == "VALID"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
