@@ -56,6 +56,7 @@ class TestDeleteUserTasks:
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
 
+    @pytest.mark.skip #ANTONTODO - reinstate this test when it runs faster
     @automation_logger(logger)
     def test_delete_1000_messages(self, api_client):
         allure.step("Verify that service able to delete 1000 messages.")
