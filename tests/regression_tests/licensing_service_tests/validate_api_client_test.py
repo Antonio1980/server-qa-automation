@@ -28,8 +28,8 @@ class TestValidateClient:
         _response = api_client.licensing_svc.validate_client("C", "api_id", "client_id")
 
         assert _response[0] is not None
+        assert _response[0]['responseType'] == "VALID"
         assert _response[1].status_code == 200
-        assert _response[1].reason == "VALID"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
