@@ -93,6 +93,6 @@ class TestAddRemoteConfig:
         assert "err" and "body" and "description" in _response[0].keys()
         assert isinstance(_response[0]["err"], str)
         assert isinstance(_response[0]["body"], str)
-        assert isinstance(_response[0]["decription"], str)
+        assert isinstance(_response[0]["description"], str)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
