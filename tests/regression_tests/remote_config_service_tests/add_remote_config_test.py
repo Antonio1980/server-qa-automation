@@ -90,9 +90,9 @@ class TestAddRemoteConfig:
 
         assert _response[1].status_code == 400, "Known Issue # BUG V2X-1882"
         assert isinstance(_response[0], dict)
-        assert "expose" and "statusCode" and "status" and "body" and "type" in _response[0].keys()
-        assert _response[0]['statusCode'] == 400
-        assert _response[0]['status'] == 400
+        assert "err" and "body" and "description" in _response[0].keys()
+        assert isinstance(_response[0]["err"], str)
         assert isinstance(_response[0]["body"], str)
+        assert isinstance(_response[0]["description"], str)
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")

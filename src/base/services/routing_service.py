@@ -311,7 +311,7 @@ class RoutingService(ServiceBase):
 
         :return: tuple - (response body as text and pure HTTP response)
         """
-        uri = self.url + "version-info"
+        uri = self.url + "version"
         try:
             logger.logger.info(F"API Service URL is GET- {uri}")
             _response = requests.get(uri, headers=self.headers_without_token)
