@@ -55,15 +55,3 @@ class TestDeleteUserTasks:
         assert _response[1].status_code == 401
 
         logger.logger.info(F"============ TEST CASE {test_case} / 3 PASSED ===========")
-
-    @automation_logger(logger)
-    def test_delete_1000_messages(self, api_client):
-        allure.step("Verify that service able to delete 1000 messages.")
-        for i in range(1000):
-            api_client.log_fetch_svc.add_task("server-qa-automation")
-
-        _response = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")[0]
-
-        assert _response["deletedCount"] == 1000
-
-        logger.logger.info(F"============ TEST CASE {test_case} / 4 PASSED ===========")

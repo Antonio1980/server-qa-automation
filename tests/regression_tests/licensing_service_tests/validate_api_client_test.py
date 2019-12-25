@@ -40,6 +40,6 @@ class TestValidateClient:
 
         assert isinstance(_response, dict)
         assert "responseType" in _response.keys()
-        assert _response["responseType"] == "OK"
+        assert _response["responseType"] == "VALID"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
