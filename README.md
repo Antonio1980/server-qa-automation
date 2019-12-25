@@ -88,9 +88,9 @@ TESTS
 * Test Groups:
 
 1. liveness - Production tests.
-2. client - all API methods related to the client (App), without Authorization token
-3. functional - Heavy tests, could be with some DB or additional access (required isolated env.)
-4. regression - Simple API tests (checks basic functional of the services- smoke/sanity)
+2. client - all API methods related to the client (App), without Authorization token.
+3. functional - Heavy tests, could be with some DB or additional access (required isolated env.).
+4. regression - Simple API tests (checks basic functional of the services- smoke/sanity).
 5. regression_areas_blacklist
 6. regression_log_fetch
 7. regression_message

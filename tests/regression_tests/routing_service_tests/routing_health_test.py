@@ -16,7 +16,7 @@ test_case = "HEALTH ROUTING"
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/routing_service_tests/routing_health_test.py",
                  "TestHealthRouting")
 @pytest.mark.regression
-@pytest.mark.regression_messages_synch
+@pytest.mark.regression_routing
 class TestHealthRouting:
 
     @automation_logger(logger)
