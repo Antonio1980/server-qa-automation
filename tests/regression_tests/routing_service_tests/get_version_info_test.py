@@ -36,10 +36,12 @@ class TestGetVersionInfo:
         _response = api_client.routing_svc.get_version_info()[0]
 
         assert isinstance(_response, dict)
-        assert "buildTime" and "revision" and "clientCommonRevision" and "serverCommonRevision" in _response.keys()
-        assert _response["buildTime"] is not None
-        assert _response["revision"] is not None
-        assert _response["clientCommonRevision"] is not None
-        assert _response["serverCommonRevision"] is not None
+        assert "versioning" in _response.keys()
+        assert isinstance(_response["versioning"], dict)
+        assert "buildTime" and "revision" and "clientCommonRevision" and "serverCommonRevision" in _response["versioning"].keys()
+        assert _response["versioning"]["buildTime"] is not None
+        assert _response["versioning"]["revision"] is not None
+        assert _response["versioning"]["clientCommonRevision"] is not None
+        assert _response["versioning"]["serverCommonRevision"] is not None
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
