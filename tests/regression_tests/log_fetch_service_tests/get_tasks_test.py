@@ -22,6 +22,23 @@ test_case = "GET TASKS"
 @pytest.mark.regression_log_fetch
 class TestGetTasks:
 
+    @pytest.fixture
+    @automation_logger(logger)
+    def _task(self, request, api_client):
+
+        def delete_task():
+            del_res = api_client.log_fetch_svc.delete_user_tasks("server-qa-automation")
+            assert del_res[1].status_code == 200, "Known Issue # BUG V2X-1878"
+
+        delete_task()
+
+        _response = api_client.log_fetch_svc.add_task("server-qa-automation")
+        assert _response[1].status_code == 200
+
+        request.addfinalizer(delete_task)
+
+        return _response[0][0]
+
     @automation_logger(logger)
     def test_get_tasks_method_works(self, api_client):
         allure.step("Verify that response is not empty and status code is 200")
@@ -33,7 +50,7 @@ class TestGetTasks:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_method(self, api_client):
+    def test_attributes_in_get_tasks_method(self, api_client, _task):
         allure.step("Verify response properties and that 'tasks' is list object.")
         _response = api_client.log_fetch_svc.get_tasks()[0]
 
@@ -41,6 +58,10 @@ class TestGetTasks:
         assert "tasks" in _response.keys()
         assert isinstance(_response["tasks"], list)
         assert len(_response["tasks"]) > 0
+        assert _response["tasks"][0]["status"] == "Pending"
+        assert _response["tasks"][0]["userid"] == _task["userid"]
+        assert _response["tasks"][0]["taskid"] == _task["taskid"]
+        assert _response["tasks"][0]["timestamp"] == _task["timestamp"], "Known issue- BUG: V2X-1914"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

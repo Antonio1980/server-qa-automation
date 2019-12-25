@@ -37,8 +37,9 @@ class TestDeleteByTaskId:
         _response = api_client.log_fetch_svc.delete_by_task_id(new_task["taskid"])[0]
 
         assert isinstance(_response, dict)
+        assert "tasks" in _response.keys()
         assert isinstance(_response["tasks"], list)
-        assert len(_response["tasks"]) > 0
+        assert len(_response["tasks"]) > 0 or len(_response["tasks"]) == 0
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

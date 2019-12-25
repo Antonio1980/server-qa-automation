@@ -33,7 +33,7 @@ class TestGetTasksByUserId:
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
-    def test_attributes_in_get_tasks_by_user_id_method(self, api_client):
+    def test_attributes_in_get_tasks_by_user_id_method(self, api_client, new_task):
         allure.step("Verify response properties and that 'response' is list object.")
         _response = api_client.log_fetch_svc.get_tasks_grouped_by_user_id()[0]
 
