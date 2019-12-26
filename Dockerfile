@@ -24,11 +24,9 @@ RUN pip install -r project/requirements.txt
 
 RUN find project/ -name \*.pyc -delete
 
-# RUN rm -r project/src/repository
-
 RUN pwd && ls -la
 
-VOLUME ["src/repository/allure_results"]
+VOLUME ["src/allure_results"]
 
 WORKDIR project
 
