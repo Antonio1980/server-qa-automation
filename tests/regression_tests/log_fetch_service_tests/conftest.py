@@ -10,8 +10,12 @@ num_loops = 20
 
 @pytest.fixture(autouse=True)
 @automation_logger(logger)
-def _1000_user_messages(api_client):
-    api_client.log_fetch_svc.delete_user_tasks(user_id)
+def _1000_user_messages(request, api_client):
+
+    def del_messages():
+        api_client.log_fetch_svc.delete_user_tasks(user_id)
+
+    del_messages()
 
     def _messages():
         temp = []
@@ -26,3 +30,5 @@ def _1000_user_messages(api_client):
         worker.setDaemon(True)
         worker.start()
         worker.join(1.0)
+
+    request.addfinalizer(del_messages)
