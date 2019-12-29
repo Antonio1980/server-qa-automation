@@ -86,7 +86,7 @@ class LogFetchService(ServiceBase):
                     body = _response.text
                 else:
                     body = _response.reason
-            logger.logger.info(RESPONSE_TEXT.format(body))
+            # logger.logger.info(RESPONSE_TEXT.format(body))
             return body, _response
         except Exception as e:
             logger.logger.error(F"{e.__class__.__name__} add_task failed with error: {e}")

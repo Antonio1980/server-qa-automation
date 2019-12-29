@@ -1,15 +1,12 @@
 import pytest
 from threading import Thread
-from src.base.utils import logger
-from src.base.utils.log_decorator import automation_logger
 
 user_id = "server-qa-automation"
-num_threads = 50
-num_loops = 20
+num_threads = 10
+num_loops = 100
 
 
-@pytest.fixture(autouse=True)
-@automation_logger(logger)
+@pytest.fixture(scope="class")
 def _1000_user_messages(request, api_client):
 
     def del_messages():
@@ -23,7 +20,7 @@ def _1000_user_messages(request, api_client):
             resp = api_client.log_fetch_svc.add_task(user_id)
             assert resp[1].status_code == 200
             temp.append(resp[1].status_code)
-        assert len(temp) == 20
+        assert len(temp) == num_loops
 
     for i in range(num_threads):
         worker = Thread(target=_messages)
