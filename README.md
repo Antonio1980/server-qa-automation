@@ -106,6 +106,13 @@ CONFIGURATION
 
 Project Configuration:
 ----------------------
+NOTE:
+Be carefull with allure and pytest plugins because of hell of conflicts, current valide plagin configuration is:
+plugins: bdd-3.2.1, xdist-1.31.0, forked-1.1.3, allure-pytest-2.8.6
+
+Protobuf installation:
+pip install --no-binary=protobuf protobuf
+I guess that before it you need pip uninstall protobuf
 
 - Project base configuration stores in staging.cfg (per env) that processes by config_definitions.py -> BaseConfig class.
 
