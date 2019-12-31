@@ -1,0 +1,25 @@
+INFO     PYTHON_QA:log_decorator.py:21   --> run_time_counter
+INFO     PYTHON_QA:conftest.py:25 START TIME: 1.629729061
+INFO     PYTHON_QA:log_decorator.py:21  TestDeleteUserTasks --> test_delete_user_tasks_negative
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  LogFetchService --> delete_user_tasks
+INFO     PYTHON_QA:log_fetch_service.py:142 API Service URL is DELETE- http://stg.eyenet-mobile.net/log-fetch-service/api/tasks/server-qa-automation
+INFO     PYTHON_QA:log_fetch_service.py:152 Service Response: {'name': 'UnauthorizedError', 'message': 'No authorization token was found', 'code': 'credentials_required', 'status': 401, 'inner': {'message': 'No authorization token was found'}}
+INFO     PYTHON_QA:delete_user_tasks_test.py:57 ============ TEST CASE DELETE USER TASKS / 3 PASSED ===========
+INFO     PYTHON_QA:conftest.py:29 END TIME: 1.864976918
+INFO     PYTHON_QA:conftest.py:32 AVERAGE OF THE TEST CASE RUN TIME: 0 minutes 0 seconds 0 microseconds

@@ -1,0 +1,25 @@
+INFO     PYTHON_QA:log_decorator.py:21   --> run_time_counter
+INFO     PYTHON_QA:conftest.py:25 START TIME: 1.654294993
+INFO     PYTHON_QA:log_decorator.py:21  TestGetMessage --> test_get_message_negative
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_timestamps
+INFO     PYTHON_QA:log_decorator.py:21  Utils --> get_dates
+INFO     PYTHON_QA:log_decorator.py:21  MessageService --> get_messages
+INFO     PYTHON_QA:message_service.py:23 API Service URL is GET- http://stg.eyenet-mobile.net/messages-service/api/messages/
+INFO     PYTHON_QA:message_service.py:33 Service Response: {'name': 'UnauthorizedError', 'message': 'No authorization token was found', 'code': 'credentials_required', 'status': 401, 'inner': {'message': 'No authorization token was found'}}
+INFO     PYTHON_QA:get_message_test.py:59 ============ TEST CASE GET MESSAGE / 3 PASSED ===========
+INFO     PYTHON_QA:conftest.py:29 END TIME: 1.831700481
+INFO     PYTHON_QA:conftest.py:32 AVERAGE OF THE TEST CASE RUN TIME: 0 minutes 0 seconds 0 microseconds

@@ -50,7 +50,7 @@ class TestLicensingLiveness(object):
         assert _response[1].reason == "OK"
         assert isinstance(_response[0], dict)
         assert "responseType" in _response[0].keys()
-        assert _response[0]["responseType"] == "OK"
+        assert _response[0]["responseType"] == "VALID"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 

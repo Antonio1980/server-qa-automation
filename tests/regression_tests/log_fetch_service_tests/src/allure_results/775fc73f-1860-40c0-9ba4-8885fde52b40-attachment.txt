@@ -1,0 +1,25 @@
+2019-12-30 11:11:50,469 - PYTHON_QA - INFO -   --> run_time_counter
+2019-12-30 11:11:51,469 - PYTHON_QA - INFO - START TIME: 1.629729061
+2019-12-30 11:11:51,471 - PYTHON_QA - INFO -  TestDeleteUserTasks --> test_delete_user_tasks_negative
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,472 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,473 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,473 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,473 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,473 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,473 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO -  LogFetchService --> delete_user_tasks
+2019-12-30 11:11:51,474 - PYTHON_QA - INFO - API Service URL is DELETE- http://stg.eyenet-mobile.net/log-fetch-service/api/tasks/server-qa-automation
+2019-12-30 11:11:51,702 - PYTHON_QA - INFO - Service Response: {'name': 'UnauthorizedError', 'message': 'No authorization token was found', 'code': 'credentials_required', 'status': 401, 'inner': {'message': 'No authorization token was found'}}
+2019-12-30 11:11:51,702 - PYTHON_QA - INFO - ============ TEST CASE DELETE USER TASKS / 3 PASSED ===========
+2019-12-30 11:11:51,704 - PYTHON_QA - INFO - END TIME: 1.864976918
+2019-12-30 11:11:51,708 - PYTHON_QA - INFO - AVERAGE OF THE TEST CASE RUN TIME: 0 minutes 0 seconds 0 microseconds

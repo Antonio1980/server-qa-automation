@@ -1,0 +1,25 @@
+2019-12-30 11:22:55,711 - PYTHON_QA - INFO -   --> run_time_counter
+2019-12-30 11:22:56,715 - PYTHON_QA - INFO - START TIME: 1.647546456
+2019-12-30 11:22:56,716 - PYTHON_QA - INFO -  TestGetMessage --> test_get_message_negative
+2019-12-30 11:22:56,717 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,717 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,717 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,717 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,717 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,718 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,718 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,718 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,718 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,718 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_timestamps
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  Utils --> get_dates
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO -  MessageService --> get_messages
+2019-12-30 11:22:56,719 - PYTHON_QA - INFO - API Service URL is GET- http://int.eyenet-mobile.net/messages-service/api/messages/
+2019-12-30 11:22:56,870 - PYTHON_QA - INFO - Service Response: {'name': 'UnauthorizedError', 'message': 'No authorization token was found', 'code': 'credentials_required', 'status': 401, 'inner': {'message': 'No authorization token was found'}}
+2019-12-30 11:22:56,870 - PYTHON_QA - INFO - ============ TEST CASE GET MESSAGE / 3 PASSED ===========
+2019-12-30 11:22:56,871 - PYTHON_QA - INFO - END TIME: 1.804218763
+2019-12-30 11:22:56,876 - PYTHON_QA - INFO - AVERAGE OF THE TEST CASE RUN TIME: 0 minutes 0 seconds 0 microseconds
