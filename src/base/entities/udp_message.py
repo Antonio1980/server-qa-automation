@@ -1,9 +1,9 @@
 import random
-from src.base.utils import logger
+from src.base.lib_ import logger
 from src.base.entities.entity import Entity
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_.log_decorator import automation_logger
 from src.base.services.svc_requests.request_constants import *
-from src.base.utils.utils import Utils
+from src.base.lib_.utils import Utils
 
 
 class UdpMessage(Entity):

@@ -2,7 +2,7 @@ import os
 import configparser
 from src import src_dir
 from src.base.enums.enums import Environment
-from src.base.automation_error import AutomationError
+from src.base.lib_.automation_error import AutomationError
 
 
 executor = {

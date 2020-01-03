@@ -1,11 +1,11 @@
 import allure
 import pytest
-from src.base.utils import logger
-from src.base.utils.slack import Slack
+from src.base.lib_ import logger
+from src.base.lib_.slack import Slack
 from config_definitions import BaseConfig
 from src.base.entities.bounding_box import BoundingBox
-from src.base.utils.log_decorator import automation_logger
-from src.base.automation_error import AutomationError
+from src.base.lib_.log_decorator import automation_logger
+from src.base.lib_.automation_error import AutomationError
 
 test_case = "LIVENESS SMOKE"
 

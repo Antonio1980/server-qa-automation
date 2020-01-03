@@ -1,11 +1,11 @@
 import json
 
 from config_definitions import BaseConfig
-from src.base.utils import logger
+from src.base.lib_ import logger
 from pymongo import MongoClient
 from bson.json_util import dumps
-from src.base.automation_error import AutomationError
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_.automation_error import AutomationError
+from src.base.lib_.log_decorator import automation_logger
 
 
 class MongoCli:

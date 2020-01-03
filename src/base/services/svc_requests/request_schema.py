@@ -1,5 +1,5 @@
-from src.base.automation_error import AutomationError
-from src.base.utils.utils import Utils
+from src.base.lib_.automation_error import AutomationError
+from src.base.lib_.utils import Utils
 
 
 class RequestSchema(object):

@@ -1,5 +1,5 @@
 from src.base.entities.device_app import DeviceApp
-from src.base.utils.utils import Utils
+from src.base.lib_.utils import Utils
 
 
 class AppClient(object):

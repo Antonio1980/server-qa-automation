@@ -1,5 +1,5 @@
 from src.base.enums.enums import DetectedType
-from src.base.utils.utils import Utils
+from src.base.lib_.utils import Utils
 from src.base.entities.entity import Entity
 
 

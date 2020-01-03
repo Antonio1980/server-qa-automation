@@ -1,6 +1,6 @@
 import pytest
-from src.base.utils.log_decorator import automation_logger
-from src.base.utils.logger import logger
+from src.base.lib_.log_decorator import automation_logger
+from src.base.lib_.logger import logger
 from src.proto import LocationServiceRequest_pb2
 from src.proto import LocationServiceResponse_pb2
 from src.proto import ClientLocationData_pb2
@@ -25,8 +25,8 @@ class TestCheckAllPortsWithProtobuf(object):
         request.clientLocationData.clientData.clientDataType = ClientData_pb2.ClientData.LocationBearerType.CAR
         binaryMessage = request.SerializeToString()
         readableMessage = str(request)
-        logger.logger.info(F"A: {readableMessage}")
-#        logger.logger.info(F"B: {request.__dict__}")
-        logger.logger.info(F"C: {request}")
+        logger.logger.info(f"A: {readableMessage}")
+        # logger.logger.info(F"B: {request.__dict__}")
+        logger.logger.info(f"C: {request}")
         # response = LocationServiceResponse_pb2.LocationServiceResponse()
         # response.ParseFromString("tergfr")

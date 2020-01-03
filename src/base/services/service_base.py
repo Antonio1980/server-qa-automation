@@ -1,5 +1,5 @@
 from config_definitions import BaseConfig
-from src.base.utils.utils import Utils
+from src.base.lib_.utils import Utils
 
 
 class ServiceBase:

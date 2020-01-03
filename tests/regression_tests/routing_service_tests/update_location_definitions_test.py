@@ -1,10 +1,10 @@
 import allure
 import pytest
-from src.base.utils import logger
+from src.base.lib_ import logger
 from config_definitions import BaseConfig
 from src.base.instruments.api_client import ApiClient
 from src.base.entities.bounding_box import BoundingBox
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_.log_decorator import automation_logger
 
 test_case = "UPDATE LOCATION DEFINITIONS"
 

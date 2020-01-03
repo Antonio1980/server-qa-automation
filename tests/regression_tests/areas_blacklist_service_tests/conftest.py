@@ -1,7 +1,7 @@
 import pytest
-from src.base.utils import logger
+from src.base.lib_ import logger
 from src.base.entities.bounding_box import BoundingBox
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_.log_decorator import automation_logger
 
 
 ne_lat, ne_lng = 0.0, 0.0

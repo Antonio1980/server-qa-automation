@@ -1,7 +1,7 @@
 import pytest
-from src.base.utils import logger
-from src.base.utils.utils import Utils
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_ import logger
+from src.base.lib_.utils import Utils
+from src.base.lib_.log_decorator import automation_logger
 
 _task_id = Utils.get_random_string()
 

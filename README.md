@@ -219,8 +219,22 @@ PROTOBUF
 
 https://github.com/protocolbuffers/protobuf/releases/tag/v3.6.1
 
+$ brew install libtool 
+$ brew install automake
+$ pip3 install --no-binary=protobuf protobuf
+$ python3 ./setup.py build  
+$ python3 ./setup.py -v install  
+$ python3 ./autogen.sh
+$ python3 ./configure
+
+- Plugin:
+https://github.com/dropbox/mypy-protobuf
+
 * Generate python proto:
-$ GitLab\protoc-3.6.1-win32\bin\protoc -I=GitLab\proto_contracts\src --python_out=GitLab\proto_contracts\gen      
+$ GitLab\protoc-3.6.1-win32\bin\protoc -I=GitLab\proto_contracts\src --python_out=GitLab\proto_contracts\gen   
+
+* Generate mypy proto (with autocomplete and keywords):
+$ protoc -I=. --mypy_out=../mypy_out --python_out=../python_out LocationServiceResponse.proto   
 
 
 MAINTAINERS

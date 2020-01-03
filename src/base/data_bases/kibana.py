@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from src.base.utils import logger
+from src.base.lib_ import logger
 from elasticsearch import Elasticsearch
 from config_definitions import BaseConfig
 from elasticsearch.serializer import JSONSerializer
-from src.base.automation_error import AutomationError
-from src.base.utils.log_decorator import automation_logger
+from src.base.lib_.automation_error import AutomationError
+from src.base.lib_.log_decorator import automation_logger
 
 
 class SetEncoder(JSONSerializer):

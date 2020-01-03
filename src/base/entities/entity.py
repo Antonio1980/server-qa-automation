@@ -1,5 +1,5 @@
 import json
-from src.base.utils.utils import Utils
+from src.base.lib_.utils import Utils
 
 
 class Entity(object):
