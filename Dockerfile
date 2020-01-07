@@ -21,6 +21,7 @@ COPY . project
 RUN pip install --upgrade pip
 
 RUN pip install -r project/requirements.txt
+RUN pip install --no-binary=protobuf protobuf
 
 RUN find project/ -name \*.pyc -delete
 

@@ -3,72 +3,74 @@
 # source: model/ClientLocationData.proto
 
 import sys
-_b=sys.version_info[0]<3 and (lambda x:x) or (lambda x:x.encode('latin1'))
+
+_b = sys.version_info[0] < 3 and (lambda x: x) or (lambda x: x.encode('latin1'))
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
 from src.proto import ClientData_pb2 as model_dot_ClientData__pb2
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
-
 DESCRIPTOR = _descriptor.FileDescriptor(
-  name='model/ClientLocationData.proto',
-  package='V2X.Protobuf',
-  syntax='proto3',
-  serialized_options=_b('\n0com.eyenet.locationservice.dao.entities.protobufB\027ClientLocationDataProto'),
-  serialized_pb=_b('\n\x1emodel/ClientLocationData.proto\x12\x0cV2X.Protobuf\x1a\x16model/ClientData.proto\"}\n\x12\x43lientLocationData\x12,\n\nclientData\x18\x01 \x01(\x0b\x32\x18.V2X.Protobuf.ClientData\x12\x11\n\tdebugMode\x18\x02 \x01(\x08\x12\x10\n\x08notifyMe\x18\x03 \x01(\x08\x12\x14\n\x0cnotifyOthers\x18\x04 \x01(\x08\x42K\n0com.eyenet.locationservice.dao.entities.protobufB\x17\x43lientLocationDataProtob\x06proto3')
-  ,
-  dependencies=[model_dot_ClientData__pb2.DESCRIPTOR,])
+    name='model/ClientLocationData.proto',
+    package='V2X.Protobuf',
+    syntax='proto3',
+    serialized_options=_b('\n0com.eyenet.locationservice.dao.entities.protobufB\027ClientLocationDataProto'),
+    serialized_pb=_b(
+        '\n\x1emodel/ClientLocationData.proto\x12\x0cV2X.Protobuf\x1a\x16model/ClientData.proto\"}\n\x12\x43lientLocationData\x12,\n\nclientData\x18\x01 \x01(\x0b\x32\x18.V2X.Protobuf.ClientData\x12\x11\n\tdebugMode\x18\x02 \x01(\x08\x12\x10\n\x08notifyMe\x18\x03 \x01(\x08\x12\x14\n\x0cnotifyOthers\x18\x04 \x01(\x08\x42K\n0com.eyenet.locationservice.dao.entities.protobufB\x17\x43lientLocationDataProtob\x06proto3')
+    ,
+    dependencies=[model_dot_ClientData__pb2.DESCRIPTOR, ])
 
 _CLIENTLOCATIONDATA = _descriptor.Descriptor(
-  name='ClientLocationData',
-  full_name='V2X.Protobuf.ClientLocationData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='clientData', full_name='V2X.Protobuf.ClientLocationData.clientData', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='debugMode', full_name='V2X.Protobuf.ClientLocationData.debugMode', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='notifyMe', full_name='V2X.Protobuf.ClientLocationData.notifyMe', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='notifyOthers', full_name='V2X.Protobuf.ClientLocationData.notifyOthers', index=3,
-      number=4, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[],
-  nested_types=[],
-  enum_types=[],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[],
-  serialized_start=72,
-  serialized_end=197,
+    name='ClientLocationData',
+    full_name='V2X.Protobuf.ClientLocationData',
+    filename=None,
+    file=DESCRIPTOR,
+    containing_type=None,
+    fields=[
+        _descriptor.FieldDescriptor(
+            name='clientData', full_name='V2X.Protobuf.ClientLocationData.clientData', index=0,
+            number=1, type=11, cpp_type=10, label=1,
+            has_default_value=False, default_value=None,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            serialized_options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='debugMode', full_name='V2X.Protobuf.ClientLocationData.debugMode', index=1,
+            number=2, type=8, cpp_type=7, label=1,
+            has_default_value=False, default_value=False,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            serialized_options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='notifyMe', full_name='V2X.Protobuf.ClientLocationData.notifyMe', index=2,
+            number=3, type=8, cpp_type=7, label=1,
+            has_default_value=False, default_value=False,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            serialized_options=None, file=DESCRIPTOR),
+        _descriptor.FieldDescriptor(
+            name='notifyOthers', full_name='V2X.Protobuf.ClientLocationData.notifyOthers', index=3,
+            number=4, type=8, cpp_type=7, label=1,
+            has_default_value=False, default_value=False,
+            message_type=None, enum_type=None, containing_type=None,
+            is_extension=False, extension_scope=None,
+            serialized_options=None, file=DESCRIPTOR),
+    ],
+    extensions=[],
+    nested_types=[],
+    enum_types=[],
+    serialized_options=None,
+    is_extendable=False,
+    syntax='proto3',
+    extension_ranges=[],
+    oneofs=[],
+    serialized_start=72,
+    serialized_end=197,
 )
 
 _CLIENTLOCATIONDATA.fields_by_name['clientData'].message_type = model_dot_ClientData__pb2._CLIENTDATA
@@ -76,12 +78,11 @@ DESCRIPTOR.message_types_by_name['ClientLocationData'] = _CLIENTLOCATIONDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ClientLocationData = _reflection.GeneratedProtocolMessageType('ClientLocationData', (_message.Message,), {
-  'DESCRIPTOR' : _CLIENTLOCATIONDATA,
-  '__module__' : 'model.ClientLocationData_pb2'
-  # @@protoc_insertion_point(class_scope:V2X.Protobuf.ClientLocationData)
-  })
+    'DESCRIPTOR': _CLIENTLOCATIONDATA,
+    '__module__': 'model.ClientLocationData_pb2'
+    # @@protoc_insertion_point(class_scope:V2X.Protobuf.ClientLocationData)
+})
 _sym_db.RegisterMessage(ClientLocationData)
-
 
 DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
