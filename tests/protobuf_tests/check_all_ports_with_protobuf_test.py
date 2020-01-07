@@ -7,6 +7,7 @@ from src.proto import ClientLocationData_pb2
 from src.proto import ClientData_pb2
 
 
+@pytest.mark.skip
 @pytest.mark.protobuf
 class TestCheckAllPortsWithProtobuf(object):
 
