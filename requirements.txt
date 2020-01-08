@@ -13,10 +13,11 @@ requests==2.22.0
 requests-cache==0.5.2
 ntplib==0.3.3
 google-cloud-logging==1.14.0
-pymongo==3.10.0
+pymongo==3.10.1
 uuid==1.30
 elasticsearch==7.1.0
 bs4==0.0.1
 html5lib==1.0.1
 tox==3.14.3
 typing-extensions==3.7.4.1
+mypy-protobuf==1.16

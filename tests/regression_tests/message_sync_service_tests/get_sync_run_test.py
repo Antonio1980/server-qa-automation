@@ -16,9 +16,9 @@ test_case = "GET SYNC RUN"
 @allure.severity(allure.severity_level.BLOCKER)
 @allure.testcase(BaseConfig.GITLAB_URL + "regression_tests/message_sync_service_tests/get_sync_run_test.py",
                  "TestGetSyncRun")
+@pytest.mark.liveness
 @pytest.mark.regression
 @pytest.mark.regression_message_sync
-@pytest.mark.liveness
 class TestGetSyncRun:
 
     @automation_logger(logger)
