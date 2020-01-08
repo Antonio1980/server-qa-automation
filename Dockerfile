@@ -19,6 +19,7 @@ RUN apt-get update          \
 COPY . project
 
 RUN pip install --upgrade pip
+RUN rm -rf $HOME/.cache/pip/*
 RUN pip install -r project/requirements.txt
 RUN pip uninstall protobuf -y
 RUN pip install --no-binary=protobuf protobuf

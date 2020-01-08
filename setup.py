@@ -1,10 +1,19 @@
 import io
 import os
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 tests = "tests"
+
+install_requires = [
+    'allure-pytest',
+]
+
+tests_require = [
+    'pytest',
+    'pytest-xdist',
+]
 
 name_ = os.path.abspath(os.path.dirname(sys.argv[0]))
 
@@ -92,9 +101,13 @@ setup(
     version='2.0',
     url='https://git-v2x.foresight.com:qa-automation/server-qa-automation',
     setup_requires=["pytest-runner", ],
-    tests_require=["pytest", ],
-    packages=test_cases,
+    packages=find_packages(),
     package_dir=package_dir,
+    install_requires=install_requires,
+    tests_require=tests_require,
+    extras_require={
+        'testing': tests_require,
+    },
     package_data=proto_files,
     scripts=scripts,
     license='ASL',
