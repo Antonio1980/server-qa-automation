@@ -4,12 +4,33 @@ import uuid
 import random
 import string
 import datetime
+import platform
 from src.base.lib_ import logger
+from src.base.enums.enums import OperationSystem
 from src.base.lib_.automation_error import AutomationError
 from src.base.lib_.log_decorator import automation_logger
 
 
 class Utils:
+
+    @staticmethod
+    @automation_logger(logger)
+    def detect_os():
+        """
+        Detects the OS on which Python tests will run.
+        :return: enum string value of OS name.
+        """
+        current_platform = platform.system().lower()
+        if current_platform == OperationSystem.DARWIN.value:
+            return OperationSystem.DARWIN.value
+        elif current_platform == OperationSystem.WINDOWS.value:
+            return OperationSystem.WINDOWS.value
+        elif current_platform == OperationSystem.LINUX.value:
+            return OperationSystem.LINUX.value
+        else:
+            e = AutomationError("The OS is not detected!")
+            logger.logger.exception(e)
+            raise e
 
     @staticmethod
     @automation_logger(logger)

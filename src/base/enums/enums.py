@@ -12,3 +12,9 @@ class DetectedType(str, Enum):
     CAR = "CAR"
     PEDESTRIAN = "PEDESTRIAN"
     BIKE = "BIKE"
+
+
+class OperationSystem(str, Enum):
+    WINDOWS = "windows"
+    LINUX = "linux"
+    DARWIN = "darwin"

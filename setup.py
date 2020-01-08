@@ -15,6 +15,11 @@ tests_require = [
     'pytest-xdist',
 ]
 
+extra_req = [
+    'sphinx',
+    'alabaster',
+]
+
 name_ = os.path.abspath(os.path.dirname(sys.argv[0]))
 
 if "\\" in name_:
@@ -106,7 +111,8 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={
-        'testing': tests_require,
+        'test': tests_require,
+        'docs': extra_req
     },
     package_data=proto_files,
     scripts=scripts,
