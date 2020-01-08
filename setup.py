@@ -1,0 +1,118 @@
+import io
+import os
+import sys
+from setuptools import setup
+from setuptools.command.test import test as TestCommand
+
+tests = "tests"
+
+name_ = os.path.abspath(os.path.dirname(sys.argv[0]))
+
+if "\\" in name_:
+    name = name_.split("\\")[-1]
+else:
+    name = name_.split("/")[-1]
+
+root_dir = os.path.abspath(os.path.dirname(__file__))
+
+# Restructured text project description read from file
+path = os.path.join(root_dir, 'README.md')
+long_description_ = io.open(path, encoding="utf-8").read()
+
+# Python 3.4 or later needed
+if sys.version_info < (3, 4, 0, 'final', 0):
+    raise SystemExit('Python 3.4 or later is required!')
+
+# Build a list of all tests classes.
+test_cases = []
+for dirname, dir_names, filenames in os.walk(os.path.join(root_dir, tests)):
+    if 'NF' or 'READY' in filenames:
+        pass
+    elif '__init__.py' in filenames:
+        test_cases.append(dirname.replace('/', '.'))
+
+package_dir = {name: name}
+
+# Protobuf files
+proto_files = {name: [os.path.join(name, 'src/proto')]}
+
+# Scripts- ./build/scripts
+scripts = []
+for dirname, dir_names, filenames in os.walk(os.path.join(root_dir, 'src/scripts')):
+    for filename in filenames:
+        if filename.endswith('.js') or filename.endswith('.sh'):
+            scripts.append(os.path.join(dirname, filename))
+
+# Data_files (e.g. doc) needs (directory, files-in-this-directory) tuples- ./build/data
+base_files = []
+for dirname, dir_names, filenames in os.walk(os.path.join(root_dir, 'src/base')):
+    files_list = []
+    for filename in filenames:
+        fullname = os.path.join(dirname, filename)
+        files_list.append(fullname)
+    base_files.append((dirname, files_list))
+
+
+# python setup.py test with distutils- https://justin.abrah.ms/python/setuppy_distutils_testing.html
+class PyTest(TestCommand):
+    user_options = [("pytest-args=", "test" )]
+
+    def __init__(self, dist, **kw):
+        super().__init__(dist, **kw)
+        self.pytest_args = ""
+
+    def initialize_options(self):
+        PyTest.initialize_options(self)
+
+    def finalize_options(self):
+        pass
+
+    def run_tests(self):
+        import shlex
+
+        # import here, cause outside the eggs aren't loaded
+        import pytest
+
+        errno = pytest.main(shlex.split(self.pytest_args))
+        sys.exit(errno)
+
+    def run(self):
+        import sys, subprocess
+        if sys.version_info < (3, 4, 0, 'final', 0):
+            raise SystemExit(subprocess.call([sys.executable, 'unit2', 'discover', '-s', 'tests/',
+                                              '-p', '*_test.py']))
+        else:
+            raise SystemExit(
+                subprocess.call([sys.executable, '-m', 'pytest', '-vv', 'tests/', '*_test.py']))
+
+
+# python setup.py test
+setup(
+    name=name,
+    version='2.0',
+    url='https://git-v2x.foresight.com:qa-automation/server-qa-automation',
+    setup_requires=["pytest-runner", ],
+    tests_require=["pytest", ],
+    packages=test_cases,
+    package_dir=package_dir,
+    package_data=proto_files,
+    scripts=scripts,
+    license='ASL',
+    author='antons',
+    author_email='antons@eyenet-mobile.com',
+    data_files=base_files,
+    cmdclass={'test': PyTest},
+    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7'
+    ],
+    keywords='argparse distutils pytest python',
+    description='python tests - runs front of back-end API.',
+    long_description=long_description_
+)

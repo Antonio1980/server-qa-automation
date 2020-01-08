@@ -61,7 +61,7 @@ class TestGetTasks:
         assert _response["tasks"][0]["status"] == "Pending"
         assert _response["tasks"][0]["userid"] == _task["userid"]
         assert _response["tasks"][0]["taskid"] == _task["taskid"]
-        assert _response["tasks"][0]["timestamp"] != _task["timestamp"], "Known issue- BUG: V2X-1914"
+        assert _response["tasks"][0]["timestamp"] == _task["timestamp"], "Known issue- BUG: V2X-1914"
 
         logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
 
