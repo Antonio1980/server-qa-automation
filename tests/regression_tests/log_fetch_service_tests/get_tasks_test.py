@@ -49,6 +49,7 @@ class TestGetTasks:
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
+    @pytest.mark.skip
     @automation_logger(logger)
     def test_attributes_in_get_tasks_method(self, api_client, _task):
         allure.step("Verify response properties and that 'tasks' is list object.")
