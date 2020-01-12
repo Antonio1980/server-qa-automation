@@ -17,7 +17,7 @@ BUFSIZ = 1024
 @allure.title(test_case)
 @allure.description("""
     Functional end to end test.
-    1. Check that number of Location definition returned in response "get state" equals to number of instances.
+    1. Check that number of Location definition returned in response "get_location_services_v1" equals to number of instances.
     2. Check (for every instance) that Location service allows connections by provided min/max ports.
     """)
 @allure.severity(allure.severity_level.CRITICAL)

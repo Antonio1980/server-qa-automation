@@ -10,6 +10,7 @@ from src.base.lib_.log_decorator import automation_logger
 test_case = "ROUTING FUNCTIONAL"
 
 
+@pytest.mark.skip
 @pytest.mark.incremental
 @allure.title(test_case)
 @allure.description("""
