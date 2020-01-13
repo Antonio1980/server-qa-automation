@@ -35,15 +35,6 @@ class UdpSocket(object):
             logger.logger.error(F"udp_send failed with error: {e.with_traceback(e.__traceback__)}")
 
     @automation_logger(logger)
-    def udp_send_as_another_thread(self, bytes_to_send: bytes):
-        from threading import Thread
-
-        worker = Thread(target=self.udp_send(bytes_to_send))
-        worker.setDaemon(True)
-        worker.start()
-        worker.join()
-
-    @automation_logger(logger)
     def udp_send_to(self, bytes_to_send: bytes, address: tuple):
         try:
             self.udp_socket.sendto(bytes_to_send, address)
