@@ -1,3 +1,4 @@
+import json
 import random
 import allure
 import pytest
@@ -27,8 +28,8 @@ BUFSIZ = 1024
 class TestLivenessPerServicePort(object):
     first_case_issues = ""
     second_case_issues = ""
-    latitude = "0.0"
-    longitude = "0.0"
+    latitude = "0.1"
+    longitude = "0.1"
     bearing = random.uniform(0, 360)
     velocity = random.uniform(2, 40)
     accuracy = 5.0
@@ -84,7 +85,7 @@ class TestLivenessPerServicePort(object):
                         if _response is not None:
                             logger.logger.info(
                                 F"The instance {instance['instanceId']} is available for connect on port {port} !")
-                            logger.logger.info(F"UDP Response: {_response}")
+                            logger.logger.info(F"UDP Response: {json.loads(_response)}")
 
                 if len(error_ports) > 0 and tries == 2:
                     logger.logger.info(f"!!! RECURSION !!! with next failed ports: {error_ports}")

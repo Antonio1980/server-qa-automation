@@ -1,0 +1,103 @@
+import json
+import random
+import allure
+import pytest
+from src.base.lib_ import logger
+from src.base.lib_.slack import Slack
+from config_definitions import BaseConfig
+from src.base.entities.udp_message import UdpMessage
+from src.base.lib_.log_decorator import automation_logger
+from src.base.lib_.automation_error import AutomationError
+from src.base.lib_.utils import Utils
+from src.proto import LocationServiceResponse_pb2
+
+test_case = "PROTO SCENARIOS"
+BUFSIZ = 1024
+
+
+@allure.feature("PROTOBUF")
+@allure.story('Client able to ')
+@allure.title(test_case)
+@allure.description("""
+    Functional end to end test.
+    1. Check that .
+    2. Check .
+    """)
+@allure.severity(allure.severity_level.CRITICAL)
+@allure.testcase(BaseConfig.GITLAB_URL + "protobuf_tests/protobuf_multiscenarios_test.py", "TestScenariosProtobuf")
+@pytest.mark.liveness
+class TestScenariosProtobuf(object):
+
+    latitude = "0.1"
+    longitude = "0.1"
+    bearing = random.uniform(0, 360)
+    velocity = random.uniform(2, 40)
+    accuracy = 5.0
+
+    @automation_logger(logger)
+    def test_client1_json_client2_protobuf(self, locations, socket_):
+        allure.step("Verify that received Protobuf.")
+        issues = ""
+        socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["minPort"]))
+
+        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port {locations['instances'][0]['minPort']} ! \n"
+        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
+                                                self.velocity, self.accuracy, "server-qa-automation" + Utils.get_random_string())
+        message2 = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy,
+                                                      "server-qa-automation" + Utils.get_random_string())
+        socket_.udp_send(message1)
+
+        socket_.udp_send(message2)
+
+        response_ = socket_.udp_receive(BUFSIZ)
+
+        if response_ is not None and isinstance(response_, bytes):
+            logger.logger.info(
+                F"The instance {locations['instances'][0]['instanceId']} available for connect on port {locations['instances'][0]['minPort']} !")
+            proto_response = LocationServiceResponse_pb2.LocationServiceResponse()
+            proto_response.ParseFromString(response_)
+            logger.logger.info(F"UDP Response: {proto_response}")
+        else:
+            issues += if_error
+            logger.logger.error(f"{if_error}")
+
+        if issues is not "":
+            logger.logger.fatal(f"{issues}")
+            # Slack.send_message(issues)
+
+            raise AutomationError(F"============ TEST CASE {test_case} / 1 FAILED ===========")
+        else:
+            logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
+
+    @automation_logger(logger)
+    def test_client1_protobuf_client2_json(self, locations, socket_):
+        allure.step("Verify that received Json.")
+        issues = ""
+        socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
+
+        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port {locations['instances'][0]['maxPort']} ! \n"
+        message1 = UdpMessage().get_udp_message_proto(1.1, 1.1, self.bearing, self.velocity, self.accuracy,
+                                                      "server-qa-automation" + Utils.get_random_string())
+        message2 = UdpMessage().get_udp_message("1.1", "1.1", self.bearing, self.velocity, self.accuracy,
+                                                "server-qa-automation" + Utils.get_random_string())
+        socket_.udp_send(message1)
+
+        socket_.udp_send(message2)
+
+        response_ = socket_.udp_receive(BUFSIZ)
+
+        if response_ is not None and isinstance(response_, bytes):
+            logger.logger.info(
+                F"The instance {locations['instances'][0]['instanceId']} available for connect on port {locations['instances'][0]['maxPort']} !")
+            logger.logger.info(F"UDP Response: {json.loads(response_)}")
+        else:
+            issues += if_error
+            logger.logger.error(f"{if_error}")
+
+        if issues is not "":
+            logger.logger.fatal(f"{issues}")
+            # Slack.send_message(issues)
+
+            raise AutomationError(F"============ TEST CASE {test_case} / 2 FAILED ===========")
+        else:
+            logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")

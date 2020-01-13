@@ -68,9 +68,9 @@ class TestProtobufPerServicePort(object):
                         if isinstance(_response, bytes):
                             logger.logger.info(
                                 F"The instance {instance['instanceId']} is available for connect on port {port} !")
-                            l_response = LocationServiceResponse_pb2.LocationServiceResponse()
-                            l_response.ParseFromString(_response)
-                            logger.logger.info(F"UDP Response: {l_response}")
+                            proto_response = LocationServiceResponse_pb2.LocationServiceResponse()
+                            proto_response.ParseFromString(_response)
+                            logger.logger.info(F"UDP Response: {proto_response}")
                         elif _response is None:
                             logger.logger.warn(F"Response is None -> {_response}")
                         else:
@@ -78,7 +78,7 @@ class TestProtobufPerServicePort(object):
                                                                            F"and port {port} returned not Proto! " \
                                                                            F"response is {_response}"
 
-                if len(error_ports) > 0 and tries == 2:
+                if 0 < len(error_ports) < 10 and tries == 2:
                     logger.logger.info(f"!!! RECURSION !!! with next failed ports: {error_ports}")
                     check_ports(error_ports, tries - 1)
 

@@ -9,7 +9,7 @@ class UdpSocket(object):
         super(UdpSocket, self).__init__()
         self.udp_socket = socket(family=AF_INET, type=SOCK_DGRAM)
         self.udp_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.udp_socket.settimeout(1)
+        self.udp_socket.settimeout(2.0)
 
     def __exit__(self):
         self.udp_socket.close()

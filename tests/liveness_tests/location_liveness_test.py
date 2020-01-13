@@ -1,3 +1,4 @@
+import json
 import random
 import allure
 import pytest
@@ -25,8 +26,8 @@ BUFSIZ = 1024
 @pytest.mark.liveness
 class TestLiveness(object):
     issues = ""
-    latitude = "0.0"
-    longitude = "0.0"
+    latitude = "0.1"
+    longitude = "0.1"
     bearing = random.uniform(0, 360)
     velocity = random.uniform(2, 40)
     accuracy = 5.0
@@ -73,7 +74,7 @@ class TestLiveness(object):
                     TestLiveness.issues += if_data_error
                 if response_:
                     logger.logger.info(F"The instance {instance['instanceId']} available for connect on port {port} !")
-                    logger.logger.info(F"UDP Response: {response_}")
+                    logger.logger.info(F"UDP Response: {json.loads(response_)}")
                 else:
                     TestLiveness.issues += if_error
                     logger.logger.error(f"{if_error}")
