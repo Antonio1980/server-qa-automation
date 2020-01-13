@@ -93,7 +93,7 @@ class TestLivenessPerServicePort(object):
 
             check_ports(port_range)
 
-        if TestLivenessPerServicePort.first_case_issues != "":
+        if TestLivenessPerServicePort.first_case_issues is not "":
             logger.logger.info("---------- Those errors of the first test case will be sent to Slack Chanel ----------")
             logger.logger.fatal(f"{TestLivenessPerServicePort.first_case_issues}")
             Slack.send_message(TestLivenessPerServicePort.first_case_issues)

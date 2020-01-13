@@ -79,7 +79,7 @@ class TestLiveness(object):
                     TestLiveness.issues += if_error
                     logger.logger.error(f"{if_error}")
 
-        if TestLiveness.issues:
+        if TestLiveness.issues is not "":
             logger.logger.fatal(f"{TestLiveness.issues}")
             Slack.send_message(TestLiveness.issues)
 
