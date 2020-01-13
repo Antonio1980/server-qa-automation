@@ -49,7 +49,8 @@ class UdpSocket(object):
                 _response = self.udp_socket.recv(buf_size)
                 if len(_response) <= 0:
                     break
-                logger.logger.info(F"UDP response is: {_response}")
+                if str(_response).startswith('{'):
+                    logger.logger.info(F"UDP response is: {_response}")
                 return _response
         except (TimeoutError, ConnectionRefusedError) as e:
             logger.logger.error(F"udp_receive failed with error: {e.with_traceback(e.__traceback__)}")

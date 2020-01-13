@@ -21,10 +21,10 @@ BUFSIZ = 1024
     2. Check (for every instance) that Location service allows connections by provided ports.
     """)
 @allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase(BaseConfig.GITLAB_URL + "liveness_tests/location_liveness_per_svc_port_test.py",
-                 "TestLocationLivenessPerServicePort")
+@allure.testcase(BaseConfig.GITLAB_URL + "protobuf_tests/proto_vs_proto_per_svc_port_test.py",
+                 "TestLivenessPerServicePort")
 @pytest.mark.liveness
-class TestLocationLivenessPerServicePort(object):
+class TestLivenessPerServicePort(object):
     first_case_issues = ""
     second_case_issues = ""
     latitude = "0.0"
@@ -41,7 +41,7 @@ class TestLocationLivenessPerServicePort(object):
         if_err_message = f"Definitions count {definitions_len} != number of instances {instances_len}"
 
         if definitions_len != instances_len:
-            TestLocationLivenessPerServicePort.first_case_issues += if_err_message
+            TestLivenessPerServicePort.first_case_issues += if_err_message
             logger.logger.exception(if_err_message)
 
             raise AutomationError(if_err_message)
@@ -65,9 +65,9 @@ class TestLocationLivenessPerServicePort(object):
 
                         if_error = F"The instance {instance['instanceId']} is not responding on port {port} ! \n"
                         message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                                self.velocity, self.accuracy)
+                                                                self.velocity, self.accuracy, "server-qa-automation-1")
                         message2 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                                self.velocity, self.accuracy)
+                                                                self.velocity, self.accuracy, "server-qa-automation-2")
                         try:
                             socket_.udp_send(message1)
 
@@ -77,7 +77,7 @@ class TestLocationLivenessPerServicePort(object):
                             logger.logger.error(ex)
                             logger.logger.exception(f"{if_error}")
                             if tries != 2:
-                                TestLocationLivenessPerServicePort.second_case_issues += if_error
+                                TestLivenessPerServicePort.second_case_issues += if_error
                             else:
                                 error_ports.append(port)
 
@@ -92,15 +92,15 @@ class TestLocationLivenessPerServicePort(object):
 
             check_ports(port_range)
 
-        if TestLocationLivenessPerServicePort.first_case_issues != "":
+        if TestLivenessPerServicePort.first_case_issues != "":
             logger.logger.info("---------- Those errors of the first test case will be sent to Slack Chanel ----------")
-            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.first_case_issues}")
-            Slack.send_message(TestLocationLivenessPerServicePort.first_case_issues)
+            logger.logger.fatal(f"{TestLivenessPerServicePort.first_case_issues}")
+            Slack.send_message(TestLivenessPerServicePort.first_case_issues)
 
-        if TestLocationLivenessPerServicePort.second_case_issues != "":
+        if TestLivenessPerServicePort.second_case_issues != "":
             logger.logger.info("---------- Those errors of the second test case will be sent to Slack Chanel ---------")
-            logger.logger.fatal(f"{TestLocationLivenessPerServicePort.second_case_issues}")
-            Slack.send_message(TestLocationLivenessPerServicePort.second_case_issues)
+            logger.logger.fatal(f"{TestLivenessPerServicePort.second_case_issues}")
+            Slack.send_message(TestLivenessPerServicePort.second_case_issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} FAILED ===========")
         else:
