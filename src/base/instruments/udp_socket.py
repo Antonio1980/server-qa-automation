@@ -38,7 +38,7 @@ class UdpSocket(object):
     def udp_send_to(self, bytes_to_send: bytes, address: tuple):
         try:
             self.udp_socket.sendto(bytes_to_send, address)
-            logger.logger.info(F'UDP message is sent to {address}')
+            logger.logger.info(F'UDP message {bytes_to_send.__repr__()} is sent to {address}')
         except Exception as e:
             logger.logger.error(F"udp_send_to failed with error: {e.with_traceback(e.__traceback__)}")
 

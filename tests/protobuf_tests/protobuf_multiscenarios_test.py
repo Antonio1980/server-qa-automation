@@ -43,9 +43,10 @@ class TestScenariosProtobuf(object):
         issues = ""
         socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["minPort"]))
 
-        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port {locations['instances'][0]['minPort']} ! \n"
-        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                self.velocity, self.accuracy, "server-qa-automation" + Utils.get_random_string())
+        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port " \
+                   F"{locations['instances'][0]['minPort']} ! \n"
+        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing, self.velocity,
+                                                self.accuracy, "server-qa-automation" + Utils.get_random_string())
         message2 = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy,
                                                       "server-qa-automation" + Utils.get_random_string())
         socket_.udp_send(message1)
@@ -57,8 +58,10 @@ class TestScenariosProtobuf(object):
         response_ = socket_.udp_receive(BUFSIZ)
 
         if response_ is not None and isinstance(response_, bytes):
+            logger.logger.warn(F"PURE Response: {response_}")
             logger.logger.info(
-                F"The instance {locations['instances'][0]['instanceId']} available for connect on port {locations['instances'][0]['minPort']} !")
+                F"The instance {locations['instances'][0]['instanceId']} available for connect on port "
+                F"{locations['instances'][0]['minPort']} !")
             proto_response = LocationServiceResponse_pb2.LocationServiceResponse()
             proto_response.ParseFromString(response_)
             logger.logger.info(F"UDP Response: {proto_response}")
@@ -80,7 +83,8 @@ class TestScenariosProtobuf(object):
         issues = ""
         socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
 
-        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port {locations['instances'][0]['maxPort']} ! \n"
+        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port " \
+                   F"{locations['instances'][0]['maxPort']} ! \n"
         message1 = UdpMessage().get_udp_message_proto(1.1, 1.1, self.bearing, self.velocity, self.accuracy,
                                                       "server-qa-automation" + Utils.get_random_string())
         message2 = UdpMessage().get_udp_message("1.1", "1.1", self.bearing, self.velocity, self.accuracy,
@@ -94,8 +98,10 @@ class TestScenariosProtobuf(object):
         response_ = socket_.udp_receive(BUFSIZ)
 
         if response_ is not None and isinstance(response_, bytes):
+            logger.logger.warn(F"PURE Response: {response_}")
             logger.logger.info(
-                F"The instance {locations['instances'][0]['instanceId']} available for connect on port {locations['instances'][0]['maxPort']} !")
+                F"The instance {locations['instances'][0]['instanceId']} available for connect on port "
+                F"{locations['instances'][0]['maxPort']} !")
             logger.logger.info(F"UDP Response: {json.loads(response_)}")
         else:
             issues += if_error

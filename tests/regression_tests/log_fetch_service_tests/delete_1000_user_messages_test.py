@@ -22,6 +22,6 @@ class TestDelete1000UserMessages(object):
 
         assert _response["deletedCount"] <= num_threads * num_loops
 
-        logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+        logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 
 

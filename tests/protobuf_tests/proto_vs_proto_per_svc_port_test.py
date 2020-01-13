@@ -49,9 +49,9 @@ class TestProtobufPerServicePort(object):
                         socket_.udp_connect((instance["ip"], port))
 
                         if_error = F"The instance {instance['instanceId']} is not responding on port {port} ! \n"
-                        message1 = UdpMessage.get_udp_message_proto(self.latitude, self.longitude, self.bearing,
+                        message1 = UdpMessage().get_udp_message_proto(self.latitude, self.longitude, self.bearing,
                                                                     self.velocity, self.accuracy, "server-qa-automation-1")
-                        message2 = UdpMessage.get_udp_message_proto(self.latitude, self.longitude, self.bearing,
+                        message2 = UdpMessage().get_udp_message_proto(self.latitude, self.longitude, self.bearing,
                                                                     self.velocity, self.accuracy, "server-qa-automation-2")
                         try:
                             socket_.udp_send(message1)
