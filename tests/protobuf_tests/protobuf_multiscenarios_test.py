@@ -28,6 +28,7 @@ BUFSIZ = 1024
 @allure.severity(allure.severity_level.CRITICAL)
 @allure.testcase(BaseConfig.GITLAB_URL + "protobuf_tests/protobuf_multiscenarios_test.py", "TestScenariosProtobuf")
 @pytest.mark.liveness
+@pytest.mark.protobuf
 class TestScenariosProtobuf(object):
 
     latitude = "0.1"

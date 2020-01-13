@@ -24,6 +24,7 @@ BUFSIZ = 1024
 @allure.testcase(BaseConfig.GITLAB_URL + "protobuf_tests/check_proto_per_svc_port_test.py",
                  "TestProtobufPerServicePort")
 @pytest.mark.liveness
+@pytest.mark.protobuf
 class TestProtobufPerServicePort(object):
     test_case_issues = ""
     latitude = 0.1
