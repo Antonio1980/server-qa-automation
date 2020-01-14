@@ -1,11 +1,13 @@
 import json
 import random
 import threading
+import time
 import allure
 import pytest
 from google.protobuf.json_format import MessageToJson
+from google.protobuf.message import DecodeError
+from src.base.instruments.udp_socket import UdpSocket, timeout
 from src.base.lib_ import logger
-from src.base.lib_.slack import Slack
 from config_definitions import BaseConfig
 from src.base.entities.udp_message import UdpMessage
 from src.base.lib_.log_decorator import automation_logger
@@ -36,36 +38,18 @@ class TestProtobufAndJsonFields(object):
     bearing = random.uniform(0, 360)
     velocity = random.uniform(2, 40)
     accuracy = 5.0
+    issues1 = ""
+    id1, id2 = "server-qa-automation" + Utils.get_random_string(), "server-qa-automation" + Utils.get_random_string()
 
-    @automation_logger(logger)
-    def test_protobuf_fields(self, locations, socket_):
-        allure.step("Verify that Protobuf message is correct.")
-        issues = ""
-        socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
-        id1, id2 = "server-qa-automation" + Utils.get_random_string(), "server-qa-automation" + Utils.get_random_string()
-        if_error = F"The instance {locations['instances'][0]['instanceId']} is not responding on port " \
-                   F"{locations['instances'][0]['maxPort']} ! \n"
-        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing,
-                                                self.velocity, self.accuracy, id1)
-        message2 = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy, id2)
-        socket_.udp_send(message1)
-
-        def send_message():
-            socket_.udp_send(message2)
-
-        t1 = threading.Thread(target=send_message, args=[])
-        t1.start()
-        t1.join()
-
-        response_ = socket_.udp_receive(BUFSIZ)
-
+    def check_response_proto(self, response_):
         if response_ is not None and isinstance(response_, bytes):
-            logger.logger.warn(F"PURE Response: {response_}")
-            logger.logger.info(
-                F"The instance {locations['instances'][0]['instanceId']} available for connect on port "
-                F"{locations['instances'][0]['maxPort']} !")
             proto_response = LocationServiceResponse_pb2.LocationServiceResponse()
-            proto_response.ParseFromString(response_)
+            try:
+                proto_response.ParseFromString(response_)
+            except DecodeError as dr:
+                TestProtobufAndJsonFields.issues1 += "Response different from proto."
+                logger.logger.error(f"{TestProtobufAndJsonFields.issues1}")
+                raise AutomationError(dr.args)
             logger.logger.info(F"UDP Response: {proto_response}")
             proto_json = json.loads(MessageToJson(proto_response, including_default_value_fields=False))
             assert isinstance(proto_json["serverLocationsData"], dict)
@@ -76,10 +60,10 @@ class TestProtobufAndJsonFields(object):
             assert len(proto_json["serverLocationsData"]["clientDatas"]["data"]) > 0
             assert isinstance(proto_json["serverLocationsData"]["clientDatas"]["data"][0], dict)
             data_json = proto_json["serverLocationsData"]["clientDatas"]["data"][0]
-            assert "id" and "bearing" and "latitude" and "velocity" and "longitude" and "clientDataType" and "timestamp"\
-                   "altitudeValue" and "horizontalAccuracy" and "verticalAccuracyValue" and "source" and \
-                   "rawHorizontalAccuracyValue" in data_json.keys()
-            assert data_json["id"] == id2
+            assert "id" and "bearing" and "latitude" and "velocity" and "longitude" and "clientDataType" and \
+                   "timestamp" and "altitudeValue" and "horizontalAccuracy" and "verticalAccuracyValue" and \
+                   "source" and "rawHorizontalAccuracyValue" in data_json.keys()
+            assert data_json["id"] == self.id2
             assert data_json["bearing"] == self.bearing
             assert data_json["latitude"] == 0.1
             assert data_json["velocity"] == self.velocity
@@ -91,12 +75,51 @@ class TestProtobufAndJsonFields(object):
             assert data_json["source"] == "QA Test"
             assert data_json["rawHorizontalAccuracyValue"] == 0.0
         else:
-            issues += if_error
-            logger.logger.error(f"{if_error}")
+            TestProtobufAndJsonFields.issues1 += "Response is None"
+            logger.logger.error(f"{TestProtobufAndJsonFields.issues1}")
 
-        if issues is not "":
-            logger.logger.fatal(f"{issues}")
-            # Slack.send_message(issues)
+    @automation_logger(logger)
+    def test_protobuf_fields(self, locations, socket_):
+        allure.step("Verify that Protobuf message is correct.")
+        try:
+            socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
+        except Exception as e:
+            logger.logger.error(F"The instance {locations['instances'][0]['instanceId']} is not responding on port "
+                                F"{locations['instances'][0]['maxPort']} ! \n")
+            TestProtobufAndJsonFields.issues1 += "Unable to connect."
+            raise AutomationError(e.args)
+
+        message1 = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing, self.velocity,
+                                                self.accuracy, self.id1)
+        socket_.udp_send(message1)
+
+        def send_message():
+            _socket = UdpSocket()
+            _socket.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
+            message2 = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy,self.id2)
+            _socket.udp_send(message2)
+            res, response_ = False, None
+            start_time = time.perf_counter()
+            while not res and time.perf_counter() < start_time + 10.0:
+                try:
+                    time.sleep(1.0)
+                    response_ = _socket.udp_receive(BUFSIZ)
+                    logger.logger.warn(F"PURE Response: {response_}")
+                    res = True
+                    if isinstance(response_, bytes):
+                        self.check_response_proto(response_)
+                except timeout as te:
+                    logger.logger.error(F"WHILE {te}")
+            if response_ is None or not isinstance(response_, bytes):
+                TestProtobufAndJsonFields.issues1 += "send_message failed."
+                raise AutomationError("send_message Thread failed.")
+
+        t1 = threading.Thread(target=send_message, args=[])
+        t1.start()
+        t1.join()
+
+        if TestProtobufAndJsonFields.issues1 is not "":
+            logger.logger.fatal(f"{TestProtobufAndJsonFields.issues1}")
 
             raise AutomationError(F"============ TEST CASE {test_case} / 1 FAILED ===========")
         else:
@@ -159,7 +182,6 @@ class TestProtobufAndJsonFields(object):
 
         if issues is not "":
             logger.logger.fatal(f"{issues}")
-            # Slack.send_message(issues)
 
             raise AutomationError(F"============ TEST CASE {test_case} / 2 FAILED ===========")
         else:
