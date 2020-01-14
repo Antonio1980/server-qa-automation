@@ -51,7 +51,10 @@ class TestScenariosProtobuf(object):
                                                       "server-qa-automation" + Utils.get_random_string())
         socket_.udp_send(message1)
 
-        t1 = threading.Thread(target=socket_.udp_send(message2), args=[])
+        def send_message():
+            socket_.udp_send(message2)
+
+        t1 = threading.Thread(target=send_message, args=[])
         t1.start()
         t1.join()
 
@@ -91,7 +94,10 @@ class TestScenariosProtobuf(object):
                                                 "server-qa-automation" + Utils.get_random_string())
         socket_.udp_send(message1)
 
-        t1 = threading.Thread(target=socket_.udp_send(message2), args=[])
+        def send_message():
+            socket_.udp_send(message2)
+
+        t1 = threading.Thread(target=send_message, args=[])
         t1.start()
         t1.join()
 

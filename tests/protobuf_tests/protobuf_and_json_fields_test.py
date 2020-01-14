@@ -50,7 +50,10 @@ class TestProtobufAndJsonFields(object):
         message2 = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy, id2)
         socket_.udp_send(message1)
 
-        t1 = threading.Thread(target=socket_.udp_send(message2), args=[])
+        def send_message():
+            socket_.udp_send(message2)
+
+        t1 = threading.Thread(target=send_message, args=[])
         t1.start()
         t1.join()
 
@@ -111,7 +114,10 @@ class TestProtobufAndJsonFields(object):
         message2 = UdpMessage().get_udp_message("1.1", "1.1", self.bearing, self.velocity, self.accuracy, id2)
         socket_.udp_send(message1)
 
-        t1 = threading.Thread(target=socket_.udp_send(message2), args=[])
+        def send_message():
+            socket_.udp_send(message2)
+
+        t1 = threading.Thread(target=send_message, args=[])
         t1.start()
         t1.join()
 
