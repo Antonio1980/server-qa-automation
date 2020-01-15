@@ -128,18 +128,20 @@ class TestProtobufAndJsonFields(object):
 
         json_message = UdpMessage().get_udp_message(self.latitude, self.longitude, self.bearing, self.velocity,
                                                     self.accuracy, self.json_id1)
-        json_socket.udp_send(json_message)
+        for i in range(5):
+            json_socket.udp_send(json_message)
 
-        def send_message():
+        def send_proto_message():
             proto_socket = UdpSocket()
             proto_socket.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["minPort"]))
             logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
             proto_message = UdpMessage().get_udp_message_proto(0.1, 0.1, self.bearing, self.velocity, self.accuracy,
                                                                self.proto_id1)
             time.sleep(0.5)
-            proto_socket.udp_send(proto_message)
+            for i in range(5):
+                proto_socket.udp_send(proto_message)
 
-        t1 = threading.Thread(target=send_message, args=[])
+        t1 = threading.Thread(target=send_proto_message, args=[])
         t1.start()
         t1.join()
         res, response_ = False, None
@@ -167,8 +169,10 @@ class TestProtobufAndJsonFields(object):
     @automation_logger(logger)
     def test_json_fields(self, locations, socket_):
         allure.step("Verify that Json message is correct.")
+        proto_socket = socket_
         try:
-            socket_.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
+            proto_socket.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["minPort"]))
+            logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
         except Exception as e:
             logger.logger.error(F"The instance {locations['instances'][0]['instanceId']} is not responding on port "
                                 F"{locations['instances'][0]['maxPort']} ! \n")
@@ -177,18 +181,24 @@ class TestProtobufAndJsonFields(object):
 
         proto_message = UdpMessage().get_udp_message_proto(1.1, 1.1, self.bearing, self.velocity, self.accuracy,
                                                            self.json_id2)
-        socket_.udp_send(proto_message)
+        for i in range(5):
+            proto_socket.udp_send(proto_message)
 
-        def send_message():
+        def send_json_message():
+            json_socket = UdpSocket()
+            json_socket.udp_connect((locations["instances"][0]["ip"], locations["instances"][0]["maxPort"]))
+            logger.logger.info(F"SOCKET JSON : {json_socket.udp_socket.getsockname()}")
             json_message = UdpMessage().get_udp_message("1.1", "1.1", self.bearing, self.velocity, self.accuracy,
                                                         self.proto_id2)
-            socket_.udp_send(json_message)
+            time.sleep(0.5)
+            for i in range(5):
+                json_socket.udp_send(json_message)
 
-        t1 = threading.Thread(target=send_message, args=[])
+        t1 = threading.Thread(target=send_json_message, args=[])
         t1.start()
         t1.join()
 
-        response_ = socket_.udp_receive(BUFSIZ)
+        response_ = proto_socket.udp_receive(BUFSIZ)
         logger.logger.warn(F"PURE Response: {response_}")
         if isinstance(response_, bytes):
             self.check_response_json(response_)
