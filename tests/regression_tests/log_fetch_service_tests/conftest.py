@@ -23,7 +23,7 @@ def _1000_user_messages(request, api_client):
         assert len(temp) == num_loops
 
     for i in range(num_threads):
-        worker = Thread(target=_messages)
+        worker = Thread(target=_messages, daemon=True)
         worker.setDaemon(True)
         worker.start()
         worker.join(1.0)
