@@ -194,6 +194,9 @@ $ cd /usr/local/zend/var/log
 * View logs:
 $ tail -f | grep *.log
 
+* Kill all UDP connections (Docker included):
+$ lsof -P | grep 'UDP' | awk '{print $2}' | xargs kill -9 
+
 Git:
 ----
 * $ git init
@@ -219,13 +222,10 @@ PROTOBUF
 
 https://github.com/protocolbuffers/protobuf/releases/tag/v3.6.1
 
-$ brew install libtool 
-$ brew install automake
+$ brew install libtool, automake
 $ pip3 install --no-binary=protobuf protobuf
 $ python3 ./setup.py build  
 $ python3 ./setup.py -v install  
-$ python3 ./autogen.sh
-$ python3 ./configure
 
 - Plugin:
 https://github.com/dropbox/mypy-protobuf
