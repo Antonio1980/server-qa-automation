@@ -69,28 +69,27 @@ for dirname, dir_names, filenames in os.walk(os.path.join(root_dir, 'src/base'))
 
 # python setup.py test with distutils- https://justin.abrah.ms/python/setuppy_distutils_testing.html
 class PyTest(TestCommand):
-    user_options = [("pytest-args=", "-vv", "--alluredir=src/allure_results", )]
+    user_options = [("pytest-args=", "v", "--alluredir=src/allure_results", )]
 
     def __init__(self, dist, **kw):
         super().__init__(dist, **kw)
         self.pytest_args = ""
 
     def initialize_options(self):
-        PyTest.initialize_options(self)
+        TestCommand.initialize_options(self)
         self.pytest_args = []
 
     def finalize_options(self):
-        pass
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
 
     def run_tests(self):
         import shlex
-
-        # import here, cause outside the eggs aren't loaded
         import pytest
 
         errno = pytest.main(shlex.split(self.pytest_args))
         sys.exit(errno)
-
 
 # python setup.py test
 setup(
