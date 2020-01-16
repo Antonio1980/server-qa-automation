@@ -20,7 +20,7 @@ class TestDelete1000UserMessages(object):
 
         _response = api_client.log_fetch_svc.delete_user_tasks(user_id)[0]
 
-        assert _response["deletedCount"] <= num_threads * num_loops
+        assert _response["deletedCount"] == num_threads * num_loops
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
 

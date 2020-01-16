@@ -54,8 +54,9 @@ class TestScenariosProtobuf(object):
         def send_message():
             for i in range(6):
                 socket_.udp_send(message2)
+            return socket_
 
-        t1 = threading.Thread(target=send_message, args=[])
+        t1 = threading.Thread(target=send_message, daemon=True)
         t1.start()
         t1.join()
 
@@ -97,8 +98,9 @@ class TestScenariosProtobuf(object):
 
         def send_message():
             socket_.udp_send(message2)
+            return socket_
 
-        t1 = threading.Thread(target=send_message, args=[])
+        t1 = threading.Thread(target=send_message, daemon=True)
         t1.start()
         t1.join()
 

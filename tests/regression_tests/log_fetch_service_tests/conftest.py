@@ -2,8 +2,8 @@ import pytest
 from threading import Thread
 
 user_id = "server-qa-automation"
-num_threads = 10
-num_loops = 100
+num_threads = 20
+num_loops = 50
 
 
 @pytest.fixture(scope="class")
@@ -21,11 +21,12 @@ def _1000_user_messages(request, api_client):
             assert resp[1].status_code == 200
             temp.append(resp[1].status_code)
         assert len(temp) == num_loops
+        return temp
 
     for i in range(num_threads):
         worker = Thread(target=_messages, daemon=True)
         worker.setDaemon(True)
         worker.start()
-        worker.join(1.0)
+        worker.join()
 
     request.addfinalizer(del_messages)

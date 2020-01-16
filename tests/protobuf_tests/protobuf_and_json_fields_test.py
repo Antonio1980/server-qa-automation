@@ -147,6 +147,7 @@ class TestProtobufAndJsonFields:
                                                            self.velocity, self.accuracy, self.proto_id1)
         for i in range(6):
             proto_socket.udp_send(proto_message)
+        return proto_socket
 
     @automation_logger(logger)
     def send_json_message(self, ip_, port):
@@ -158,6 +159,7 @@ class TestProtobufAndJsonFields:
         for i in range(6):
             json_socket.udp_send(json_message)
         # json_socket.udp_socket.detach()
+        return json_socket
 
     @automation_logger(logger)
     def check_response_proto(self, response_):
