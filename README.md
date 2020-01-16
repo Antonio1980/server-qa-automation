@@ -26,6 +26,7 @@ TECHNOLOGIES
 ------------
 
 - pytest - advanced test framework.
+- tox - to isolate or manage virtual environments.
 - allure-pytest - reporting framework.
 - elasticsearch - access to KIBANA DB.
 - pymongo - access to Mongo DB.
@@ -85,20 +86,27 @@ TESTS
 9 Ignore Not Finished tests (cross project)
 * $ pytest -v tests/ --ignore-glob='NF*.py'
 
+10 Run tests under tox and pass environment variable:
+* $ ENV=int tox -- -m [GROUP_NAME] --alluredir=../src/allure_results
+
+11 Run tests under tox:
+* $ tox -- -m [GROUP_NAME] --alluredir=../src/allure_results
+
 * Test Groups:
 
 1. liveness - Production tests.
 2. client - all API methods related to the client (App), without Authorization token.
 3. functional - Heavy tests, could be with some DB or additional access (required isolated env.).
-4. regression - Simple API tests (checks basic functional of the services- smoke/sanity).
-5. regression_areas_blacklist
-6. regression_log_fetch
-7. regression_message
-8. regression_message_sync
-9. regression_remote_config
-10. regression_reporting
-11. regression_routing
-12. regression_licensing
+4. protobuf - Tests with protobuf.
+5. regression - Simple API tests (checks basic functional of the services- smoke/sanity).
+6. regression_areas_blacklist
+7. regression_log_fetch
+8. regression_message
+9. regression_message_sync
+10. regression_remote_config
+11. regression_reporting
+12. regression_routing
+13. regression_licensing
 
 
 CONFIGURATION
@@ -107,12 +115,15 @@ CONFIGURATION
 Project Configuration:
 ----------------------
 NOTE:
-Be carefull with allure and pytest plugins because of hell of conflicts, current valide plagin configuration is:
+Be careful with allure and pytest plugins because of hell of conflicts, current valid plugin configuration is:
 plugins: bdd-3.2.1, xdist-1.31.0, forked-1.1.3, allure-pytest-2.8.6
 
 Protobuf installation:
 pip install --no-binary=protobuf protobuf
 I guess that before it you need pip uninstall protobuf
+
+Tox documentation:
+https://tox.readthedocs.io/en/latest/example/general.html
 
 - Project base configuration stores in staging.cfg (per env) that processes by config_definitions.py -> BaseConfig class.
 

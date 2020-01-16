@@ -69,7 +69,7 @@ for dirname, dir_names, filenames in os.walk(os.path.join(root_dir, 'src/base'))
 
 # python setup.py test with distutils- https://justin.abrah.ms/python/setuppy_distutils_testing.html
 class PyTest(TestCommand):
-    user_options = [("pytest-args=", "test" )]
+    user_options = [("pytest-args=", "-vv", "--alluredir=src/allure_results", )]
 
     def __init__(self, dist, **kw):
         super().__init__(dist, **kw)
@@ -77,6 +77,7 @@ class PyTest(TestCommand):
 
     def initialize_options(self):
         PyTest.initialize_options(self)
+        self.pytest_args = []
 
     def finalize_options(self):
         pass
@@ -89,15 +90,6 @@ class PyTest(TestCommand):
 
         errno = pytest.main(shlex.split(self.pytest_args))
         sys.exit(errno)
-
-    def run(self):
-        import sys, subprocess
-        if sys.version_info < (3, 4, 0, 'final', 0):
-            raise SystemExit(subprocess.call([sys.executable, 'unit2', 'discover', '-s', 'tests/',
-                                              '-p', '*_test.py']))
-        else:
-            raise SystemExit(
-                subprocess.call([sys.executable, '-m', 'pytest', '-vv', 'tests/', '*_test.py']))
 
 
 # python setup.py test
