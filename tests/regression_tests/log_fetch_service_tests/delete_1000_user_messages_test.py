@@ -10,6 +10,7 @@ num_threads = 50
 num_loops = 20
 
 
+@allure.severity(allure.severity_level.BLOCKER)
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
 class TestDelete1000UserMessages(object):
@@ -23,5 +24,3 @@ class TestDelete1000UserMessages(object):
         assert _response["deletedCount"] == num_threads * num_loops
 
         logger.logger.info(F"============ TEST CASE {test_case} PASSED ===========")
-
-

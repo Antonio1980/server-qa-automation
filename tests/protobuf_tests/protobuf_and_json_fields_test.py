@@ -33,13 +33,14 @@ BUFSIZ = 1024
 @pytest.mark.protobuf
 class TestProtobufAndJsonFields:
 
-    latitude1, latitude2 = "0.1", 0.1
-    longitude1, longitude2 = "0.1", 0.1
+    j_latitude, p_latitude = "0.1", 0.1
+    j_longitude, p_longitude = "0.1", 0.1
     bearing = random.uniform(0, 360)
     velocity = random.uniform(2, 40)
-    port1, port2 = "maxPort", "minPort"
+    max_port, min_port = "maxPort", "minPort"
     accuracy = 5.0
     issues1, issues2 = "", ""
+    instance_1, instance_2 = 0, 1
     json_id1, proto_id1 = "server-qa-automation" + Utils.get_random_string(), "server-qa-automation" + \
                           Utils.get_random_string()
     json_id2, proto_id2 = "server-qa-automation" + Utils.get_random_string(), "server-qa-automation" + \
@@ -49,22 +50,23 @@ class TestProtobufAndJsonFields:
     def test_proto_fields(self, locations, socket_):
         allure.step("Verify that Json message is correct.")
         proto_socket = socket_
-        ip1, ip2, port1, port2 = locations["instances"][0]["ip"], locations["instances"][0]["ip"], \
-                                 locations["instances"][0][self.port1], locations["instances"][0][self.port2]
+        ip_, port1, port2 = locations["instances"][self.instance_1]["ip"], \
+                                 locations["instances"][self.instance_1][self.max_port], \
+                                 locations["instances"][self.instance_1][self.min_port]
         try:
-            proto_socket.udp_connect((ip1, port1))
+            proto_socket.udp_connect((ip_, port1))
             logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
         except Exception as e:
-            er = F"The IP {ip1} is not responding on port {port1} ! \n"
+            er = F"The IP {ip_} is not responding on port {port1} ! \n"
             logger.logger.error(er)
             TestProtobufAndJsonFields.issues2 += "Unable to connect." + er
             raise AutomationError(e.args)
 
-        proto_message = UdpMessage().get_udp_message_proto(self.latitude2, self.longitude2, self.bearing,
+        proto_message = UdpMessage().get_udp_message_proto(self.p_latitude, self.p_longitude, self.bearing,
                                                            self.velocity, self.accuracy, self.json_id2)
         proto_socket.udp_send(proto_message)
 
-        t1 = threading.Thread(target=self.send_json_message(ip2, port2), daemon=True)
+        t1 = threading.Thread(target=self.send_json_message(ip_, port2), daemon=True)
         t1.start()
         t1.join()
 
@@ -95,22 +97,23 @@ class TestProtobufAndJsonFields:
     def test_json_fields(self, locations, socket_):
         allure.step("Verify that Protobuf message is correct.")
         json_socket = socket_
-        ip1, ip2, port1, port2 = locations["instances"][0]["ip"], locations["instances"][0]["ip"], \
-                                 locations["instances"][0][self.port1], locations["instances"][0][self.port2]
+        ip_, port1, port2 = locations["instances"][self.instance_2]["ip"], \
+                                 locations["instances"][self.instance_2][self.max_port], \
+                                 locations["instances"][self.instance_2][self.min_port]
         try:
-            json_socket.udp_connect((ip1, port1))
+            json_socket.udp_connect((ip_, port1))
             logger.logger.info(F"SOCKET JSON: {json_socket.udp_socket.getsockname()}")
         except Exception as e:
-            er = F"The ip {ip1} is not responding on port {port1} ! \n"
+            er = F"The ip {ip_} is not responding on port {port1} ! \n"
             logger.logger.error(er)
             TestProtobufAndJsonFields.issues1 += "Unable to connect." + er
             raise AutomationError(e.args)
 
-        json_message = UdpMessage().get_udp_message(self.latitude1, self.longitude1, self.bearing, self.velocity,
+        json_message = UdpMessage().get_udp_message(self.j_latitude, self.j_longitude, self.bearing, self.velocity,
                                                     self.accuracy, self.json_id1)
         json_socket.udp_send(json_message)
 
-        t1 = threading.Thread(target=self.send_proto_message(ip2, port2), daemon=True)
+        t1 = threading.Thread(target=self.send_proto_message(ip_, port2), daemon=True)
         t1.start()
         t1.join()
 
@@ -140,29 +143,31 @@ class TestProtobufAndJsonFields:
 
     @automation_logger(logger)
     def send_proto_message(self, ip_, port):
+        allure.step("Send Protobuf message.")
         proto_socket = UdpSocket()
         proto_socket.udp_connect((ip_, port))
         logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
-        proto_message = UdpMessage().get_udp_message_proto(self.latitude2, self.longitude2, self.bearing,
+        proto_message = UdpMessage().get_udp_message_proto(self.p_latitude, self.p_longitude, self.bearing,
                                                            self.velocity, self.accuracy, self.proto_id1)
         for i in range(6):
             proto_socket.udp_send(proto_message)
-        return proto_socket
+        return
 
     @automation_logger(logger)
     def send_json_message(self, ip_, port):
+        allure.step("Send Json message.")
         json_socket = UdpSocket()
         json_socket.udp_connect((ip_, port))
         logger.logger.info(F"SOCKET JSON : {json_socket.udp_socket.getsockname()}")
-        json_message = UdpMessage().get_udp_message(self.latitude1, self.longitude1, self.bearing, self.velocity,
+        json_message = UdpMessage().get_udp_message(self.j_latitude, self.j_longitude, self.bearing, self.velocity,
                                                     self.accuracy, self.proto_id2)
         for i in range(6):
             json_socket.udp_send(json_message)
-        # json_socket.udp_socket.detach()
-        return json_socket
+        return
 
     @automation_logger(logger)
     def check_response_proto(self, response_):
+        allure.step("Check that Protobuf content is correct.")
         if response_ is not None and isinstance(response_, bytes):
             proto_response = LocationServiceResponse_pb2.LocationServiceResponse()
             try:
@@ -186,9 +191,9 @@ class TestProtobufAndJsonFields:
                    "source" and "rawHorizontalAccuracyValue" in data_json.keys()
             assert data_json["id"] == self.proto_id1
             assert data_json["bearing"] == self.bearing
-            assert data_json["latitude"] == self.latitude2
+            assert data_json["latitude"] == self.p_latitude
             assert data_json["velocity"] == self.velocity
-            assert data_json["longitude"] == self.longitude2
+            assert data_json["longitude"] == self.p_longitude
             assert data_json["horizontalAccuracy"] == self.accuracy
             assert data_json["source"] == "QA Test"
             assert data_json["clientDataType"] == "CAR"
@@ -201,6 +206,7 @@ class TestProtobufAndJsonFields:
 
     @automation_logger(logger)
     def check_response_json(self, response_):
+        allure.step("Check that Json content is correct.")
         if response_ is not None:
             json_data = json.loads(response_)
             logger.logger.info(F"UDP Response: {json_data}")
@@ -216,9 +222,9 @@ class TestProtobufAndJsonFields:
                    "avgAcceleration" and "avgAngularChange" and "maxDeceleration" in data_json.keys()
             assert data_json["id"] == self.proto_id2
             assert data_json["bearing"] == self.bearing
-            assert data_json["latitude"] == self.latitude2
+            assert data_json["latitude"] == self.p_latitude
             assert data_json["velocity"] == self.velocity
-            assert data_json["longitude"] == self.longitude2
+            assert data_json["longitude"] == self.p_longitude
             assert data_json["clientDataType"] == "CAR"
             assert data_json["horizontalAccuracy"] == self.accuracy
             assert data_json["source"] == "QA Test"

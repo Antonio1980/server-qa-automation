@@ -6,7 +6,7 @@ num_threads = 20
 num_loops = 50
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture
 def _1000_user_messages(request, api_client):
 
     def del_messages():
@@ -21,11 +21,10 @@ def _1000_user_messages(request, api_client):
             assert resp[1].status_code == 200
             temp.append(resp[1].status_code)
         assert len(temp) == num_loops
-        return temp
+        return
 
     for i in range(num_threads):
         worker = Thread(target=_messages, daemon=True)
-        worker.setDaemon(True)
         worker.start()
         worker.join()
 
