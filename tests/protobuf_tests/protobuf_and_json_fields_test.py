@@ -15,7 +15,7 @@ from src.base.lib_.log_decorator import automation_logger
 from src.base.lib_.automation_error import AutomationError
 from src.base.instruments.udp_socket import UdpSocket, timeout
 
-test_case = "PROTO CONTENT"
+test_case = "PROTO/JSON CONTENT"
 BUFSIZ = 1024
 
 
@@ -48,61 +48,13 @@ class TestProtobufAndJsonFields:
 
     @automation_logger(logger)
     def test_proto_fields(self, locations, socket_):
-        allure.step("Verify that Json message is correct.")
-        proto_socket = socket_
-        ip_, port1, port2 = locations["instances"][self.instance_1]["ip"], \
-                                 locations["instances"][self.instance_1][self.max_port], \
-                                 locations["instances"][self.instance_1][self.min_port]
-        try:
-            proto_socket.udp_connect((ip_, port1))
-            logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
-        except Exception as e:
-            er = F"The IP {ip_} is not responding on port {port1} ! \n"
-            logger.logger.error(er)
-            TestProtobufAndJsonFields.issues2 += "Unable to connect." + er
-            raise AutomationError(e.args)
-
-        proto_message = UdpMessage().get_udp_message_proto(self.p_latitude, self.p_longitude, self.bearing,
-                                                           self.velocity, self.accuracy, self.json_id2)
-        proto_socket.udp_send(proto_message)
-
-        t1 = threading.Thread(target=self.send_json_message(ip_, port2), daemon=True)
-        t1.start()
-        t1.join()
-
-        res, response_ = False, None
-        start_time = time.perf_counter()
-        while not res and time.perf_counter() < start_time + 10.0:
-            try:
-                response_ = proto_socket.udp_receive(BUFSIZ)
-                logger.logger.warn(F"PURE Response: {response_}")
-                res = True
-                if isinstance(response_, bytes):
-                    self.check_response_proto(response_)
-            except timeout as te:
-                logger.logger.error(F"WHILE {te}")
-
-        if response_ is None or not isinstance(response_, bytes):
-            TestProtobufAndJsonFields.issues1 += "send_message failed."
-            raise AutomationError("send_json_message Thread failed.")
-
-        if TestProtobufAndJsonFields.issues2 is not "":
-            logger.logger.fatal(f"{TestProtobufAndJsonFields.issues2}")
-
-            raise AutomationError(F"============ TEST CASE {test_case} / 2 FAILED ===========")
-        else:
-            logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
-
-    @automation_logger(logger)
-    def test_json_fields(self, locations, socket_):
         allure.step("Verify that Protobuf message is correct.")
-        json_socket = socket_
         ip_, port1, port2 = locations["instances"][self.instance_2]["ip"], \
-                                 locations["instances"][self.instance_2][self.max_port], \
-                                 locations["instances"][self.instance_2][self.min_port]
+                            locations["instances"][self.instance_2][self.max_port], \
+                            locations["instances"][self.instance_2][self.min_port]
         try:
-            json_socket.udp_connect((ip_, port1))
-            logger.logger.info(F"SOCKET JSON: {json_socket.udp_socket.getsockname()}")
+            socket_.udp_connect((ip_, port1))
+            logger.logger.info(F"CONNECTED SOCKET JSON: {socket_.udp_socket.getsockname()}")
         except Exception as e:
             er = F"The ip {ip_} is not responding on port {port1} ! \n"
             logger.logger.error(er)
@@ -111,24 +63,24 @@ class TestProtobufAndJsonFields:
 
         json_message = UdpMessage().get_udp_message(self.j_latitude, self.j_longitude, self.bearing, self.velocity,
                                                     self.accuracy, self.json_id1)
-        json_socket.udp_send(json_message)
+        socket_.udp_send(json_message)
 
         t1 = threading.Thread(target=self.send_proto_message(ip_, port2), daemon=True)
         t1.start()
-        t1.join()
 
         res, response_ = False, None
         start_time = time.perf_counter()
         while not res and time.perf_counter() < start_time + 10.0:
             try:
-                response_ = json_socket.udp_receive(BUFSIZ)
-                logger.logger.info(F"SOCKET JSON: {json_socket.udp_socket.getsockname()}")
+                response_ = socket_.udp_receive(BUFSIZ)
+                logger.logger.info(F"RECEIVED SOCKET JSON: {socket_.udp_socket.getsockname()}")
                 logger.logger.warn(F"PURE Response: {response_}")
                 res = True
                 if isinstance(response_, bytes):
-                    self.check_response_json(response_)
+                    self.check_response_proto(response_)
             except timeout as te:
                 logger.logger.error(F"WHILE {te}")
+        t1.join()
 
         if response_ is None or not isinstance(response_, bytes):
             TestProtobufAndJsonFields.issues1 += "send_proto_message failed."
@@ -142,28 +94,76 @@ class TestProtobufAndJsonFields:
             logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
     @automation_logger(logger)
+    def test_json_fields(self, locations, socket_):
+        allure.step("Verify that Json message is correct.")
+        ip_, port1, port2 = locations["instances"][self.instance_1]["ip"], \
+                                 locations["instances"][self.instance_1][self.max_port], \
+                                 locations["instances"][self.instance_1][self.min_port]
+        try:
+            socket_.udp_connect((ip_, port1))
+            logger.logger.info(F"CONNECTED SOCKET PROTO : {socket_.udp_socket.getsockname()}")
+        except Exception as e:
+            er = F"The IP {ip_} is not responding on port {port1} ! \n"
+            logger.logger.error(er)
+            TestProtobufAndJsonFields.issues2 += "Unable to connect." + er
+            raise AutomationError(e.args)
+
+        proto_message = UdpMessage().get_udp_message_proto(self.p_latitude, self.p_longitude, self.bearing,
+                                                           self.velocity, self.accuracy, self.json_id2)
+        socket_.udp_send(proto_message)
+
+        t1 = threading.Thread(target=self.send_json_message(ip_, port2), daemon=True)
+        t1.start()
+
+        res, response_ = False, None
+        start_time = time.perf_counter()
+        while not res and time.perf_counter() < start_time + 10.0:
+            try:
+                response_ = socket_.udp_receive(BUFSIZ)
+                logger.logger.info(
+                    F"RECEIVED SOCKET PROTO: {socket_.udp_socket.getsockname()}")
+                logger.logger.warn(F"PURE Response: {response_}")
+                res = True
+                if isinstance(response_, bytes):
+                    self.check_response_json(response_)
+            except timeout as te:
+                logger.logger.error(F"WHILE {te}")
+        t1.join()
+
+        if response_ is None or not isinstance(response_, bytes):
+            TestProtobufAndJsonFields.issues1 += "send_message failed."
+            raise AutomationError("send_json_message Thread failed.")
+
+        if TestProtobufAndJsonFields.issues2 is not "":
+            logger.logger.fatal(f"{TestProtobufAndJsonFields.issues2}")
+
+            raise AutomationError(F"============ TEST CASE {test_case} / 2 FAILED ===========")
+        else:
+            logger.logger.info(F"============ TEST CASE {test_case} / 2 PASSED ===========")
+
+    @automation_logger(logger)
     def send_proto_message(self, ip_, port):
         allure.step("Send Protobuf message.")
         proto_socket = UdpSocket()
         proto_socket.udp_connect((ip_, port))
-        logger.logger.info(F"SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
+        logger.logger.info(F"ANOTHER SOCKET PROTO : {proto_socket.udp_socket.getsockname()}")
         proto_message = UdpMessage().get_udp_message_proto(self.p_latitude, self.p_longitude, self.bearing,
                                                            self.velocity, self.accuracy, self.proto_id1)
-        for i in range(6):
+        for i in range(5):
             proto_socket.udp_send(proto_message)
-        return
+        return proto_socket.udp_socket.__exit__()
 
     @automation_logger(logger)
     def send_json_message(self, ip_, port):
         allure.step("Send Json message.")
         json_socket = UdpSocket()
         json_socket.udp_connect((ip_, port))
-        logger.logger.info(F"SOCKET JSON : {json_socket.udp_socket.getsockname()}")
+        logger.logger.info(F"ANOTHER SOCKET JSON : {json_socket.udp_socket.getsockname()}")
         json_message = UdpMessage().get_udp_message(self.j_latitude, self.j_longitude, self.bearing, self.velocity,
                                                     self.accuracy, self.proto_id2)
-        for i in range(6):
+        for i in range(5):
             json_socket.udp_send(json_message)
-        return
+        return json_socket.udp_socket.__exit__()
 
     @automation_logger(logger)
     def check_response_proto(self, response_):
@@ -195,7 +195,7 @@ class TestProtobufAndJsonFields:
             assert data_json["velocity"] == self.velocity
             assert data_json["longitude"] == self.p_longitude
             assert data_json["horizontalAccuracy"] == self.accuracy
-            assert data_json["source"] == "QA Test"
+            assert data_json["source"] == "Test QA"
             assert data_json["clientDataType"] == "CAR"
             assert data_json["altitudeValue"] == 0.0
             assert data_json["verticalAccuracyValue"] == 0.0

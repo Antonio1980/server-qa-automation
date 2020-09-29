@@ -35,7 +35,7 @@ class TestLivenessPerServicePort(object):
     accuracy = 5.0
 
     @automation_logger(logger)
-    def test_returned_endpoints(self, locations):
+    def test_returned_locations(self, locations):
         allure.step("Verify that Routing svc sum of returned location definitions equals to sum returned instances. ")
 
         definitions_len, instances_len = len(locations["definitions"]), len(locations["instances"])

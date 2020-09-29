@@ -39,7 +39,7 @@ elif environment == Environment.INTEGRATION.value:
 elif environment == Environment.PRODUCTION.value:
     environment_conf_file = "production.cfg"
 else:
-    error = "Environment is not detected ! Please specify environment variable 'ENV', like one of ENV=[stg, int, prod]"
+    error = "Environment is not detected ! Please specify environment variable 'ENV', like one of [stg, int, prod]"
     raise AutomationError(error)
 
 

@@ -9,7 +9,7 @@ from src.base.lib_.log_decorator import automation_logger
 from src.base.lib_.automation_error import AutomationError
 from src.proto import LocationServiceResponse_pb2
 
-test_case = "PROTO PER PORT"
+test_case = "PROTO VS PROTO FOR EVERY PORT"
 BUFSIZ = 1024
 
 
@@ -40,6 +40,7 @@ class TestProtobufPerServicePort(object):
         for instance in locations["instances"]:
             error_ports = []
             port_range = [p for p in range(instance["minPort"], instance["maxPort"] + 1)]
+            logger.logger.info(F"Now testing instance: {instance['instanceId']}")
             logger.logger.info(F"Accepted ports are: {port_range}")
 
             def check_ports(ports, tries=2):

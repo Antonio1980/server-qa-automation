@@ -22,3 +22,4 @@ class RequestSchema(object):
 
     def from_json(self, key=None):
         return Utils.to_json_dumps(self, key)
+    

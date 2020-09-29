@@ -77,7 +77,7 @@ def new_definition(request, api_client):
     return res
 
 
-@pytest.fixture
+@pytest.fixture(scope="function")
 @automation_logger(logger)
 def socket_(request):
     sock = UdpSocket()

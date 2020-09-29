@@ -55,12 +55,8 @@ class UdpMessage(Entity):
         client_data.velocity = velocity
         client_data.horizontalAccuracy = accuracy
         client_data.timestamp = Utils.get_timestamps()[1]
-        client_data.source = "QA Test"
+        client_data.source = "Test QA"
 
         data_bytes = request.SerializeToString()
         logger.logger.info(F"UDP Message Proto is {str(request)}")
         return data_bytes
-
-
-if __name__ == "__main__":
-    message1 = UdpMessage.get_udp_message_proto(0.1, 0.1, 12.3, 25.0, 5.0)

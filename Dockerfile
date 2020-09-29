@@ -20,14 +20,14 @@ COPY . project
 RUN pip3 install --upgrade pip
 RUN rm -rf $HOME/.cache/pip3/*
 RUN pip3 install -r project/requirements.txt
-RUN pip3 uninstall protobuf -y
-RUN pip3 install --no-binary=protobuf protobuf
+# RUN pip3 uninstall protobuf -y
+# RUN pip3 install --no-binary=protobuf protobuf
 
 RUN find project/ -name \*.pyc -delete
 
 RUN pwd && ls -la
 
-VOLUME ["src/allure_results"]
+VOLUME ["project/src/allure_results"]
 
 WORKDIR project
 

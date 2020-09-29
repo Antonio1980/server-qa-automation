@@ -13,6 +13,7 @@ num_loops = 20
 @allure.severity(allure.severity_level.BLOCKER)
 @pytest.mark.regression
 @pytest.mark.regression_log_fetch
+@automation_logger(logger)
 class TestDelete1000UserMessages(object):
 
     @automation_logger(logger)

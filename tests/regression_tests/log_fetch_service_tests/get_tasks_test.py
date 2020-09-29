@@ -49,6 +49,7 @@ class TestGetTasks:
 
         logger.logger.info(F"============ TEST CASE {test_case} / 1 PASSED ===========")
 
+#TALTODO: after bug is resolved, rerun this test
     @pytest.mark.skip # Because of "Known issue- BUG: V2X-1914"
     @automation_logger(logger)
     def test_attributes_in_get_tasks_method(self, api_client, _task):

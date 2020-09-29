@@ -3,10 +3,9 @@ from src.base.lib_ import logger
 from src.base.lib_.log_decorator import automation_logger
 
 
-class UdpSocket(object):
+class UdpSocket:
 
     def __init__(self):
-        super(UdpSocket, self).__init__()
         self.udp_socket = socket(family=AF_INET, type=SOCK_DGRAM)
         self.udp_socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.udp_socket.settimeout(2.0)
